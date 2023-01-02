@@ -1,21 +1,33 @@
 <template>
   <div class="modal-container" :class="{ 'modal-hidden': styles.display }">
-    {{ task.title }} - {{ task.description }}
+    <form>
+      title:<input type="text" v-model="task.title" /> desc:<input
+        type="text"
+        v-model="task.description"
+      />
+    </form>
+    <AddTask
+      @click="
+        pushTask({ title: task.title, description: task.description, id: 1 })
+      "
+    />
   </div>
-  <button @click="styles.display = !styles.display"></button>
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import type { Tasks } from "@/types";
+import AddTask from "./AddTask.vue";
 
 interface Props {
   task: {
-    title: String;
-    description: String;
+    title: string;
+    description: string;
+    id: number;
   };
+  pushTask(task: Tasks): void;
+  styles: { display: boolean };
 }
 const Props = defineProps<Props>();
-const styles = ref({ display: true });
 </script>
 
 <style scoped lang="scss">
