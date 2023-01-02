@@ -1,12 +1,5 @@
-<script lang="ts">
-import { defineComponent } from "vue";
+<script lang="ts" setup>
 import Board from "./components/Board/components/Board.vue";
-
-export default defineComponent({
-  name: "App",
-  components: { Board },
-  setup() {},
-});
 </script>
 
 <template>
