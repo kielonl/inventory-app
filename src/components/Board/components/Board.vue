@@ -1,10 +1,10 @@
 <template>
+  <Modal :task="task" :pushTask="pushTask" :styles="styles" />
   <div class="board-container">
     <div v-for="task in tasks" v-bind:key="task.id">
       <Task :title="task.title" :description="task.description" :id="task.id" />
     </div>
 
-    <Modal :task="task" :pushTask="pushTask" :styles="styles" />
     <AddTask @click="styles.display = !styles.display" />
   </div>
 </template>
@@ -21,6 +21,10 @@ const styles = ref({ display: true });
 
 const lastTask = tasks.value.length === 0 ? 0 : tasks.value.length - 1;
 const task = ref({ title: "", description: "", id: lastTask });
+
+if (styles.value.display === false) {
+  task.value = { title: "", description: "", id: lastTask + 1 };
+}
 
 const pushTask = (_task: Tasks): void => {
   if (task.value.title === "" || task.value.description === "") return;

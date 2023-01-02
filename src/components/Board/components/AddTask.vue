@@ -1,6 +1,6 @@
 <template>
   <div class="addtask-container">
-    <button class="addtask-button">+</button>
+    <button class="addtask-button">DODAJ</button>
   </div>
 </template>
 <script lang="ts" setup></script>

@@ -1,4 +1,5 @@
 <template>
+  <div :class="{ 'modal-backdrop': !styles.display }"></div>
   <div class="modal-container" :class="{ 'modal-hidden': styles.display }">
     <form>
       title:<input type="text" v-model="task.title" /> desc:<input
@@ -6,11 +7,16 @@
         v-model="task.description"
       />
     </form>
-    <AddTask
-      @click="
-        pushTask({ title: task.title, description: task.description, id: 1 })
-      "
-    />
+    <div class="modal-buttons">
+      <AddTask
+        @click="
+          pushTask({ title: task.title, description: task.description, id: 1 })
+        "
+      />
+      <button class="modal-close" @click="styles.display = !styles.display">
+        ANULUJ
+      </button>
+    </div>
   </div>
 </template>
 
@@ -27,6 +33,7 @@ interface Props {
   pushTask(task: Tasks): void;
   styles: { display: boolean };
 }
+
 const Props = defineProps<Props>();
 </script>
 
