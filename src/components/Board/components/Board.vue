@@ -13,6 +13,8 @@ export default defineComponent({
     const task = ref({ title: "", description: "" });
 
     const pushTask = (_task: Tasks): void => {
+      if (task.value.title === "" || task.value.description === "") return;
+
       if (!tasks.value.length) {
         tasks.value = [_task];
         task.value = { title: "", description: "" };

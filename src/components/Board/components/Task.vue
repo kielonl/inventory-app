@@ -16,8 +16,8 @@ export default defineComponent({
 
 <template>
   <div class="task-container">
-    {{ title }}<br />
-    {{ description }}
+    <div>{{ title }}</div>
+    <div>{{ description }}</div>
   </div>
 </template>
 
