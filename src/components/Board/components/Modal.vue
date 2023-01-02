@@ -13,9 +13,7 @@
           pushTask({ title: task.title, description: task.description, id: 1 })
         "
       />
-      <button class="modal-close" @click="styles.display = !styles.display">
-        ANULUJ
-      </button>
+      <button class="modal-close" @click="closeModal()">ANULUJ</button>
     </div>
   </div>
 </template>
@@ -35,6 +33,10 @@ interface Props {
 }
 
 const Props = defineProps<Props>();
+
+const closeModal = () => {
+  Props.styles.display = !Props.styles.display;
+};
 </script>
 
 <style scoped lang="scss">
