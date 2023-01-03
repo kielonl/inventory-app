@@ -28,19 +28,32 @@ let tasks = ref<Tasks[]>([]);
 const styles = ref({ display: true });
 
 const lastTask = tasks.value.length === 0 ? 0 : tasks.value.length - 1;
-const task = ref({ title: "", description: "", id: lastTask });
+
+const task = ref({
+  title: "Task",
+  description: "",
+  id: lastTask,
+});
 
 const pushTask = (_task: Tasks): void => {
   if (task.value.title === "" || task.value.description === "") return;
 
   if (!tasks.value.length) {
     tasks.value = [_task];
-    task.value = { title: "", description: "", id: lastTask + 1 };
+    task.value = {
+      title: "Task",
+      description: "",
+      id: lastTask + 1,
+    };
     styles.value.display = !styles.value.display;
     return;
   }
   tasks.value = [...tasks.value, _task];
-  task.value = { title: "", description: "", id: lastTask + 1 };
+  task.value = {
+    title: "Task",
+    description: "",
+    id: lastTask + 1,
+  };
   styles.value.display = !styles.value.display;
   return;
 };
