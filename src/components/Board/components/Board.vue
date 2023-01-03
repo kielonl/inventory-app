@@ -27,12 +27,10 @@ import type { Tasks } from "../../../types";
 let tasks = ref<Tasks[]>([]);
 const styles = ref({ display: true });
 
-const lastTask = tasks.value.length === 0 ? 0 : tasks.value.length - 1;
-
 const task = ref({
-  title: "Task",
+  title: "",
   description: "",
-  id: lastTask,
+  id: tasks.value.length,
 });
 
 const pushTask = (_task: Tasks): void => {
@@ -41,18 +39,18 @@ const pushTask = (_task: Tasks): void => {
   if (!tasks.value.length) {
     tasks.value = [_task];
     task.value = {
-      title: "Task",
+      title: "",
       description: "",
-      id: lastTask + 1,
+      id: tasks.value.length,
     };
     styles.value.display = !styles.value.display;
     return;
   }
   tasks.value = [...tasks.value, _task];
   task.value = {
-    title: "Task",
+    title: "",
     description: "",
-    id: lastTask + 1,
+    id: tasks.value.length,
   };
   styles.value.display = !styles.value.display;
   return;

@@ -1,7 +1,7 @@
 .modal-container {
   position: absolute;
   z-index: 2;
-  width: 40%;
+  width: 35%;
   aspect-ratio: 2/1;
   border: black 1px solid;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
@@ -14,6 +14,10 @@
   transform: translate(-50%, -50%);
   top: 50%;
   left: 50%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .modal-backdrop {
@@ -26,6 +30,7 @@
 }
 
 .modal-description-textarea {
+  display: block;
   outline: none;
   resize: none;
   border-radius: 0.5rem;
@@ -43,16 +48,17 @@
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 0.5rem;
+  font-size: 1rem;
+  display: block;
 }
-svg {
-  width: 0.5rem;
-  aspect-ratio: 1/1;
-  margin-bottom: 0.8rem;
-}
+
 .modal-buttons {
+  margin-top: 1rem;
   width: 100%;
+  gap: 1rem;
   display: flex;
   flex-direction: row-reverse;
+  align-self: flex-end;
 }
 
 .modal-textarea-button,
@@ -69,13 +75,23 @@ svg {
 .modal-textarea-button {
   display: inline-block;
   width: 3rem;
+
   background: #4299e1;
+  &:hover {
+    background: #3182ce;
+  }
 }
 
 .modal-close-button {
-  background: red;
+  background: #e53e3e;
+  &:hover {
+    background: #c53030;
+  }
 }
 
+label {
+  font-size: 0.8rem;
+}
 .modal-hidden {
   display: none;
 }
