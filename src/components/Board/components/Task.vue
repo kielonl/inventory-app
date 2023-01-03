@@ -1,7 +1,6 @@
 <template>
-  <div class="task-container">
-    <div>{{ title }}</div>
-    <div>{{ description }}</div>
+  <div class="task-container" :style="{ background: '#FFBA08' }">
+    <h3 class="task-title">{{ description }}</h3>
   </div>
 </template>
 

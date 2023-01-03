@@ -1,11 +1,18 @@
 <template>
   <Modal :task="task" :pushTask="pushTask" :styles="styles" />
   <div class="board-container">
-    <div v-for="task in tasks" v-bind:key="task.id">
-      <Task :title="task.title" :description="task.description" :id="task.id" />
+    <div class="board-add-task-button">
+      <IconButton @click="styles.display = !styles.display" :icon="'➕'" />
     </div>
-
-    <AddTask @click="styles.display = !styles.display" />
+    <div class="tasks-wrapper">
+      <div v-for="task in tasks" v-bind:key="task.id" class="tasks-container">
+        <Task
+          :title="task.title"
+          :description="task.description"
+          :id="task.id"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -13,7 +20,8 @@
 import { ref } from "vue";
 import Task from "../components/Task.vue";
 import Modal from "./Modal.vue";
-import AddTask from "./AddTask.vue";
+import IconButton from "./IconButton.vue";
+
 import type { Tasks } from "../../../types";
 
 let tasks = ref<Tasks[]>([]);

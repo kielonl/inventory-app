@@ -8,19 +8,20 @@
       />
     </form>
     <div class="modal-buttons">
-      <AddTask
+      <IconButton @click="closeModal()" :icon="'❌'" class="modal-close" />
+      <IconButton
         @click="
           pushTask({ title: task.title, description: task.description, id: 1 })
         "
+        :icon="'➕'"
       />
-      <button class="modal-close" @click="closeModal()">ANULUJ</button>
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
 import type { Tasks } from "@/types";
-import AddTask from "./AddTask.vue";
+import IconButton from "./IconButton.vue";
 
 interface Props {
   task: {
@@ -33,6 +34,16 @@ interface Props {
 }
 
 const Props = defineProps<Props>();
+
+let disabled = false;
+
+const warnDisabled = () => {
+  console.log("a");
+  disabled = true;
+  setTimeout(() => {
+    disabled = false;
+  }, 1500);
+};
 
 const closeModal = () => {
   Props.styles.display = !Props.styles.display;
