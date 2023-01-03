@@ -8,7 +8,7 @@ interface Props {
   icon: string;
 }
 
-const Props = defineProps<Props>();
+const props = defineProps<Props>();
 </script>
 <style scoped lang="scss">
 @import "../styles/IconButton.scss";

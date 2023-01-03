@@ -32,7 +32,7 @@
       >
         ADD
       </button>
-      <button class="modal-close-button" @click="closeModal()">CANCEL</button>
+      <button class="modal-close-button" @click="toggleModal()">CANCEL</button>
     </div>
   </div>
 </template>
@@ -47,17 +47,11 @@ interface Props {
     id: number;
   };
   pushTask(task: Tasks): void;
+  toggleModal(): void;
   styles: { display: boolean };
 }
 
-const Props = defineProps<Props>();
-
-const closeModal = () => {
-  Props.styles.display = !Props.styles.display;
-
-  Props.task.title = "";
-  Props.task.description = "";
-};
+const props = defineProps<Props>();
 </script>
 
 <style scoped lang="scss">
