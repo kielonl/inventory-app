@@ -16,11 +16,10 @@ coverage
 
 /cypress/videos/
 /cypress/screenshots/
-/.vscode/extensions
 
 # Editor directories and files
 .vscode/*
-!.vscode/extensions.json
+.vscode/extensions.json
 .idea
 *.suo
 *.ntvs*
