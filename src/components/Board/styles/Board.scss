@@ -1,0 +1,21 @@
+.board-container {
+  z-index: 1;
+  height: auto;
+  display: grid;
+  grid-template-columns: 0.2fr;
+  grid-template-rows: repeat(2, 0.2fr);
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+.board-add-task-button {
+  grid-area: 1 / 1 / 2 / 2;
+}
+
+.tasks-wrapper {
+  grid-area: 2 / 1 / 3 / 2;
+  background: #edf2f7;
+  border-radius: 1rem;
+}
+.tasks-container {
+  padding: 12px;
+}
