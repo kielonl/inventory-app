@@ -79,7 +79,14 @@ const showCreateModal = (): void => {
 };
 
 const showEditModal = (taskId: number): void => {
-  console.log(taskId);
+  const index = tasks.value.findIndex((obj) => obj.id == taskId);
+
+  task.value = {
+    title: tasks.value[index].title,
+    description: tasks.value[index].description,
+    id: tasks.value[index].id,
+  };
+
   updating.value = true;
   visible.value = true;
 };
