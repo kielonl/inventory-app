@@ -24,11 +24,7 @@
       <button class="modal-update-button" @click="updateTask()" v-if="updating">
         update
       </button>
-      <button
-        v-if="!updating"
-        class="modal-textarea-button"
-        @click="_pushTask()"
-      >
+      <button v-if="!updating" class="modal-add-button" @click="_pushTask()">
         ADD
       </button>
       <button class="modal-close-button" @click="_hideModal()">CANCEL</button>
