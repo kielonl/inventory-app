@@ -3,11 +3,11 @@
     :taskId="tasks.values.length"
     :pushTask="pushTask"
     :visible="visible"
-    :setVisible="toggleVisible"
+    :hideModal="hideModal"
   />
   <div class="board-container">
     <div class="board-add-task-button">
-      <IconButton @click="toggleVisible()" :icon="'➕'" />
+      <IconButton @click="showModal()" :icon="'➕'" />
     </div>
     <div class="tasks-wrapper">
       <div v-for="task in tasks" :key="task.id" class="tasks-container">
@@ -32,7 +32,8 @@ import type { Task } from "../../../types";
 const tasks = ref<Task[]>([]);
 const visible = ref<boolean>(false);
 
-const toggleVisible = () => (visible.value = !visible.value);
+const hideModal = () => (visible.value = false);
+const showModal = () => (visible.value = true);
 
 const pushTask = (_task: Task): void => {
   if (_task.title === "" || _task.title === "") return;

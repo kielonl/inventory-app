@@ -21,7 +21,7 @@
     />
     <div class="modal-buttons">
       <button class="modal-textarea-button" @click="_pushTask">ADD</button>
-      <button class="modal-close-button" @click="toggleModal()">CANCEL</button>
+      <button class="modal-close-button" @click="_hideModal()">CANCEL</button>
     </div>
   </div>
 </template>
@@ -33,7 +33,7 @@ import { ref } from "vue";
 interface Props {
   taskId: number;
   pushTask(task: Task): void;
-  setVisible(): void;
+  hideModal(): void;
   visible: boolean;
 }
 
@@ -49,8 +49,8 @@ const clearTask = (): void => {
   task.value = { title: "", description: "", id: props.taskId };
 };
 
-const toggleModal = (): void => {
-  props.setVisible();
+const _hideModal = (): void => {
+  props.hideModal();
   clearTask();
 };
 
@@ -60,7 +60,8 @@ const _pushTask = (): void => {
     description: task.value.description,
     id: props.taskId,
   });
-  toggleModal();
+  props.hideModal();
+  clearTask();
 };
 </script>
 
