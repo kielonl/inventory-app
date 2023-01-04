@@ -2,6 +2,7 @@
   <div :class="{ 'modal-backdrop': visible }"></div>
   <div class="modal-container" :class="{ 'modal-hidden': !visible }">
     <label for="title">Title</label>
+
     <input
       class="modal-title"
       spellcheck="false"
@@ -20,19 +21,14 @@
       name="description"
     />
     <div class="modal-buttons">
-      <button
-        v-if="updating"
-        class="modal-update-button"
-        @click="
-          updateTask(props.taskId, {
-            title: task.title,
-            description: task.description,
-          })
-        "
-      >
+      <button class="modal-update-button" @click="updateTask()" v-if="updating">
         update
       </button>
-      <button class="modal-textarea-button" v-if="!updating" @click="_pushTask">
+      <button
+        v-if="!updating"
+        class="modal-textarea-button"
+        @click="_pushTask()"
+      >
         ADD
       </button>
       <button class="modal-close-button" @click="_hideModal()">CANCEL</button>
@@ -42,27 +38,29 @@
 
 <script lang="ts" setup>
 import type { Task } from "@/types";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 
 interface Props {
-  taskId: number;
-  pushTask(task: Task): void;
-  hideModal(): void;
+  modelValue: Task;
+  save(updating: boolean): void;
   visible: boolean;
-  updateTask(id: number, updatedTask: Omit<Task, "id">): void;
   updating: boolean;
+  hideModal(): void;
 }
-
 const props = defineProps<Props>();
+const emit = defineEmits(["update:modelValue"]);
 
-const task = ref<Task>({
-  title: "",
-  description: "",
-  id: props.taskId,
+const task = computed({
+  get: () => props.modelValue,
+  set: (value: any) => emit("update:modelValue", value),
 });
 
 const clearTask = (): void => {
-  task.value = { title: "", description: "", id: props.taskId };
+  task.value = {
+    title: "",
+    description: "",
+    id: Math.floor(Math.random() * 1000000) + 1,
+  };
 };
 
 const _hideModal = (): void => {
@@ -71,12 +69,13 @@ const _hideModal = (): void => {
 };
 
 const _pushTask = (): void => {
-  props.pushTask({
-    title: task.value.title,
-    description: task.value.description,
-    id: props.taskId,
-  });
-  props.hideModal();
+  console.log(task.value);
+  props.save(false);
+  clearTask();
+};
+
+const updateTask = (): void => {
+  props.save(true);
   clearTask();
 };
 </script>
