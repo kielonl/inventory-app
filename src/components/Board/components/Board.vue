@@ -60,8 +60,6 @@ const save = (_updating = false): void => {
   }
   updating.value = _updating;
   if (updating.value) {
-    console.log("apdejt");
-    console.log(task.value);
     updateTask();
     resetFormData();
     hideModal();
@@ -79,12 +77,12 @@ const showCreateModal = (): void => {
 };
 
 const showEditModal = (taskId: number): void => {
-  const index = tasks.value.findIndex((obj) => obj.id == taskId);
+  const objectIndex = tasks.value.findIndex((obj) => obj.id == taskId);
 
   task.value = {
-    title: tasks.value[index].title,
-    description: tasks.value[index].description,
-    id: tasks.value[index].id,
+    title: tasks.value[objectIndex].title,
+    description: tasks.value[objectIndex].description,
+    id: tasks.value[objectIndex].id,
   };
 
   updating.value = true;

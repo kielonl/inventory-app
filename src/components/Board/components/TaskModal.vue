@@ -38,7 +38,7 @@
 
 <script lang="ts" setup>
 import type { Task } from "@/types";
-import { computed, ref } from "vue";
+import { computed } from "vue";
 
 interface Props {
   modelValue: Task;
@@ -69,7 +69,6 @@ const _hideModal = (): void => {
 };
 
 const _pushTask = (): void => {
-  console.log(task.value);
   props.save(false);
   clearTask();
 };
