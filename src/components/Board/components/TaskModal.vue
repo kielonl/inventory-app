@@ -20,7 +20,21 @@
       name="description"
     />
     <div class="modal-buttons">
-      <button class="modal-textarea-button" @click="_pushTask">ADD</button>
+      <button
+        v-if="updating"
+        class="modal-update-button"
+        @click="
+          updateTask(props.taskId, {
+            title: task.title,
+            description: task.description,
+          })
+        "
+      >
+        update
+      </button>
+      <button class="modal-textarea-button" v-if="!updating" @click="_pushTask">
+        ADD
+      </button>
       <button class="modal-close-button" @click="_hideModal()">CANCEL</button>
     </div>
   </div>
@@ -35,6 +49,8 @@ interface Props {
   pushTask(task: Task): void;
   hideModal(): void;
   visible: boolean;
+  updateTask(id: number, updatedTask: Omit<Task, "id">): void;
+  updating: boolean;
 }
 
 const props = defineProps<Props>();
