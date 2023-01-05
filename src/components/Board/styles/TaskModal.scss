@@ -61,8 +61,9 @@
   align-self: flex-end;
 }
 
-.modal-textarea-button,
-.modal-close-button {
+.modal-add-button,
+.modal-close-button,
+.modal-update-button {
   display: inline-block;
   border-radius: 0.5rem;
   padding-bottom: 0.5rem;
@@ -72,10 +73,9 @@
   color: white;
 }
 
-.modal-textarea-button {
+.modal-add-button {
   display: inline-block;
   width: 3rem;
-
   background: #4299e1;
   &:hover {
     background: #3182ce;
@@ -86,6 +86,13 @@
   background: #e53e3e;
   &:hover {
     background: #c53030;
+  }
+}
+
+.modal-update-button {
+  background: #48bb78;
+  &:hover {
+    background: #38a169;
   }
 }
 

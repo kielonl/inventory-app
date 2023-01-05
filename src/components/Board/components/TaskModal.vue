@@ -2,6 +2,7 @@
   <div :class="{ 'modal-backdrop': visible }"></div>
   <div class="modal-container" :class="{ 'modal-hidden': !visible }">
     <label for="title">Title</label>
+
     <input
       class="modal-title"
       spellcheck="false"
@@ -20,7 +21,20 @@
       name="description"
     />
     <div class="modal-buttons">
-      <button class="modal-textarea-button" @click="_pushTask">ADD</button>
+      <button
+        class="modal-update-button"
+        v-if="task.id !== undefined"
+        @click="updateTask()"
+      >
+        update
+      </button>
+      <button
+        class="modal-add-button"
+        v-if="task.id === undefined"
+        @click="_pushTask()"
+      >
+        ADD
+      </button>
       <button class="modal-close-button" @click="_hideModal()">CANCEL</button>
     </div>
   </div>
@@ -28,25 +42,27 @@
 
 <script lang="ts" setup>
 import type { Task } from "@/types";
-import { ref } from "vue";
+import { computed } from "vue";
 
 interface Props {
-  taskId: number;
-  pushTask(task: Task): void;
-  hideModal(): void;
+  modelValue: Task;
+  save(): void;
   visible: boolean;
+  hideModal(): void;
 }
-
 const props = defineProps<Props>();
+const emit = defineEmits(["update:modelValue"]);
 
-const task = ref<Task>({
-  title: "",
-  description: "",
-  id: props.taskId,
+const task = computed({
+  get: () => props.modelValue,
+  set: (value: any) => emit("update:modelValue", value),
 });
 
 const clearTask = (): void => {
-  task.value = { title: "", description: "", id: props.taskId };
+  task.value = {
+    title: "",
+    description: "",
+  };
 };
 
 const _hideModal = (): void => {
@@ -55,12 +71,12 @@ const _hideModal = (): void => {
 };
 
 const _pushTask = (): void => {
-  props.pushTask({
-    title: task.value.title,
-    description: task.value.description,
-    id: props.taskId,
-  });
-  props.hideModal();
+  props.save();
+  clearTask();
+};
+
+const updateTask = (): void => {
+  props.save();
   clearTask();
 };
 </script>
