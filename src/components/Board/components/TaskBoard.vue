@@ -50,16 +50,13 @@ const hideModal = () => {
 };
 
 const save = (): void => {
-  console.log(task.value);
   if (validateTask()) {
     return;
   }
 
   if (findTask(task.value.id) === -1) {
     pushTask();
-  }
-
-  if (findTask(task.value.id) !== -1) {
+  } else {
     updateTask();
   }
 
@@ -74,7 +71,6 @@ const showCreateModal = (): void => {
 
 const showEditModal = (taskId: number): void => {
   const objectIndex = findTask(taskId);
-  console.log(tasks.value[objectIndex]);
 
   task.value = {
     title: tasks.value[objectIndex].title,
@@ -105,9 +101,8 @@ const updateTask = () => {
   if (task.value.id === undefined) {
     return;
   }
-  const objectIndex = findTask(task.value.id);
 
-  tasks.value[objectIndex] = {
+  tasks.value[findTask(task.value.id)] = {
     title: task.value.title,
     description: task.value.description,
     id: task.value.id,
@@ -122,5 +117,5 @@ const validateTask = (): boolean => {
 </script>
 
 <style lang="scss">
-@import "../styles/Board.scss";
+@import "../styles/TaskBoard.scss";
 </style>
