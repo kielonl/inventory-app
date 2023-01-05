@@ -54,7 +54,7 @@ const save = (): void => {
     return;
   }
 
-  if (findTask(task.value.id) === -1) {
+  if (findTaskIndex(task.value.id) === -1) {
     pushTask();
   } else {
     updateTask();
@@ -70,7 +70,7 @@ const showCreateModal = (): void => {
 };
 
 const showEditModal = (taskId: number): void => {
-  const objectIndex = findTask(taskId);
+  const objectIndex = findTaskIndex(taskId);
 
   task.value = {
     title: tasks.value[objectIndex].title,
@@ -81,7 +81,7 @@ const showEditModal = (taskId: number): void => {
   visible.value = true;
 };
 
-const findTask = (id: number | undefined): number => {
+const findTaskIndex = (id: number | undefined): number => {
   return tasks.value.findIndex((obj) => obj.id == id);
 };
 
@@ -102,7 +102,7 @@ const updateTask = () => {
     return;
   }
 
-  tasks.value[findTask(task.value.id)] = {
+  tasks.value[findTaskIndex(task.value.id)] = {
     title: task.value.title,
     description: task.value.description,
     id: task.value.id,
