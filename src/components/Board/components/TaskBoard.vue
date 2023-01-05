@@ -29,7 +29,7 @@ import TaskModal from "./TaskModal.vue";
 import IconButton from "./IconButton.vue";
 
 import { ref, reactive, onMounted } from "vue";
-import { callApi, HTTP_METHODS } from "../../../services/callApi";
+import { read } from "../../../services/callApi";
 import type { Task } from "../../../types";
 
 const state = reactive<any>({
@@ -37,9 +37,8 @@ const state = reactive<any>({
 });
 
 onMounted(async () => {
-  const res = await callApi(HTTP_METHODS.GET, "/pokemon?offset=0");
-  state.tasks = res.result.data.results;
-  console.log(res);
+  state.tasks = await read();
+  console.log(state);
 });
 
 const tasks = ref<Task[]>([]);
