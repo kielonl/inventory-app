@@ -45,10 +45,10 @@ const put = async (task: ApiTask): Promise<{ message: string }> => {
   return result;
 };
 
-const _delete = async (id: string): Promise<{ message: string }> => {
+const remove = async (id: string): Promise<{ message: string }> => {
   const result = await callApi(HTTP_METHODS.DELETE, `/tasks/${id}`);
 
   return result;
 };
 
-export { read, readSingle, write, put, _delete };
+export { read, readSingle, write, put, remove };
