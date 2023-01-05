@@ -29,7 +29,7 @@ import TaskModal from "./TaskModal.vue";
 import IconButton from "./IconButton.vue";
 
 import { ref, reactive, onMounted } from "vue";
-import { read } from "../../../services/callApi";
+import * as api from "../../../services/axiosApiCall";
 import type { Task } from "../../../types";
 
 const state = reactive<any>({
@@ -37,8 +37,7 @@ const state = reactive<any>({
 });
 
 onMounted(async () => {
-  state.tasks = await read();
-  console.log(state);
+  state.tasks = await api.read();
 });
 
 const tasks = ref<Task[]>([]);

@@ -18,36 +18,34 @@ const callApi = async (
     method: HTTPMethod,
     url: `${apiUrl}${url}`,
     data,
-  }).then((response) => {
-    return response;
   });
 };
 
-const read = async (): Promise => {
+const read = async (): Promise<any[]> => {
   const result = await callApi(HTTP_METHODS.GET, "/pokemon?offset=0");
 
   return result;
 };
 
-const readSingle = async (task: ApiTask): Promise => {
+const readById = async (task: ApiTask): Promise<ApiTask> => {
   const result = await callApi(HTTP_METHODS.GET, `/tasks/${task.id}`);
 
   return result;
 };
 
-const write = async (task: Omit<ApiTask, "id">): Promise => {
+const write = async (task: Omit<ApiTask, "id">): Promise<ApiTask> => {
   const result = await callApi(HTTP_METHODS.POST, "/tasks");
 
   return result;
 };
 
-const put = async (task: ApiTask): Promise => {
+const put = async (task: ApiTask): Promise<{ message: string }> => {
   const result = await callApi(HTTP_METHODS.PUT, `/tasks/${task.id}`, { task });
 
   return result;
 };
 
-const _delete = async (id: string): Promise => {
+const _delete = async (id: string): Promise<{ message: string }> => {
   const result = await callApi(HTTP_METHODS.DELETE, `/tasks/${id}`);
 
   return result;
