@@ -3,7 +3,6 @@
     v-model="task"
     :save="save"
     :visible="visible"
-    :updating="updating"
     :hideModal="hideModal"
   />
   <div class="board-container">
@@ -36,48 +35,46 @@ const tasks = ref<Task[]>([]);
 const task = ref<Task>({
   title: "",
   description: "",
-  id: Math.floor(Math.random() * 1000000) + 1,
 });
 const visible = ref<boolean>(false);
-const updating = ref<boolean>(false);
 
 const resetFormData = () => {
   task.value = {
     title: "",
     description: "",
-    id: Math.floor(Math.random() * 1000000) + 1,
   };
 };
 
 const hideModal = () => {
-  resetFormData();
   visible.value = false;
 };
 
-const save = (_updating = false): void => {
-  if (!validateTask) {
+const save = (): void => {
+  console.log(task.value);
+  if (validateTask()) {
     return;
   }
-  updating.value = _updating;
-  if (updating.value) {
+
+  if (findTask(task.value.id) === -1) {
+    pushTask();
+  }
+
+  if (findTask(task.value.id) !== -1) {
     updateTask();
-    resetFormData();
-    hideModal();
-    return;
   }
-  pushTask();
+
   resetFormData();
   hideModal();
   return;
 };
 
 const showCreateModal = (): void => {
-  updating.value = false;
   visible.value = true;
 };
 
 const showEditModal = (taskId: number): void => {
-  const objectIndex = tasks.value.findIndex((obj) => obj.id == taskId);
+  const objectIndex = findTask(taskId);
+  console.log(tasks.value[objectIndex]);
 
   task.value = {
     title: tasks.value[objectIndex].title,
@@ -85,17 +82,30 @@ const showEditModal = (taskId: number): void => {
     id: tasks.value[objectIndex].id,
   };
 
-  updating.value = true;
   visible.value = true;
 };
 
+const findTask = (id: number | undefined): number => {
+  return tasks.value.findIndex((obj) => obj.id == id);
+};
+
 const pushTask = (): void => {
-  tasks.value = [...tasks.value, task.value];
+  tasks.value = [
+    ...tasks.value,
+    {
+      title: task.value.title,
+      description: task.value.description,
+      id: Math.floor(Math.random() * 1000000) + 1,
+    },
+  ];
   hideModal();
 };
 
 const updateTask = () => {
-  const objectIndex = tasks.value.findIndex((obj) => obj.id == task.value.id);
+  if (task.value.id === undefined) {
+    return;
+  }
+  const objectIndex = findTask(task.value.id);
 
   tasks.value[objectIndex] = {
     title: task.value.title,
@@ -107,10 +117,7 @@ const updateTask = () => {
 };
 
 const validateTask = (): boolean => {
-  if (task.value.description === "" || task.value.title === "") {
-    return false;
-  }
-  return true;
+  return task.value.description === "" || task.value.title === "";
 };
 </script>
 

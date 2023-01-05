@@ -9,9 +9,9 @@
 interface Props {
   title: string;
   description: string;
-  id: number;
+  id?: number;
   save(updating: boolean): void;
-  showEditModal(taskId: number): void;
+  showEditModal(taskId?: number): void;
 }
 
 const props = defineProps<Props>();
