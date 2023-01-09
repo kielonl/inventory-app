@@ -8,7 +8,6 @@ export interface UpdateTask extends Omit<Task, "uuid"> {
   message?: string;
 }
 
-export interface Error {
-  isError: boolean;
+export interface TaskError {
   errorMessage: string;
 }

@@ -1,7 +1,7 @@
 <template>
   <TaskModal
     v-model="task"
-    v-model:error="error"
+    :error="error"
     :save="save"
     :visible="visible"
     :hideModal="hideModal"
@@ -16,7 +16,7 @@
         No tasks received
       </div>
       <div
-        v-if="state.tasks.length !== 0"
+        v-if="state.tasks.length"
         v-for="task in state.tasks"
         :key="task.uuid"
         class="tasks-container"
@@ -41,26 +41,26 @@ import TaskModal from "./TaskModal.vue";
 import IconButton from "./IconButton.vue";
 
 import * as TaskService from "../../../services/taskService";
-import type { Task, Error } from "../../../types";
+import type { Task, TaskError } from "../../../types";
 
 const state = reactive<any>({
   tasks: [],
 });
 
 onMounted(async () => {
-  state.tasks = await TaskService.read();
+  const result = await TaskService.read();
+  if (!result) {
+    return setError("Unknown error");
+  }
+  state.tasks = result;
 });
 
-// const tasks = ref<Task[]>([]);
 const task = ref<Task>({
   type: "",
   name: "",
 });
 const visible = ref<boolean>(false);
-const error = ref<Error>({
-  isError: false,
-  errorMessage: "Unknown error",
-});
+const error = ref<TaskError>({ errorMessage: "" });
 
 const resetFormData = () => {
   task.value = {
@@ -71,23 +71,22 @@ const resetFormData = () => {
 
 const hideModal = () => {
   visible.value = false;
+  setError("");
 };
 
 const save = async (): Promise<void> => {
   if (validateTask()) {
-    setError(true, "Task fields cannot be empty");
-    return;
+    return setError("Task fields cannot be empty");
   }
   if (findTaskIndex(task.value.uuid) === -1) {
-    createTask();
+    await createTask();
   } else {
     await updateTask();
   }
 
-  if (error.value.isError === false) {
+  if (error.value.errorMessage === "") {
     resetFormData();
     hideModal();
-    return;
   }
 };
 
@@ -107,9 +106,8 @@ const showEditModal = (taskId: string): void => {
   visible.value = true;
 };
 
-const setError = (isError = true, errorMessage: string = "Unknown error") => {
+const setError = (errorMessage: string = "Unknown error") => {
   error.value = {
-    isError,
     errorMessage,
   };
 };
@@ -133,8 +131,12 @@ const updateTask = async (): Promise<void> => {
   if (task.value.uuid === undefined) {
     return;
   }
-  if (compareTasks(state.tasks[findTaskIndex(task.value.uuid)], task.value)) {
-    return setError(true, "zmien co");
+
+  const taskIndex = findTaskIndex(task.value.uuid);
+
+  //check if user edited task. If not return an error
+  if (compareTasks(state.tasks[taskIndex], task.value)) {
+    return setError("You have to change something");
   }
 
   const result = await TaskService.put(task.value.uuid, {
@@ -146,12 +148,12 @@ const updateTask = async (): Promise<void> => {
     return setError();
   }
 
-  state.tasks[findTaskIndex(task.value.uuid)] = {
+  state.tasks[taskIndex] = {
     type: result.type,
     name: result.name,
     uuid: task.value.uuid,
   };
-  setError(false);
+  setError("");
 };
 
 const compareTasks = (localTask: Task, apiTask: Task): boolean => {
