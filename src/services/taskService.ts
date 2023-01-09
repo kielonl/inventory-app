@@ -6,8 +6,7 @@ const HTTP_METHODS = {
   PUT: "PUT",
   DELETE: "DELETE",
 };
-
-const apiUrl = "http://127.0.0.1:8000";
+const apiUrl = import.meta.env.VITE_API_URL;
 //change data type later
 const callApi = async (
   HTTPMethod: HTTP_METHODS,

@@ -31,7 +31,7 @@ import TaskBox from "./TaskBox.vue";
 import TaskModal from "./TaskModal.vue";
 import IconButton from "./IconButton.vue";
 
-import * as api from "../../../services/axiosTaskService";
+import * as api from "../../../services/taskService";
 import type { Task } from "../../../types";
 
 const state = reactive<any>({
