@@ -45,9 +45,8 @@ const write = async (task: Omit<ApiTask, "id">): Promise<ApiTask> => {
 const put = async (
   taskId: string,
   task: Omit<ApiTask, "id">
-): Promise<{ message: string }> => {
+): Promise<UpdateTask> => {
   const result = await callApi(HTTP_METHODS.PUT, `/tasks/${taskId}`, task);
-
   return result.data;
 };
 

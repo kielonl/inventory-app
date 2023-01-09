@@ -13,8 +13,8 @@
     <div class="tasks-wrapper">
       <div v-for="task in state.tasks" :key="task.uuid" class="tasks-container">
         <TaskBox
-          :title="task.title"
-          :description="task.description"
+          :type="task.type"
+          :name="task.name"
           :id="task.uuid"
           :save="save"
           :showEditModal="showEditModal"
@@ -31,7 +31,7 @@ import TaskBox from "./TaskBox.vue";
 import TaskModal from "./TaskModal.vue";
 import IconButton from "./IconButton.vue";
 
-import * as api from "../../../services/taskService";
+import * as TaskService from "../../../services/taskService";
 import type { Task } from "../../../types";
 
 const state = reactive<any>({
@@ -39,20 +39,20 @@ const state = reactive<any>({
 });
 
 onMounted(async () => {
-  state.tasks = await api.read();
+  state.tasks = await TaskService.read();
 });
 
-const tasks = ref<Task[]>([]);
+// const tasks = ref<Task[]>([]);
 const task = ref<Task>({
-  title: "",
-  description: "",
+  type: "",
+  name: "",
 });
 const visible = ref<boolean>(false);
 
 const resetFormData = () => {
   task.value = {
-    title: "",
-    description: "",
+    type: "",
+    name: "",
   };
 };
 
@@ -65,8 +65,8 @@ const save = (): void => {
     return;
   }
 
-  if (findTaskIndex(task.value.id) === -1) {
-    pushTask();
+  if (findTaskIndex(task.value.uuid) === -1) {
+    createTask();
   } else {
     updateTask();
   }
@@ -80,50 +80,54 @@ const showCreateModal = (): void => {
   visible.value = true;
 };
 
-const showEditModal = (taskId: number): void => {
+const showEditModal = (taskId: string): void => {
   const objectIndex = findTaskIndex(taskId);
 
   task.value = {
-    title: tasks.value[objectIndex].title,
-    description: tasks.value[objectIndex].description,
-    id: tasks.value[objectIndex].id,
+    type: state.tasks[objectIndex].type,
+    name: state.tasks[objectIndex].name,
+    uuid: state.tasks[objectIndex].uuid,
   };
 
   visible.value = true;
 };
 
-const findTaskIndex = (id: number | undefined): number => {
-  return tasks.value.findIndex((obj) => obj.id == id);
+const findTaskIndex = (taskId: string | undefined): number => {
+  return state.tasks.findIndex((obj: any) => obj.uuid == taskId);
 };
 
-const pushTask = (): void => {
-  tasks.value = [
-    ...tasks.value,
-    {
-      title: task.value.title,
-      description: task.value.description,
-      id: Math.floor(Math.random() * 1000000) + 1,
-    },
-  ];
+const createTask = async (): Promise<void> => {
+  const result = await TaskService.write({
+    type: task.value.type,
+    name: task.value.name,
+  });
+
+  state.tasks = [...state.tasks, result];
+
   hideModal();
 };
 
-const updateTask = () => {
-  if (task.value.id === undefined) {
+const updateTask = async (): Promise<void> => {
+  if (task.value.uuid === undefined) {
     return;
   }
 
-  tasks.value[findTaskIndex(task.value.id)] = {
-    title: task.value.title,
-    description: task.value.description,
-    id: task.value.id,
+  const result = await TaskService.put(task.value.uuid, {
+    type: task.value.type,
+    name: task.value.name,
+  });
+
+  state.tasks[findTaskIndex(task.value.uuid)] = {
+    type: result.type,
+    name: result.name,
+    uuid: task.value.uuid,
   };
 
   hideModal();
 };
 
 const validateTask = (): boolean => {
-  return task.value.description === "" || task.value.title === "";
+  return task.value.name === "" || task.value.type === "";
 };
 </script>
 
