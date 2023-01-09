@@ -9,7 +9,7 @@
         spellcheck="false"
         placeholder="..."
         name="title"
-        v-model="task.title"
+        v-model="task.type"
       />
       <label for="description">Description</label>
       <textarea
@@ -17,21 +17,21 @@
         cols="40"
         class="modal-description-textarea"
         type="text"
-        v-model="task.description"
+        v-model="task.name"
         placeholder="..."
         name="description"
       />
       <div class="modal-buttons">
         <button
           class="modal-update-button"
-          v-if="task.id !== undefined"
+          v-if="task.uuid !== undefined"
           @click="updateTask()"
         >
           update
         </button>
         <button
           class="modal-add-button"
-          v-if="task.id === undefined"
+          v-if="task.uuid === undefined"
           @click="_pushTask()"
         >
           ADD
@@ -62,8 +62,9 @@ const task = computed({
 
 const clearTask = (): void => {
   task.value = {
-    title: "",
-    description: "",
+    type: "",
+    name: "",
+    uuid: task.value.uuid,
   };
 };
 
