@@ -21,6 +21,8 @@
         placeholder="..."
         name="description"
       />
+      <ErrorBox v-if="error.isError" :message="error.errorMessage" />
+      {{ error.isError }}
       <div class="modal-buttons">
         <button
           class="modal-update-button"
@@ -43,21 +45,28 @@
 </template>
 
 <script lang="ts" setup>
-import type { Task } from "@/types";
+import type { Task, Error } from "@/types";
 import { computed } from "vue";
+import ErrorBox from "./ErrorBox.vue";
 
 interface Props {
   modelValue: Task;
+  error: Error;
   save(): void;
   visible: boolean;
   hideModal(): void;
 }
 const props = defineProps<Props>();
-const emit = defineEmits(["update:modelValue"]);
+const emit = defineEmits(["update:modelValue", "update:error"]);
 
 const task = computed({
   get: () => props.modelValue,
   set: (value: any) => emit("update:modelValue", value),
+});
+
+const error = computed({
+  get: () => props.error,
+  set: (value: any) => emit("update:error", value),
 });
 
 const clearTask = (): void => {
@@ -75,12 +84,12 @@ const _hideModal = (): void => {
 
 const _pushTask = (): void => {
   props.save();
-  clearTask();
+  // clearTask();
 };
 
 const updateTask = (): void => {
   props.save();
-  clearTask();
+  // clearTask();
 };
 </script>
 
