@@ -9,12 +9,13 @@
     <div class="board-add-task-button">
       <IconButton @click="showCreateModal()" :icon="'➕'" />
     </div>
+
     <div class="tasks-wrapper">
-      <div v-for="task in tasks" :key="task.id" class="tasks-container">
+      <div v-for="task in state.tasks" :key="task.uuid" class="tasks-container">
         <TaskBox
           :title="task.title"
           :description="task.description"
-          :id="task.id"
+          :id="task.uuid"
           :save="save"
           :showEditModal="showEditModal"
         />
@@ -24,12 +25,22 @@
 </template>
 
 <script lang="ts" setup>
-import { ref } from "vue";
+import { ref, reactive, onMounted } from "vue";
+
 import TaskBox from "./TaskBox.vue";
 import TaskModal from "./TaskModal.vue";
 import IconButton from "./IconButton.vue";
 
+import * as api from "../../../services/taskService";
 import type { Task } from "../../../types";
+
+const state = reactive<any>({
+  tasks: [],
+});
+
+onMounted(async () => {
+  state.tasks = await api.read();
+});
 
 const tasks = ref<Task[]>([]);
 const task = ref<Task>({
