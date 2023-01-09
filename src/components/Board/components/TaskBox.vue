@@ -1,5 +1,5 @@
 <template>
-  <div class="task-container" @click="showEditModal(id)">
+  <div class="task-container" @click="showEditModal(uuid)">
     <h3 class="task-title">{{ type }}</h3>
     <h3 class="task-description">{{ name }}</h3>
   </div>
@@ -9,9 +9,9 @@
 interface Props {
   type: string;
   name: string;
-  id?: string;
+  uuid?: string;
   save(updating: boolean): void;
-  showEditModal(taskId?: string): void;
+  showEditModal(uuid?: string): void;
 }
 
 const props = defineProps<Props>();
