@@ -31,7 +31,7 @@ import TaskBox from "./TaskBox.vue";
 import TaskModal from "./TaskModal.vue";
 import IconButton from "./IconButton.vue";
 
-import * as api from "../../../services/taskService";
+import * as TaskService from "../../../services/taskService";
 import type { Task } from "../../../types";
 
 const state = reactive<any>({
@@ -39,7 +39,7 @@ const state = reactive<any>({
 });
 
 onMounted(async () => {
-  state.tasks = await api.read();
+  state.tasks = await TaskService.read();
 });
 
 // const tasks = ref<Task[]>([]);
@@ -66,7 +66,7 @@ const save = (): void => {
   }
 
   if (findTaskIndex(task.value.uuid) === -1) {
-    pushTask();
+    createTask();
   } else {
     updateTask();
   }
@@ -92,12 +92,12 @@ const showEditModal = (taskId: string): void => {
   visible.value = true;
 };
 
-const findTaskIndex = (TaskId: string | undefined): number => {
-  return state.tasks.findIndex((obj: any) => obj.uuid == TaskId);
+const findTaskIndex = (taskId: string | undefined): number => {
+  return state.tasks.findIndex((obj: any) => obj.uuid == taskId);
 };
 
-const pushTask = async (): Promise<void> => {
-  const result = await api.write({
+const createTask = async (): Promise<void> => {
+  const result = await TaskService.write({
     type: task.value.type,
     name: task.value.name,
   });
@@ -112,7 +112,7 @@ const updateTask = async (): Promise<void> => {
     return;
   }
 
-  const result = await api.put(task.value.uuid, {
+  const result = await TaskService.put(task.value.uuid, {
     type: task.value.type,
     name: task.value.name,
   });

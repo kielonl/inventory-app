@@ -3,3 +3,7 @@ export interface Task {
   name: string;
   uuid?: string;
 }
+
+export interface UpdateTask extends Omit<Task, "uuid"> {
+  message?: string;
+}
