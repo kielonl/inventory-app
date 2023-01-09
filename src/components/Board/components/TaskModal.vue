@@ -30,6 +30,7 @@
           class="modal-update-button"
           v-if="task.uuid !== undefined"
           @click="updateTask()"
+          :disabled="validateTask()"
         >
           update
         </button>
@@ -37,6 +38,7 @@
           class="modal-add-button"
           v-if="task.uuid === undefined"
           @click="_pushTask()"
+          :disabled="validateTask()"
         >
           ADD
         </button>
@@ -57,6 +59,7 @@ interface Props {
   save(): void;
   visible: boolean;
   hideModal(): void;
+  validateTask(): boolean;
 }
 const props = defineProps<Props>();
 const emit = defineEmits(["update:modelValue", "update:error"]);

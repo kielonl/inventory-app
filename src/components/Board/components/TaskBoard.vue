@@ -5,6 +5,7 @@
     :save="save"
     :visible="visible"
     :hideModal="hideModal"
+    :validateTask="validateTask"
   />
   <div class="board-container">
     <div class="board-add-task-button">

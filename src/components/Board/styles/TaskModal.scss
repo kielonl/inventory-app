@@ -71,6 +71,7 @@
   outline: none;
   border: none;
   color: white;
+  cursor: pointer;
 }
 
 .modal-add-button {
@@ -94,6 +95,11 @@
   &:hover {
     background: #38a169;
   }
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 label {
