@@ -13,16 +13,21 @@ const callApi = async (
   url: string,
   data: any
 ): Promise => {
-  return await axios({
-    headers: {
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "GET, POST, PATCH, PUT, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
-    },
-    method: HTTPMethod,
-    url: `${apiUrl}${url}`,
-    data,
-  });
+  try {
+    return await axios({
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods":
+          "GET, POST, PATCH, PUT, DELETE, OPTIONS",
+        "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
+      },
+      method: HTTPMethod,
+      url: `${apiUrl}${url}`,
+      data,
+    });
+  } catch (error) {
+    return error;
+  }
 };
 
 const read = async (): Promise<any[]> => {

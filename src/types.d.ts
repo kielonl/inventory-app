@@ -7,3 +7,7 @@ export interface Task {
 export interface UpdateTask extends Omit<Task, "uuid"> {
   message?: string;
 }
+
+export interface TaskError {
+  errorMessage: string;
+}
