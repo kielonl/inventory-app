@@ -3,13 +3,13 @@
   <Transition name="fade">
     <div class="modal-container" v-if="visible">
       <label for="title">Title</label>
-
       <input
         class="modal-title"
         spellcheck="false"
         placeholder="..."
         name="title"
         v-model="task.type"
+        required
       />
       <label for="description">Description</label>
       <textarea
@@ -20,6 +20,7 @@
         v-model="task.name"
         placeholder="..."
         name="description"
+        required
       />
       <ErrorBox
         v-if="error.errorMessage !== ''"
@@ -59,7 +60,6 @@ interface Props {
   save(): void;
   visible: boolean;
   hideModal(): void;
-  validateTask(): boolean;
 }
 const props = defineProps<Props>();
 const emit = defineEmits(["update:modelValue", "update:error"]);
@@ -68,6 +68,15 @@ const task = computed({
   get: () => props.modelValue,
   set: (value: any) => emit("update:modelValue", value),
 });
+
+const validateTask = (): boolean => {
+  return (
+    task.value.name === "" ||
+    task.value.type === "" ||
+    task.value.name.length > 80 ||
+    task.value.type.length > 16
+  );
+};
 
 const clearTask = (): void => {
   task.value = {

@@ -5,7 +5,6 @@
     :save="save"
     :visible="visible"
     :hideModal="hideModal"
-    :validateTask="validateTask"
   />
   <div class="board-container">
     <div class="board-add-task-button">
@@ -76,9 +75,6 @@ const hideModal = () => {
 };
 
 const save = async (): Promise<void> => {
-  if (validateTask()) {
-    return setError("Task fields cannot be empty");
-  }
   if (findTaskIndex(task.value.uuid) === -1) {
     await createTask();
   } else {
@@ -163,10 +159,6 @@ const compareTasks = (localTask: Task, apiTask: Task): boolean => {
     localTask.type === apiTask.type &&
     apiTask.uuid === apiTask.uuid
   );
-};
-
-const validateTask = (): boolean => {
-  return task.value.name === "" || task.value.type === "";
 };
 </script>
 
