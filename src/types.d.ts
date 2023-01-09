@@ -7,5 +7,5 @@ export interface Task {
 export interface ApiTask {
   type: string;
   name: string;
-  id: string;
+  uuid: string;
 }

@@ -9,12 +9,13 @@
     <div class="board-add-task-button">
       <IconButton @click="showCreateModal()" :icon="'➕'" />
     </div>
+
     <div class="tasks-wrapper">
-      <div v-for="task in tasks" :key="task.id" class="tasks-container">
+      <div v-for="task in state.tasks" :key="task.uuid" class="tasks-container">
         <TaskBox
           :title="task.title"
           :description="task.description"
-          :id="task.id"
+          :id="task.uuid"
           :save="save"
           :showEditModal="showEditModal"
         />
