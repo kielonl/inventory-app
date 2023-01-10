@@ -33,7 +33,7 @@
           @click="updateTask()"
           :disabled="validateTask()"
         >
-          update
+          UPDATE
         </button>
         <button
           class="modal-add-button"
