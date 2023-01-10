@@ -30,7 +30,7 @@
           class="modal-update-button"
           v-if="item.uuid !== undefined"
           @click="updateItem()"
-          :disabled="validateTask()"
+          :disabled="validateItem()"
         >
           UPDATE
         </button>
@@ -38,7 +38,7 @@
           class="modal-add-button"
           v-if="item.uuid === undefined"
           @click="_pushItem()"
-          :disabled="validateTask()"
+          :disabled="validateItem()"
         >
           ADD
         </button>
@@ -68,7 +68,7 @@ const item = computed({
   set: (value: any) => emit("update:modelValue", value),
 });
 
-const validateTask = (): boolean => {
+const validateItem = (): boolean => {
   return (
     item.value.name === "" ||
     item.value.type === "" ||

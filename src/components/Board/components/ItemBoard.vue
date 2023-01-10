@@ -94,8 +94,8 @@ const showCreateModal = (): void => {
   visible.value = true;
 };
 
-const showEditModal = (itemId: string): void => {
-  const objectIndex = findItemIndex(itemId);
+const showEditModal = (id: string): void => {
+  const objectIndex = findItemIndex(id);
 
   item.value = {
     type: state.items[objectIndex].type,
@@ -112,8 +112,8 @@ const setError = (errorMessage: string = "Unknown error") => {
   };
 };
 
-const findItemIndex = (itemId: string | undefined): number => {
-  return state.items.findIndex((obj: any) => obj.uuid == itemId);
+const findItemIndex = (id: string | undefined): number => {
+  return state.items.findIndex((obj: any) => obj.uuid == id);
 };
 
 const createItem = async (): Promise<void> => {
