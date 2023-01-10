@@ -3,7 +3,6 @@
   <Transition name="fade">
     <div class="modal-container" v-if="visible">
       <label for="title">Title</label>
-
       <input
         class="modal-title"
         spellcheck="false"
@@ -20,6 +19,7 @@
         v-model="item.name"
         placeholder="..."
         name="description"
+        required
       />
       <ErrorBox
         v-if="error.errorMessage !== ''"
@@ -30,13 +30,15 @@
           class="modal-update-button"
           v-if="item.uuid !== undefined"
           @click="updateItem()"
+          :disabled="validateTask()"
         >
-          update
+          UPDATE
         </button>
         <button
           class="modal-add-button"
           v-if="item.uuid === undefined"
           @click="_pushItem()"
+          :disabled="validateTask()"
         >
           ADD
         </button>
@@ -65,6 +67,15 @@ const item = computed({
   get: () => props.modelValue,
   set: (value: any) => emit("update:modelValue", value),
 });
+
+const validateTask = (): boolean => {
+  return (
+    item.value.name === "" ||
+    item.value.type === "" ||
+    item.value.name.length > 80 ||
+    item.value.type.length > 16
+  );
+};
 
 const clearItem = (): void => {
   item.value = {
