@@ -35,28 +35,28 @@ const read = async (): Promise<any[]> => {
   return result.data;
 };
 
-const readById = async (id: string): Promise<ApiTask> => {
+const readById = async (id: string): Promise<Item> => {
   const result = await callApi(HTTP_METHODS.GET, `/tasks/${id}`);
 
   return result.data;
 };
 
-const write = async (task: Omit<ApiTask, "id">): Promise<ApiTask> => {
-  const result = await callApi(HTTP_METHODS.POST, "/tasks", task);
+const write = async (item: Omit<Item, "id">): Promise<Item> => {
+  const result = await callApi(HTTP_METHODS.POST, "/tasks", item);
 
   return result.data;
 };
 
 const put = async (
-  taskId: string,
-  task: Omit<ApiTask, "id">
-): Promise<UpdateTask> => {
-  const result = await callApi(HTTP_METHODS.PUT, `/tasks/${taskId}`, task);
+  itemId: string,
+  item: Omit<Item, "id">
+): Promise<UpdateItem> => {
+  const result = await callApi(HTTP_METHODS.PUT, `/tasks/${itemId}`, item);
   return result.data;
 };
 
-const remove = async (id: string): Promise<{ message: string }> => {
-  const result = await callApi(HTTP_METHODS.DELETE, `/tasks/${id}`);
+const remove = async (ItemId: string): Promise<ItemError> => {
+  const result = await callApi(HTTP_METHODS.DELETE, `/tasks/${ItemId}`);
 
   return result.data;
 };

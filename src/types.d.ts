@@ -1,13 +1,13 @@
-export interface Task {
+export interface Item {
   type: string;
   name: string;
   uuid?: string;
 }
 
-export interface UpdateTask extends Omit<Task, "uuid"> {
+export interface UpdateItem extends Omit<Item, "uuid"> {
   message?: string;
 }
 
-export interface TaskError {
+export interface ItemError {
   errorMessage: string;
 }

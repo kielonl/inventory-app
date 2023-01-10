@@ -9,7 +9,7 @@
         spellcheck="false"
         placeholder="..."
         name="title"
-        v-model="task.type"
+        v-model="item.type"
       />
       <label for="description">Description</label>
       <textarea
@@ -17,7 +17,7 @@
         cols="40"
         class="modal-description-textarea"
         type="text"
-        v-model="task.name"
+        v-model="item.name"
         placeholder="..."
         name="description"
       />
@@ -28,15 +28,15 @@
       <div class="modal-buttons">
         <button
           class="modal-update-button"
-          v-if="task.uuid !== undefined"
-          @click="updateTask()"
+          v-if="item.uuid !== undefined"
+          @click="updateItem()"
         >
           update
         </button>
         <button
           class="modal-add-button"
-          v-if="task.uuid === undefined"
-          @click="_pushTask()"
+          v-if="item.uuid === undefined"
+          @click="_pushItem()"
         >
           ADD
         </button>
@@ -47,13 +47,13 @@
 </template>
 
 <script lang="ts" setup>
-import type { Task, TaskError } from "@/types";
+import type { Item, ItemError } from "@/types";
 import { computed } from "vue";
 import ErrorBox from "./ErrorBox.vue";
 
 interface Props {
-  modelValue: Task;
-  error: TaskError;
+  modelValue: Item;
+  error: ItemError;
   save(): void;
   visible: boolean;
   hideModal(): void;
@@ -61,33 +61,33 @@ interface Props {
 const props = defineProps<Props>();
 const emit = defineEmits(["update:modelValue", "update:error"]);
 
-const task = computed({
+const item = computed({
   get: () => props.modelValue,
   set: (value: any) => emit("update:modelValue", value),
 });
 
-const clearTask = (): void => {
-  task.value = {
+const clearItem = (): void => {
+  item.value = {
     type: "",
     name: "",
-    uuid: task.value.uuid,
+    uuid: item.value.uuid,
   };
 };
 
 const _hideModal = (): void => {
   props.hideModal();
-  clearTask();
+  clearItem();
 };
 
-const _pushTask = (): void => {
+const _pushItem = (): void => {
   props.save();
 };
 
-const updateTask = (): void => {
+const updateItem = (): void => {
   props.save();
 };
 </script>
 
 <style scoped lang="scss">
-@import "../styles/TaskModal.scss";
+@import "../styles/ItemModal.scss";
 </style>
