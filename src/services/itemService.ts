@@ -32,6 +32,7 @@ const callApi = async (
 
 const read = async (): Promise<any[]> => {
   const result = await callApi(HTTP_METHODS.GET, "/items");
+
   return result.data;
 };
 
@@ -49,6 +50,7 @@ const write = async (item: Omit<Item, "id">): Promise<Item> => {
 
 const put = async (id: string, item: Omit<Item, "id">): Promise<UpdateItem> => {
   const result = await callApi(HTTP_METHODS.PUT, `/items/${id}`, item);
+
   return result.data;
 };
 

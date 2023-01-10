@@ -120,11 +120,22 @@ const createItem = async (): Promise<void> => {
   const result = await ItemService.write({
     type: item.value.type,
     name: item.value.name,
+    description: "kurwa",
+    create_date: getCurrentDate(),
+    update_date: getCurrentDate(),
+    enabled: true,
   });
 
   state.items = [...state.items, result];
 
   hideModal();
+};
+
+const getCurrentDate = (): string => {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getDay()}-${
+    d.getMonth() + 1
+  }T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
 };
 
 const updateItem = async (): Promise<void> => {
@@ -142,6 +153,12 @@ const updateItem = async (): Promise<void> => {
   const result = await ItemService.put(item.value.uuid, {
     type: item.value.type,
     name: item.value.name,
+    description: "wefkwjkfwajkefnjk",
+    uuid: item.value.uuid,
+    //change this later
+    create_date: getCurrentDate(),
+    update_date: getCurrentDate(),
+    enabled: true,
   });
 
   if (result === undefined) {
