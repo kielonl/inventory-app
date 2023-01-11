@@ -1,11 +1,11 @@
 <template>
   <div class="App">
-    <TaskBoard />
+    <ItemBoard />
   </div>
 </template>
 
 <script lang="ts" setup>
-import TaskBoard from "./components/Board/components/TaskBoard.vue";
+import ItemBoard from "./components/Board/components/ItemBoard.vue";
 </script>
 
 <style scoped lang="scss"></style>
