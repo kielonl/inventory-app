@@ -38,13 +38,13 @@ const state = reactive<any>({
   tasks: [],
 });
 
-// onMounted(async () => {
-//   const result = await TaskService.read();
-//   if (!result) {
-//     return setError("Unknown error");
-//   }
-//   state.tasks = result;
-// });
+onMounted(async () => {
+  const result = await TaskService.read();
+  if (!result) {
+    return setError("Unknown error");
+  }
+  state.tasks = result;
+});
 
 const task = ref<Task>({
   type: "",
