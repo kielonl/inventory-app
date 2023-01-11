@@ -1,12 +1,42 @@
 .task-container {
-  background: #ffba08;
-  color: black;
-  width: 100%;
-  aspect-ratio: 3/1;
+  position: relative;
+  text-transform: capitalize;
+  overflow-y: hidden;
+  font-size: 1.5rem;
+  background: #f56565;
+  color: white;
+  height: 22rem;
+  // border: 1px solid black;
+  aspect-ratio: 4/5;
   border-radius: 0.5rem;
-  padding: 0.75rem 1.75rem 0.25rem 0.75rem;
+  padding: 1rem 1.25rem 0.25rem 1.25rem;
+  // box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
+  //   rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+}
+
+.task-title {
+  font-size: 3rem;
+}
+
+.task-description {
+  word-wrap: break-word;
 }
 
 .tasks-container {
   padding: 12px;
+}
+
+.task-bend {
+  height: 4rem;
+  width: 4rem;
+  background: #edf2f7;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  border-radius: 10px 0 0 0;
+  background: linear-gradient(
+    135deg,
+    rgba(212, 18, 18, 1) 50%,
+    rgba(237, 242, 247, 1) 50%
+  );
 }

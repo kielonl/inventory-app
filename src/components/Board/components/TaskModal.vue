@@ -2,25 +2,28 @@
   <div :class="{ 'modal-backdrop': visible }"></div>
   <Transition name="fade">
     <div class="modal-container" v-if="visible">
-      <label for="title">Title</label>
-
-      <input
-        class="modal-title"
-        spellcheck="false"
-        placeholder="..."
-        name="title"
-        v-model="task.type"
-      />
-      <label for="description">Description</label>
-      <textarea
-        rows="4"
-        cols="40"
-        class="modal-description-textarea"
-        type="text"
-        v-model="task.name"
-        placeholder="..."
-        name="description"
-      />
+      <div class="modal-title-wrapper">
+        <label for="title">Title</label>
+        <input
+          class="modal-title"
+          spellcheck="false"
+          placeholder="..."
+          name="title"
+          v-model="task.type"
+        />
+      </div>
+      <div class="modal-description-wrapper">
+        <label for="description">Description</label>
+        <textarea
+          rows="4"
+          cols="40"
+          class="modal-description-textarea"
+          type="text"
+          v-model="task.name"
+          placeholder="..."
+          name="description"
+        />
+      </div>
       <ErrorBox
         v-if="error.errorMessage !== ''"
         :message="error.errorMessage"

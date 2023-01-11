@@ -50,6 +50,9 @@
   border-radius: 0.5rem;
   font-size: 1rem;
   display: block;
+  width: 100%;
+  outline: none;
+  border: none;
 }
 
 .modal-buttons {
@@ -61,13 +64,12 @@
   align-self: flex-end;
 }
 
-.modal-add-button,
-.modal-close-button,
-.modal-update-button {
+button {
   display: inline-block;
   border-radius: 0.5rem;
   padding-bottom: 0.5rem;
   padding-top: 0.5rem;
+
   outline: none;
   border: none;
   color: white;
@@ -115,5 +117,29 @@ label {
 @media (max-width: 640px) {
   .modal-buttons {
     justify-content: center;
+  }
+  .modal-container {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+  }
+  .modal-description-textarea {
+    height: 15rem;
+  }
+  .modal-title-wrapper {
+    padding-top: 10%;
+    input {
+      width: 100%;
+    }
+  }
+  button,
+  .modal-add-button {
+    border-radius: 0;
+    height: 5rem;
+    width: 100vw;
+    font-size: 2rem;
+  }
+  .modal-buttons {
+    gap: 0;
   }
 }

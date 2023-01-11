@@ -1,7 +1,12 @@
 <template>
   <div class="task-container" @click="showEditModal(uuid)">
-    <h3 class="task-title">{{ type }}</h3>
-    <h3 class="task-description">{{ name }}</h3>
+    <h4 class="task-type">type</h4>
+    <h4 class="task-title">title</h4>
+    <h3 class="task-description">
+      akwjenfakwjnefkjwnkjkajwnefkjawnekjfnawkefnakwenfkawnefkwane
+      akjwnefkjanwekfjnawkejnfjakwenfjknw
+    </h3>
+    <div class="task-bend"></div>
   </div>
 </template>
 

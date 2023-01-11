@@ -10,17 +10,8 @@
     <div class="board-add-task-button">
       <IconButton @click="showCreateModal()" :icon="'➕'" />
     </div>
-
     <div class="tasks-wrapper">
-      <div v-if="state.tasks.length === 0" class="no-tasks">
-        No tasks received
-      </div>
-      <div
-        v-if="state.tasks.length"
-        v-for="task in state.tasks"
-        :key="task.uuid"
-        class="tasks-container"
-      >
+      <div class="tasks-container" v-for="task in state.tasks">
         <TaskBox
           :type="task.type"
           :name="task.name"
@@ -30,6 +21,78 @@
         />
       </div>
     </div>
+    <!-- <div class="tasks-wrapper"> -->
+    <!-- <TaskBox
+        :type="'halo'"
+        :name="'co'"
+        :uuid="'1'"
+        :save="save"
+        :showEditModal="showEditModal"
+      />
+      <TaskBox
+        :type="'halo'"
+        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
+        :uuid="'1'"
+        :save="save"
+        :showEditModal="showEditModal"
+      />
+      <TaskBox
+        :type="'halo'"
+        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
+        :uuid="'1'"
+        :save="save"
+        :showEditModal="showEditModal"
+      />
+      <TaskBox
+        :type="'halo'"
+        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
+        :uuid="'1'"
+        :save="save"
+        :showEditModal="showEditModal"
+      /><TaskBox
+        :type="'halo'"
+        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
+        :uuid="'1'"
+        :save="save"
+        :showEditModal="showEditModal"
+      /><TaskBox
+        :type="'halo'"
+        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
+        :uuid="'1'"
+        :save="save"
+        :showEditModal="showEditModal"
+      /><TaskBox
+        :type="'halo'"
+        :name="'akewmfalkwemflakwemflkawmelfkmawelkawefjkawenfkajwenfkjawnefkjanwefkjnawjekfnawjkefnawkjefnakwjenfkwajenfkjnw'"
+        :uuid="'1'"
+        :save="save"
+        :showEditModal="showEditModal"
+      /><TaskBox
+        :type="'halo'"
+        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
+        :uuid="'1'"
+        :save="save"
+        :showEditModal="showEditModal"
+      /><TaskBox
+        :type="'halo'"
+        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
+        :uuid="'1'"
+        :save="save"
+        :showEditModal="showEditModal"
+      /><TaskBox
+        :type="'halo'"
+        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
+        :uuid="'1'"
+        :save="save"
+        :showEditModal="showEditModal"
+      /><TaskBox
+        :type="'halo'"
+        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
+        :uuid="'1'"
+        :save="save"
+        :showEditModal="showEditModal"
+      />
+    </div> -->
   </div>
 </template>
 
@@ -44,16 +107,42 @@ import * as TaskService from "../../../services/taskService";
 import type { Task, TaskError } from "../../../types";
 
 const state = reactive<any>({
-  tasks: [],
+  tasks: [
+    {
+      type: "1",
+      name: "1212",
+      uuid: "1",
+    },
+    {
+      type: "1",
+      name: "1212",
+      uuid: "1",
+    },
+    {
+      type: "1",
+      name: "1212",
+      uuid: "1",
+    },
+    {
+      type: "1",
+      name: "1212",
+      uuid: "1",
+    },
+    {
+      type: "1",
+      name: "1212",
+      uuid: "1",
+    },
+  ],
 });
 
-onMounted(async () => {
-  const result = await TaskService.read();
-  if (!result) {
-    return setError("Unknown error");
-  }
-  state.tasks = result;
-});
+// onMounted(async () => {
+//   const result = await TaskService.read();
+//   if (!result) {
+//     return setError("Unknown error");
+//   }
+//   state.tasks = result;
+// });
 
 const task = ref<Task>({
   type: "",
