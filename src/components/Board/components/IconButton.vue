@@ -1,6 +1,6 @@
 <template>
-  <div class="addtask-container">
-    <button class="addtask-button">{{ icon }}</button>
+  <div class="add-item-container">
+    <button class="add-item-button">{{ icon }}</button>
   </div>
 </template>
 <script lang="ts" setup>
