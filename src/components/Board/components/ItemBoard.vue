@@ -55,7 +55,6 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted } from "vue";
 
-import ItemBox from "./ItemBox.vue";
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
 
@@ -63,7 +62,6 @@ import * as ItemService from "../../../services/itemService";
 import type { Item, ItemError } from "../../../types";
 
 const state = reactive<any>({
-  categories: ["jeden", "dwa", "trzy", "cztery", "pienc"],
   items: [
     {
       type: "jeden",
@@ -161,26 +159,6 @@ const setError = (errorMessage: string = "Unknown error") => {
 const findItemIndex = (id: string | undefined): number => {
   return state.items.findIndex((obj: any) => obj.uuid == id);
 };
-
-const findItemType = (val: string) =>
-  state.items.reduce(
-    (acc: any, el: any, i: any) => (el.type === val ? [...acc, i] : acc),
-    []
-  );
-
-// function findItemType(type: string): any[] {
-//   var indexes = [];
-//   var indices = state.items
-//     .map((e: any, i: any) => (e === type ? i : ""))
-//     .filter(String);
-//   return indices;
-//   i = -1;
-// while ((i = state.items.indexOf(type, i + 1)) != -1) {
-//   console.log(i);
-//   indexes.push(i);
-
-// return indexes;
-// }
 
 const createItem = async (): Promise<void> => {
   const result = await ItemService.write({
