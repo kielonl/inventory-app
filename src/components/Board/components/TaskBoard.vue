@@ -21,78 +21,6 @@
         />
       </div>
     </div>
-    <!-- <div class="tasks-wrapper"> -->
-    <!-- <TaskBox
-        :type="'halo'"
-        :name="'co'"
-        :uuid="'1'"
-        :save="save"
-        :showEditModal="showEditModal"
-      />
-      <TaskBox
-        :type="'halo'"
-        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
-        :uuid="'1'"
-        :save="save"
-        :showEditModal="showEditModal"
-      />
-      <TaskBox
-        :type="'halo'"
-        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
-        :uuid="'1'"
-        :save="save"
-        :showEditModal="showEditModal"
-      />
-      <TaskBox
-        :type="'halo'"
-        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
-        :uuid="'1'"
-        :save="save"
-        :showEditModal="showEditModal"
-      /><TaskBox
-        :type="'halo'"
-        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
-        :uuid="'1'"
-        :save="save"
-        :showEditModal="showEditModal"
-      /><TaskBox
-        :type="'halo'"
-        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
-        :uuid="'1'"
-        :save="save"
-        :showEditModal="showEditModal"
-      /><TaskBox
-        :type="'halo'"
-        :name="'akewmfalkwemflakwemflkawmelfkmawelkawefjkawenfkajwenfkjawnefkjanwefkjnawjekfnawjkefnawkjefnakwjenfkwajenfkjnw'"
-        :uuid="'1'"
-        :save="save"
-        :showEditModal="showEditModal"
-      /><TaskBox
-        :type="'halo'"
-        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
-        :uuid="'1'"
-        :save="save"
-        :showEditModal="showEditModal"
-      /><TaskBox
-        :type="'halo'"
-        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
-        :uuid="'1'"
-        :save="save"
-        :showEditModal="showEditModal"
-      /><TaskBox
-        :type="'halo'"
-        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
-        :uuid="'1'"
-        :save="save"
-        :showEditModal="showEditModal"
-      /><TaskBox
-        :type="'halo'"
-        :name="'akewmfalkwemflakwemflkawmelfkmawelk'"
-        :uuid="'1'"
-        :save="save"
-        :showEditModal="showEditModal"
-      />
-    </div> -->
   </div>
 </template>
 
@@ -107,33 +35,7 @@ import * as TaskService from "../../../services/taskService";
 import type { Task, TaskError } from "../../../types";
 
 const state = reactive<any>({
-  tasks: [
-    {
-      type: "1",
-      name: "1212",
-      uuid: "1",
-    },
-    {
-      type: "1",
-      name: "1212",
-      uuid: "1",
-    },
-    {
-      type: "1",
-      name: "1212",
-      uuid: "1",
-    },
-    {
-      type: "1",
-      name: "1212",
-      uuid: "1",
-    },
-    {
-      type: "1",
-      name: "1212",
-      uuid: "1",
-    },
-  ],
+  tasks: [],
 });
 
 // onMounted(async () => {
@@ -164,9 +66,6 @@ const hideModal = () => {
 };
 
 const save = async (): Promise<void> => {
-  if (validateTask()) {
-    return setError("Task fields cannot be empty");
-  }
   if (findTaskIndex(task.value.uuid) === -1) {
     await createTask();
   } else {
@@ -251,10 +150,6 @@ const compareTasks = (localTask: Task, apiTask: Task): boolean => {
     localTask.type === apiTask.type &&
     apiTask.uuid === apiTask.uuid
   );
-};
-
-const validateTask = (): boolean => {
-  return task.value.name === "" || task.value.type === "";
 };
 </script>
 

@@ -33,13 +33,15 @@
           class="modal-update-button"
           v-if="task.uuid !== undefined"
           @click="updateTask()"
+          :disabled="validateTask()"
         >
-          update
+          UPDATE
         </button>
         <button
           class="modal-add-button"
           v-if="task.uuid === undefined"
           @click="_pushTask()"
+          :disabled="validateTask()"
         >
           ADD
         </button>
@@ -68,6 +70,15 @@ const task = computed({
   get: () => props.modelValue,
   set: (value: any) => emit("update:modelValue", value),
 });
+
+const validateTask = (): boolean => {
+  return (
+    task.value.name === "" ||
+    task.value.type === "" ||
+    task.value.name.length > 80 ||
+    task.value.type.length > 16
+  );
+};
 
 const clearTask = (): void => {
   task.value = {
