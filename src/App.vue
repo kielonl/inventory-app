@@ -1,12 +1,10 @@
 <template>
   <div>
-    <router-link :to="{ name: 'Home' }">Home</router-link>
-    <router-link :to="{ name: 'Login' }">Login</router-link>
+    <router-link :to="{ name: 'Home' }"></router-link>
+    <router-link :to="{ name: 'Login' }"></router-link>
   </div>
   <router-view />
 </template>
-<script lang="ts" setup>
-import TaskBoard from "./components/Board/components/TaskBoard.vue";
-</script>
+<script lang="ts" setup></script>
 
 <style scoped lang="scss"></style>

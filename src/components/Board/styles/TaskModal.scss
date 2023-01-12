@@ -29,32 +29,6 @@
   opacity: 0.1;
 }
 
-.modal-description-textarea {
-  display: block;
-  outline: none;
-  resize: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  color: #2d3748;
-  background: #edf2f7;
-  border: none;
-  padding: 1rem;
-  width: 100%;
-}
-
-.modal-title {
-  background: #edf2f7;
-  max-width: fit-content;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  display: block;
-  width: 100%;
-  outline: none;
-  border: none;
-}
-
 .modal-buttons {
   margin-top: 1rem;
   width: 100%;
@@ -123,15 +97,7 @@ label {
     height: 100vh;
     border-radius: 0;
   }
-  .modal-description-textarea {
-    height: 15rem;
-  }
-  .modal-title-wrapper {
-    padding-top: 10%;
-    input {
-      width: 100%;
-    }
-  }
+
   button,
   .modal-add-button {
     border-radius: 0;
