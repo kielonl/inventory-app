@@ -2,10 +2,7 @@
   <div class="item-container" @click="showEditModal(uuid)">
     <h4 class="item-type">type</h4>
     <h4 class="item-title">title</h4>
-    <h3 class="item-description">
-      akwjenfakwjnefkjwnkjkajwnefkjawnekjfnawkefnakwenfkawnefkwane
-      akjwnefkjanwekfjnawkejnfjakwenfjknw
-    </h3>
+    <h3 class="item-description">fajny opis</h3>
     <div class="item-bend"></div>
   </div>
 </template>

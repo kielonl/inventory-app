@@ -35,8 +35,8 @@
 import type { Item, ItemError } from "@/types";
 import { computed } from "vue";
 import ErrorBox from "./ErrorBox.vue";
-import FormInput from "@/components/ReusableComponents/FormInput.vue";
-import FormTextArea from "@/components/ReusableComponents/FormTextArea.vue";
+import FormInput from "@/components/ReusableComponents/InputTextField.vue";
+import FormTextArea from "@/components/ReusableComponents/InputTextArea.vue";
 
 interface Props {
   modelValue: Item;

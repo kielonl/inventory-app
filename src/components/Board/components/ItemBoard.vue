@@ -34,14 +34,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, inject } from "vue";
 
 import ItemBox from "./ItemBox.vue";
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
 
 import * as ItemService from "../../../services/itemService";
-import type { Item, ItemError } from "../../../types";
+import type { InjectLogin, Item, ItemError } from "../../../types";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const login = inject("login") as InjectLogin;
+//XD
+validateLogin(login.login.value.password, login.login.value.username);
 
 const state = reactive<any>({
   items: [],
@@ -61,6 +67,12 @@ const item = ref<Item>({
 });
 const visible = ref<boolean>(false);
 const error = ref<ItemError>({ errorMessage: "" });
+
+function validateLogin(username: string, password: string) {
+  if (username == "" || password == "") {
+    return router.push("/");
+  }
+}
 
 const resetFormData = () => {
   item.value = {
