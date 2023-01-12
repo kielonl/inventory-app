@@ -12,17 +12,17 @@
     </div>
     <div class="flex-center">
       <table class="items-wrapper">
-        <tr class="header-row">
+        <thead class="header-row">
           <th class="items-table-cell items-cell-lp">Lp.</th>
-          <div class="items-other-cell-wrapper">
+          <tbody class="items-other-cell-wrapper">
             <td class="items-table-cell name">Name</td>
             <td class="items-table-cell type">Type</td>
             <td class="items-table-cell description">Description</td>
-          </div>
-        </tr>
+          </tbody>
+        </thead>
         <tr class="items-table-row" v-for="(item, index) in state.items">
           <td class="items-table-cell items-cell-lp">{{ index }}</td>
-          <td class="items-other-cell-wrapper">
+          <tbody class="items-other-cell-wrapper">
             <td class="items-table-cell name">{{ item.name }}</td>
             <td class="items-table-cell type">{{ item.type }}</td>
             <td class="items-table-cell description cut-text">
@@ -32,7 +32,7 @@
               <EditIcon />
               <RemoveIcon />
             </td>
-          </td>
+          </tbody>
         </tr>
       </table>
     </div>
