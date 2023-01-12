@@ -31,32 +31,31 @@ const callApi = async (
 };
 
 const read = async (): Promise<any[]> => {
-  const result = await callApi(HTTP_METHODS.GET, "/tasks");
-  return result.data;
-};
-
-const readById = async (id: string): Promise<ApiTask> => {
-  const result = await callApi(HTTP_METHODS.GET, `/tasks/${id}`);
+  const result = await callApi(HTTP_METHODS.GET, "/items");
 
   return result.data;
 };
 
-const write = async (task: Omit<ApiTask, "id">): Promise<ApiTask> => {
-  const result = await callApi(HTTP_METHODS.POST, "/tasks", task);
+const readById = async (id: string): Promise<Item> => {
+  const result = await callApi(HTTP_METHODS.GET, `/items/${id}`);
 
   return result.data;
 };
 
-const put = async (
-  taskId: string,
-  task: Omit<ApiTask, "id">
-): Promise<UpdateTask> => {
-  const result = await callApi(HTTP_METHODS.PUT, `/tasks/${taskId}`, task);
+const write = async (item: Omit<Item, "id">): Promise<Item> => {
+  const result = await callApi(HTTP_METHODS.POST, "/items", item);
+
   return result.data;
 };
 
-const remove = async (id: string): Promise<{ message: string }> => {
-  const result = await callApi(HTTP_METHODS.DELETE, `/tasks/${id}`);
+const put = async (id: string, item: Omit<Item, "id">): Promise<UpdateItem> => {
+  const result = await callApi(HTTP_METHODS.PUT, `/items/${id}`, item);
+
+  return result.data;
+};
+
+const remove = async (id: string): Promise<ItemError> => {
+  const result = await callApi(HTTP_METHODS.DELETE, `/items/${id}`);
 
   return result.data;
 };

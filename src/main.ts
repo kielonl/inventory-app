@@ -8,7 +8,7 @@ const router = createRouter({
     {
       path: "/Home",
       name: "Home",
-      component: () => import("./components/Board/components/TaskBoard.vue"),
+      component: () => import("./components/Board/components/ItemBoard.vue"),
     },
     {
       path: "/Login",

@@ -1,14 +1,18 @@
-export interface Task {
+export interface Item {
   type: string;
   name: string;
+  description?: string;
   uuid?: string;
+  create_at?: string;
+  update_at?: string;
+  enabled?: boolean;
 }
 
-export interface UpdateTask extends Omit<Task, "uuid"> {
+export interface UpdateItem extends Omit<Item, "uuid"> {
   message?: string;
 }
 
-export interface TaskError {
+export interface ItemError {
   errorMessage: string;
 }
 

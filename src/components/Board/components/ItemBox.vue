@@ -1,12 +1,12 @@
 <template>
-  <div class="task-container" @click="showEditModal(uuid)">
-    <h4 class="task-type">type</h4>
-    <h4 class="task-title">title</h4>
-    <h3 class="task-description">
+  <div class="item-container" @click="showEditModal(uuid)">
+    <h4 class="item-type">type</h4>
+    <h4 class="item-title">title</h4>
+    <h3 class="item-description">
       akwjenfakwjnefkjwnkjkajwnefkjawnekjfnawkefnakwenfkawnefkwane
       akjwnefkjanwekfjnawkejnfjakwenfjknw
     </h3>
-    <div class="task-bend"></div>
+    <div class="item-bend"></div>
   </div>
 </template>
 
@@ -23,5 +23,5 @@ const props = defineProps<Props>();
 </script>
 
 <style lang="scss" scoped>
-@import "../styles/Task.scss";
+@import "../styles/ItemBox.scss";
 </style>

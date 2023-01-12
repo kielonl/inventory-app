@@ -1,4 +1,4 @@
-.task-container {
+.item-container {
   position: relative;
   text-transform: capitalize;
   overflow-y: hidden;
@@ -14,19 +14,19 @@
   //   rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
 }
 
-.task-title {
+.item-title {
   font-size: 3rem;
 }
 
-.task-description {
+.item-description {
   word-wrap: break-word;
 }
 
-.tasks-container {
+.items-container {
   padding: 12px;
 }
 
-.task-bend {
+.item-bend {
   height: 4rem;
   width: 4rem;
   background: #edf2f7;
