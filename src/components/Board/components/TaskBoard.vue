@@ -97,14 +97,20 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, inject } from "vue";
+import { useRouter } from "vue-router";
 
 import TaskBox from "./TaskBox.vue";
 import TaskModal from "./TaskModal.vue";
 import IconButton from "./IconButton.vue";
 
 import * as TaskService from "../../../services/taskService";
-import type { Task, TaskError } from "../../../types";
+import type { Task, TaskError, InjectLogin } from "../../../types";
+
+const router = useRouter();
+const login = inject("login") as InjectLogin;
+//XD
+validateLogin(login.login.value.password, login.login.value.username);
 
 const state = reactive<any>({
   tasks: [
@@ -150,6 +156,12 @@ const task = ref<Task>({
 });
 const visible = ref<boolean>(false);
 const error = ref<TaskError>({ errorMessage: "" });
+
+function validateLogin(username: string, password: string) {
+  if (username == "" || password == "") {
+    return router.push("/login");
+  }
+}
 
 const resetFormData = () => {
   task.value = {

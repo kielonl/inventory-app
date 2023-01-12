@@ -11,3 +11,12 @@ export interface UpdateTask extends Omit<Task, "uuid"> {
 export interface TaskError {
   errorMessage: string;
 }
+
+export interface Login {
+  username: string;
+  password: string;
+}
+
+export interface InjectLogin {
+  login: { value: { username: string; password: string } };
+}
