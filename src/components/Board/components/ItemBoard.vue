@@ -6,12 +6,12 @@
     :visible="visible"
     :hideModal="hideModal"
   />
-  <div class="board-container box-shadow--bottom">
+  <div>
     <div class="board-add-item-button">
       <IconButton @click="showCreateModal()" :icon="'➕'" />
     </div>
     <div class="flex-center">
-      <table class="items-wrapper">
+      <table class="items-wrapper box-shadow--bottom">
         <thead class="header-row">
           <th class="items-table-cell items-cell-lp">Lp.</th>
           <tbody class="items-other-cell-wrapper">
@@ -21,7 +21,7 @@
           </tbody>
         </thead>
         <tr class="items-table-row" v-for="(item, index) in state.items">
-          <td class="items-table-cell items-cell-lp">{{ index }}</td>
+          <td class="items-table-cell items-cell-lp">{{ index + 1 }}</td>
           <tbody class="items-other-cell-wrapper">
             <td class="items-table-cell name">{{ item.name }}</td>
             <td class="items-table-cell type">{{ item.type }}</td>
