@@ -64,7 +64,6 @@ onMounted(async () => {
   if (!result) {
     return setError("Unknown error");
   }
-  console.log(result)
   state.items = result;
 });
 
@@ -161,17 +160,14 @@ const getCurrentDate = (): string => {
 };
 
 const removeItem = async(id:string):Promise<void> =>{
-  console.log(id)
   if(id === undefined) {
     return;
   }
 
   const itemIndex = findItemIndex(id);
 
-  const result = await ItemService.remove(id);
-  console.log(result)
+  await ItemService.remove(id);
   state.items.splice(itemIndex,1)
-  console.log(state.items)
 }
 
 const updateItem = async (): Promise<void> => {
