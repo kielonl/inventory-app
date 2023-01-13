@@ -21,8 +21,8 @@
             <td class="items-table-cell description">Description</td>
           </tbody>
         </thead>
-        <tr class="items-table-row" v-for="(item, index) in state.items">
-          <td class="items-table-cell items-cell-lp">{{ index + 1 }}</td>
+        <tr class="items-table-row" v-for="(item, index) in items.items">
+          <td class="items-table-cell items-cell-lp">{{ Number(index) + 1 }}</td>
           <tbody class="items-other-cell-wrapper">
             <td class="items-table-cell name">{{ item.name }}</td>
             <td class="items-table-cell type">{{ item.type }}</td>
@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, inject, watch } from "vue";
+import { ref, onMounted, inject, watch } from "vue";
 
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
@@ -50,6 +50,7 @@ import RemoveIcon from "../../../icons/RemoveIcon.vue";
 
 import * as ItemService from "../../../services/itemService";
 import type { InjectLogin, Item, ItemError } from "../../../types";
+import {useItemsStore} from "@/stores/Items";
 import { useRouter } from "vue-router";
 
 const dirty = ref<boolean>(false);
@@ -57,16 +58,16 @@ const router = useRouter();
 const login = inject("login") as InjectLogin;
 validateLogin(login.login.value.password, login.login.value.username);
 
-const state = reactive<any>({
-  items: [],
-});
+const items = useItemsStore() as any;
+console.log(items.items)
 
 onMounted(async () => {
   const result = await ItemService.read();
   if (!result) {
     return setError("Unknown error");
   }
-  state.items = result;
+
+  items.setItems(result)
 });
 
 const item = ref<Item>({
@@ -120,7 +121,7 @@ const showCreateModal = (): void => {
 const showEditModal = (id: string): void => {
   const objectIndex = findItemIndex(id);
   
-  item.value = {...state.items[objectIndex]}
+  item.value = {...items.items[objectIndex]}
 
   watch(item.value, () =>{
     dirty.value = true
@@ -136,7 +137,7 @@ const setError = (errorMessage: string = "Unknown error") => {
 };
 
 const findItemIndex = (id: string | undefined): number => {
-  return state.items.findIndex((obj: any) => obj.uuid == id);
+  return items.items.findIndex((obj: any) => obj.uuid == id);
 };
 
 const createItem = async (): Promise<void> => {
@@ -147,7 +148,7 @@ const createItem = async (): Promise<void> => {
     enabled: true,
   });
 
-  state.items = [...state.items, result];
+  items.setItems([...items.items, result])
 
   hideModal();
 };
@@ -160,7 +161,7 @@ const removeItem = async(id:string):Promise<void> =>{
   const itemIndex = findItemIndex(id);
 
   await ItemService.remove(id);
-  state.items.splice(itemIndex,1)
+  items.items.splice(itemIndex,1)
 }
 
 const updateItem = async (): Promise<void> => {
@@ -182,7 +183,7 @@ const updateItem = async (): Promise<void> => {
     return setError();
   }
 
-  state.items[itemIndex] = {...result, uuid:item.value.uuid}
+  items.items[itemIndex] = {...result, uuid:item.value.uuid}
 
   setError("");
   dirty.value = false;
