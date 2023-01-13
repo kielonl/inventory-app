@@ -42,6 +42,7 @@ interface Props {
   save(): void;
   visible: boolean;
   hideModal(): void;
+  dirty: boolean;
 }
 const props = defineProps<Props>();
 const emit = defineEmits(["update:modelValue", "update:error"]);
@@ -52,12 +53,16 @@ const item = computed({
 });
 
 const validateItem = (): boolean => {
-  return (
-    item.value.name === "" ||
-    item.value.type === "" ||
-    item.value.name.length > 80 ||
-    item.value.type.length > 16
-  );
+  if (item.value.uuid !== undefined) return !props.dirty;
+  else
+    return (
+      item.value.name === "" ||
+      item.value.type === "" ||
+      item.value.description === "" ||
+      item.value.name.length > 16 ||
+      item.value.type.length > 16 ||
+      item.value.description.length > 80
+    );
 };
 
 const clearItem = (): void => {

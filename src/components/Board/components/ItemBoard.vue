@@ -5,6 +5,7 @@
     :save="save"
     :visible="visible"
     :hideModal="hideModal"
+    :dirty="dirty"
   />
   <div>
     <div class="board-add-item-button">
@@ -124,9 +125,11 @@ const showEditModal = (id: string): void => {
   const objectIndex = findItemIndex(id);
   
   item.value = {...state.items[objectIndex]}
+
   watch(item.value, () =>{
     dirty.value = true
   })
+
   visible.value = true;
 };
 
@@ -172,10 +175,6 @@ const updateItem = async (): Promise<void> => {
   const itemIndex = findItemIndex(item.value.uuid);
 
   //check if user edited item. If not return an error
-  if (!dirty.value) {
-    setError("You have to change something");
-    return;
-  }
 
   const result = await ItemService.put(item.value.uuid, {
    ...item.value,
