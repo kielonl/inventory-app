@@ -43,10 +43,15 @@ import IconButton from "./IconButton.vue";
 import * as ItemService from "../../../services/itemService";
 import type { InjectLogin, Item, ItemError } from "../../../types";
 import { useRouter } from "vue-router";
+import { useTestStore } from "@/stores/Test";
 
 const router = useRouter();
 const login = inject("login") as InjectLogin;
 validateLogin(login.login.value.password, login.login.value.username);
+
+const test = useTestStore();
+
+console.log(test);
 
 const state = reactive<any>({
   items: [],
