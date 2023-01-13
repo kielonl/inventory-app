@@ -1,8 +1,8 @@
 <template>
-  <div class="login-form-wrapper">
-    <div class="login-form-container">
+  <div class="login-form-wrapper flex--center">
+    <div class="login-form-container flex--center">
       <img :src="logo" alt="logo" />
-      <div class="login-inputs-container">
+      <div class="login-inputs-container flex--center">
         <form @submit.prevent="validateLogin()">
           <InputTextField :name="'Username'" v-model="login.username" />
           <InputTextField :name="'Password'" v-model="login.password" />

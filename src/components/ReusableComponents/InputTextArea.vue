@@ -2,7 +2,7 @@
   <div class="form-textarea-wrapper">
     <label :for="name">{{ name }}</label>
     <textarea
-      class="form-textarea"
+      class="form-textarea box-shadow--bottom"
       spellcheck="false"
       placeholder="..."
       v-model="value"

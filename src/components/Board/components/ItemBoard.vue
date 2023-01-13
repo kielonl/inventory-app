@@ -6,7 +6,7 @@
     :visible="visible"
     :hideModal="hideModal"
   />
-  <div class="board-container">
+  <div class="board-container box-shadow--bottom">
     <div class="board-add-item-button">
       <IconButton @click="showCreateModal()" :icon="'➕'" />
     </div>

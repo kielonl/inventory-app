@@ -1,6 +1,6 @@
 <template>
   <div :class="{ 'modal-backdrop': visible }"></div>
-  <form @submit.prevent="updateOrAddItem()">
+  <form @submit.prevent="saveItem()">
     <Transition name="fade">
       <div class="modal-container" v-if="visible">
         <InputTextField :name="'title'" v-model="item.type" />
@@ -12,14 +12,14 @@
         <div class="modal-buttons">
           <button
             :class="{
-              'modal-update-button': item.uuid !== undefined,
-              'modal-add-button': item.uuid === undefined,
+              'modal-button--green': item.uuid !== undefined,
+              'modal-button--blue': item.uuid === undefined,
             }"
             :disabled="validateItem()"
           >
             {{ item.uuid !== undefined ? "UPDATE" : "ADD" }}
           </button>
-          <button class="modal-close-button" @click="_hideModal()">
+          <button class="modal-button--red" @click="_hideModal()">
             CANCEL
           </button>
         </div>
@@ -72,7 +72,7 @@ const _hideModal = (): void => {
   clearItem();
 };
 
-const updateOrAddItem = (): void => {
+const saveItem = (): void => {
   props.save();
 };
 </script>

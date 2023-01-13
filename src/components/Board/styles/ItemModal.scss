@@ -49,7 +49,7 @@ button {
   cursor: pointer;
 }
 
-.modal-add-button {
+.modal-button--blue {
   display: inline-block;
   width: 3rem;
   background: #4299e1;
@@ -58,14 +58,14 @@ button {
   }
 }
 
-.modal-close-button {
+.modal-button--red {
   background: #e53e3e;
   &:hover {
     background: #c53030;
   }
 }
 
-.modal-update-button {
+.modal-button--green {
   background: #48bb78;
   &:hover {
     background: #38a169;
@@ -80,9 +80,11 @@ button:disabled {
 label {
   font-size: 0.8rem;
 }
+
 .modal-hidden {
   display: none;
 }
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease;

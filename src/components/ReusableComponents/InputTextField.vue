@@ -2,7 +2,7 @@
   <div class="form-input-wrapper">
     <label :for="name">{{ name }}</label>
     <input
-      class="form-input"
+      class="form-input box-shadow--bottom"
       spellcheck="false"
       placeholder="..."
       v-model="value"
