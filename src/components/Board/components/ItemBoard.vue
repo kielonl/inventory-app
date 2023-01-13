@@ -50,7 +50,6 @@ import RemoveIcon from "../../../icons/RemoveIcon.vue";
 import * as ItemService from "../../../services/itemService";
 import type { InjectLogin, Item, ItemError } from "../../../types";
 import { useRouter } from "vue-router";
-import { useTestStore } from "@/stores/Test";
 
 const router = useRouter();
 const login = inject("login") as InjectLogin;
@@ -70,8 +69,9 @@ onMounted(async () => {
 });
 
 const item = ref<Item>({
-  type: "",
   name: "",
+  type: "",
+  description: ""
 });
 const visible = ref<boolean>(false);
 const error = ref<ItemError>({ errorMessage: "" });
@@ -84,8 +84,9 @@ function validateLogin(username: string, password: string) {
 
 const resetFormData = () => {
   item.value = {
-    type: "",
     name: "",
+    type: "",
+    description:"",
   };
 };
 
@@ -118,8 +119,9 @@ const showEditModal = (id: string): void => {
   const objectIndex = findItemIndex(id);
 
   item.value = {
-    type: state.items[objectIndex].type,
     name: state.items[objectIndex].name,
+    type: state.items[objectIndex].type,
+    description: state.items[objectIndex].description,
     uuid: state.items[objectIndex].uuid,
   };
 
@@ -138,9 +140,9 @@ const findItemIndex = (id: string | undefined): number => {
 
 const createItem = async (): Promise<void> => {
   const result = await ItemService.write({
-    type: item.value.type,
     name: item.value.name,
-    description: "kurwa",
+    type: item.value.type,
+    description: item.value.description,
     create_date: getCurrentDate(),
     update_date: getCurrentDate(),
     enabled: true,
@@ -160,15 +162,16 @@ const getCurrentDate = (): string => {
 
 const removeItem = async(id:string):Promise<void> =>{
   console.log(id)
-  if (item.value.uuid === undefined) {
+  if(id === undefined) {
     return;
   }
 
   const itemIndex = findItemIndex(id);
 
   const result = await ItemService.remove(id);
-
   console.log(result)
+  state.items.splice(itemIndex,1)
+  console.log(state.items)
 }
 
 const updateItem = async (): Promise<void> => {
@@ -186,7 +189,7 @@ const updateItem = async (): Promise<void> => {
   const result = await ItemService.put(item.value.uuid, {
     type: item.value.type,
     name: item.value.name,
-    description: "wefkwjkfwajkefnjk",
+    description: item.value.description,
     uuid: item.value.uuid,
     //change this later
     create_date: getCurrentDate(),
@@ -201,6 +204,7 @@ const updateItem = async (): Promise<void> => {
   state.items[itemIndex] = {
     type: result.type,
     name: result.name,
+    description:result.description,
     uuid: item.value.uuid,
   };
   setError("");
@@ -211,12 +215,15 @@ const compareItems = (localItem: Item, apiItem: Item): boolean => {
     localItem.name === apiItem.name &&
     localItem.type === apiItem.type &&
     apiItem.uuid === apiItem.uuid
+    && localItem.description === localStorage.description
   );
 };
 
 const validateItem = (): boolean => {
   return item.value.name === "" || item.value.type === "";
 };
+
+
 </script>
 
 <style lang="scss">
