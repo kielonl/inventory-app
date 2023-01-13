@@ -28,32 +28,6 @@
   opacity: 0.1;
 }
 
-.modal-description-textarea {
-  display: block;
-  outline: none;
-  resize: none;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  color: #2d3748;
-  background: #edf2f7;
-  border: none;
-  padding: 1rem;
-  width: 100%;
-}
-
-.modal-title {
-  background: #edf2f7;
-  max-width: fit-content;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  border-radius: 0.5rem;
-  font-size: 1rem;
-  display: block;
-  width: 100%;
-  outline: none;
-  border: none;
-}
-
 .modal-buttons {
   margin-top: 1rem;
   width: 100%;
@@ -63,8 +37,7 @@
   align-self: flex-end;
 }
 
-button {
-  display: inline-block;
+.button {
   border-radius: 0.5rem;
   padding-bottom: 0.5rem;
   padding-top: 0.5rem;
@@ -75,8 +48,7 @@ button {
   cursor: pointer;
 }
 
-.modal-add-button {
-  display: inline-block;
+.button--blue {
   width: 3rem;
   background: #4299e1;
   &:hover {
@@ -84,14 +56,14 @@ button {
   }
 }
 
-.modal-close-button {
+.button--red {
   background: #e53e3e;
   &:hover {
     background: #c53030;
   }
 }
 
-.modal-update-button {
+.button--green {
   background: #48bb78;
   &:hover {
     background: #38a169;
@@ -106,9 +78,11 @@ button:disabled {
 label {
   font-size: 0.8rem;
 }
+
 .modal-hidden {
   display: none;
 }
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s ease;
@@ -128,17 +102,9 @@ label {
     height: 100vh;
     border-radius: 0;
   }
-  .modal-description-textarea {
-    height: 15rem;
-  }
-  .modal-title-wrapper {
-    padding-top: 10%;
-    input {
-      width: 100%;
-    }
-  }
+
   button,
-  .modal-add-button {
+  .button--blue {
     border-radius: 0;
     height: 5rem;
     width: 100vw;

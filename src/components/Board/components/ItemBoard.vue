@@ -6,7 +6,7 @@
     :visible="visible"
     :hideModal="hideModal"
   />
-  <div class="board-container">
+  <div class="board-container box-shadow--bottom">
     <div class="board-add-item-button">
       <IconButton @click="showCreateModal()" :icon="'➕'" />
     </div>
@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted } from "vue";
+import { ref, reactive, onMounted, inject } from "vue";
 
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
@@ -48,7 +48,12 @@ import EditIcon from "../../../icons/EditIcon.vue"
 import RemoveIcon from "../../../icons/RemoveIcon.vue";
 
 import * as ItemService from "../../../services/itemService";
-import type { Item, ItemError } from "../../../types";
+import type { InjectLogin, Item, ItemError } from "../../../types";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
+const login = inject("login") as InjectLogin;
+validateLogin(login.login.value.password, login.login.value.username);
 
 const state = reactive<any>({
   items: [],
@@ -69,6 +74,12 @@ const item = ref<Item>({
 });
 const visible = ref<boolean>(false);
 const error = ref<ItemError>({ errorMessage: "" });
+
+function validateLogin(username: string, password: string) {
+  if (username == "" || password == "") {
+    return router.push("/");
+  }
+}
 
 const resetFormData = () => {
   item.value = {
