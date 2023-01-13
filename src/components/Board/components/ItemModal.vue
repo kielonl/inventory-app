@@ -12,14 +12,14 @@
         <div class="modal-buttons">
           <button
             :class="{
-              'modal-button--green': item.uuid !== undefined,
-              'modal-button--blue': item.uuid === undefined,
+              'button button--green': item.uuid,
+              'button button--blue': !item.uuid,
             }"
             :disabled="validateItem()"
           >
             {{ item.uuid !== undefined ? "UPDATE" : "ADD" }}
           </button>
-          <button class="modal-button--red" @click="_hideModal()">
+          <button class="button button--red" @click="_hideModal()">
             CANCEL
           </button>
         </div>
