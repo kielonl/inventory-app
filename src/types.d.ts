@@ -1,7 +1,7 @@
 export interface Item {
-  type: string;
   name: string;
-  description?: string;
+  type: string;
+  description: string;
   uuid?: string;
   create_at?: string;
   update_at?: string;

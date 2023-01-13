@@ -12,8 +12,8 @@
 
 <script lang="ts" setup>
 interface Props {
-  uuid: string;
-  removeItem(uuid: string): void;
+  uuid?: string;
+  removeItem(uuid?: string): void;
 }
 
 const props = defineProps<Props>();
