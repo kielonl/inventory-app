@@ -28,14 +28,14 @@ const login = ref<Login>({
   password: "",
 });
 
-const storeLogin = useLoginStore();
+const loginStore = useLoginStore();
 
 function validateLogin(): void {
   if (login.value.username === "" || login.value.password === "") {
     return;
   }
 
-  storeLogin.setLogin({
+  loginStore.setLogin({
     username: login.value.username,
     password: login.value.password,
   });

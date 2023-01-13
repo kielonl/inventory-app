@@ -41,7 +41,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, inject, watch } from "vue";
+import { ref, onMounted, watch } from "vue";
 
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
@@ -97,10 +97,10 @@ const hideModal = () => {
 };
 
 const save = async (): Promise<void> => {
-  if (validateItem()) {
+  if (items.validateItem()) {
     return setError("Item fields cannot be empty");
   }
-  if (findItemIndex(item.value.uuid) === -1) {
+  if (items.findItemIndex(item.value.uuid) === -1) {
     await createItem();
   } else {
     await updateItem();
@@ -117,7 +117,7 @@ const showCreateModal = (): void => {
 };
 
 const showEditModal = (id: string): void => {
-  const objectIndex = findItemIndex(id);
+  const objectIndex = items.findItemIndex(id);
   
   item.value = {...items.items[objectIndex]}
 
@@ -134,9 +134,6 @@ const setError = (errorMessage: string = "Unknown error") => {
   };
 };
 
-const findItemIndex = (id: string | undefined): number => {
-  return items.items.findIndex((obj: any) => obj.uuid == id);
-};
 
 const createItem = async (): Promise<void> => {
   const result = await ItemService.write({
@@ -152,14 +149,10 @@ const createItem = async (): Promise<void> => {
 };
 
 const removeItem = async(id:string):Promise<void> =>{
-  if(id === undefined) {
-    return;
-  }
-
-  const itemIndex = findItemIndex(id);
+  const itemIndex = items.findItemIndex(id);
 
   await ItemService.remove(id);
-  items.items.splice(itemIndex,1)
+  items.removeItem(itemIndex)
 }
 
 const updateItem = async (): Promise<void> => {
@@ -167,7 +160,7 @@ const updateItem = async (): Promise<void> => {
     return;
   }
 
-  const itemIndex = findItemIndex(item.value.uuid);
+  const itemIndex = items.findItemIndex(item.value.uuid);
 
   //check if user edited item. If not return an error
   const result = await ItemService.put(item.value.uuid, {
@@ -187,9 +180,7 @@ const updateItem = async (): Promise<void> => {
   dirty.value = false;
 };
 
-const validateItem = (): boolean => {
-  return item.value.name === "" || item.value.type === "" || item.value.description === "";
-};
+
 
 const getCurrentDate = (): string => {
   const d = new Date();
