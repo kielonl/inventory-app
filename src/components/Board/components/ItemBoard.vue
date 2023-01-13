@@ -61,8 +61,6 @@ const state = reactive<any>({
   items: [],
 });
 
-
-
 onMounted(async () => {
   const result = await ItemService.read();
   if (!result) {
@@ -120,8 +118,6 @@ const showCreateModal = (): void => {
 };
 
 const showEditModal = (id: string): void => {
-
- 
   const objectIndex = findItemIndex(id);
   
   item.value = {...state.items[objectIndex]}
@@ -175,7 +171,6 @@ const updateItem = async (): Promise<void> => {
   const itemIndex = findItemIndex(item.value.uuid);
 
   //check if user edited item. If not return an error
-
   const result = await ItemService.put(item.value.uuid, {
    ...item.value,
     create_date: getCurrentDate(),
