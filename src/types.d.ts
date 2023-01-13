@@ -15,3 +15,12 @@ export interface UpdateItem extends Omit<Item, "uuid"> {
 export interface ItemError {
   errorMessage: string;
 }
+
+export interface Login {
+  username: string;
+  password: string;
+}
+
+export interface InjectLogin {
+  login: { value: { username: string; password: string } };
+}
