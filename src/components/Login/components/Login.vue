@@ -14,28 +14,31 @@
 </template>
 
 <script lang="ts" setup>
-import { useRouter } from "vue-router";
 import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
-import logo from "../../../assets/halinowpetla.png";
-
-import type { Login } from "../../../types";
+import { useRouter } from "vue-router";
 import { ref, inject } from "vue";
 
-const router = useRouter();
+import { useLoginStore } from "@/stores/Login";
+import type { Login } from "../../../types";
+import logo from "../../../assets/halinowpetla.png";
 
+const router = useRouter();
 const login = ref<Login>({
   username: "",
   password: "",
 });
 
-const { updateLogin } = inject("login") as any;
+const storeLogin = useLoginStore();
 
 function validateLogin(): void {
   if (login.value.username === "" || login.value.password === "") {
     return;
   }
 
-  updateLogin(login.value.username, login.value.password);
+  storeLogin.setLogin({
+    username: login.value.username,
+    password: login.value.password,
+  });
 
   router.push("/home");
 }

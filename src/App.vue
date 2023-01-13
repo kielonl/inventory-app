@@ -5,23 +5,6 @@
   </div>
   <router-view />
 </template>
-<script lang="ts" setup>
-import { provide, ref } from "vue";
-import type { Login } from "./types";
-
-const login = ref<Login>({
-  username: "",
-  password: "",
-});
-
-const updateLogin = (username: string, password: string) => {
-  login.value = {
-    username,
-    password,
-  };
-};
-
-provide("login", { login, updateLogin });
-</script>
+<script lang="ts" setup></script>
 
 <style scoped lang="scss"></style>

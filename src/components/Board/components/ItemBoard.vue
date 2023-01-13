@@ -49,17 +49,19 @@ import EditIcon from "../../../icons/EditIcon.vue"
 import RemoveIcon from "../../../icons/RemoveIcon.vue";
 
 import * as ItemService from "../../../services/itemService";
-import type { InjectLogin, Item, ItemError } from "../../../types";
+import type { Item, ItemError } from "../../../types";
 import {useItemsStore} from "@/stores/Items";
 import { useRouter } from "vue-router";
+import { useLoginStore } from "@/stores/Login";
 
 const dirty = ref<boolean>(false);
 const router = useRouter();
-const login = inject("login") as InjectLogin;
-validateLogin(login.login.value.password, login.login.value.username);
+const login = useLoginStore() as any;
+if(login.validateLogin()){
+  router.push('/')
+}
 
 const items = useItemsStore() as any;
-console.log(items.items)
 
 onMounted(async () => {
   const result = await ItemService.read();
@@ -79,11 +81,7 @@ const item = ref<Item>({
 const visible = ref<boolean>(false);
 const error = ref<ItemError>({ errorMessage: "" });
 
-function validateLogin(username: string, password: string) {
-  if (username == "" || password == "") {
-    return router.push("/");
-  }
-}
+
 
 const resetFormData = () => {
   item.value = {
