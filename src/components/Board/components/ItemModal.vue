@@ -1,57 +1,39 @@
 <template>
   <div :class="{ 'modal-backdrop': visible }"></div>
-  <Transition name="fade">
-    <div class="modal-container" v-if="visible">
-      <label for="title">Title</label>
-      <input
-        class="modal-title"
-        spellcheck="false"
-        placeholder="..."
-        name="title"
-        v-model="item.type"
-      />
-      <label for="description">Description</label>
-      <textarea
-        rows="4"
-        cols="40"
-        class="modal-description-textarea"
-        type="text"
-        v-model="item.name"
-        placeholder="..."
-        name="description"
-        required
-      />
-      <ErrorBox
-        v-if="error.errorMessage !== ''"
-        :message="error.errorMessage"
-      />
-      <div class="modal-buttons">
-        <button
-          class="modal-update-button"
-          v-if="item.uuid !== undefined"
-          @click="updateItem()"
-          :disabled="validateItem()"
-        >
-          UPDATE
-        </button>
-        <button
-          class="modal-add-button"
-          v-if="item.uuid === undefined"
-          @click="_pushItem()"
-          :disabled="validateItem()"
-        >
-          ADD
-        </button>
-        <button class="modal-close-button" @click="_hideModal()">CANCEL</button>
+  <form @submit.prevent="saveItem()">
+    <Transition name="fade">
+      <div class="modal-container" v-if="visible">
+        <InputTextField :name="'title'" v-model="item.type" />
+        <InputTextArea :name="'description'" v-model="item.name" />
+        <ErrorBox
+          v-if="error.errorMessage !== ''"
+          :message="error.errorMessage"
+        />
+        <div class="modal-buttons">
+          <button
+            :class="{
+              'button button--green': item.uuid,
+              'button button--blue': !item.uuid,
+            }"
+            :disabled="validateItem()"
+          >
+            {{ item.uuid !== undefined ? "UPDATE" : "ADD" }}
+          </button>
+          <button class="button button--red" @click="_hideModal()">
+            CANCEL
+          </button>
+        </div>
       </div>
-    </div>
-  </Transition>
+    </Transition>
+  </form>
 </template>
 
 <script lang="ts" setup>
 import type { Item, ItemError } from "@/types";
 import { computed } from "vue";
 import ErrorBox from "./ErrorBox.vue";
+import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
+import InputTextArea from "@/components/ReusableComponents/InputTextArea.vue";
 
 interface Props {
   modelValue: Item;
@@ -90,11 +72,7 @@ const _hideModal = (): void => {
   clearItem();
 };
 
-const _pushItem = (): void => {
-  props.save();
-};
-
-const updateItem = (): void => {
+const saveItem = (): void => {
   props.save();
 };
 </script>

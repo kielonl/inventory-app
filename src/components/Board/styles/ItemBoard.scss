@@ -1,29 +1,30 @@
 .board-container {
   z-index: 1;
   height: auto;
-  display: grid;
-  grid-template-columns: 0.2fr;
-  grid-template-rows: repeat(2, 0.2fr);
+
+  width: 100%;
   grid-column-gap: 0px;
   grid-row-gap: 0px;
 }
-.board-add-item-button {
-  grid-area: 1 / 1 / 2 / 2;
-}
 
 .items-wrapper {
-  grid-area: 2 / 1 / 3 / 2;
+  display: flex;
+  flex-wrap: wrap;
   background: #edf2f7;
   border-radius: 1rem;
-  max-width: 20vw;
   word-wrap: break-word;
-}
-
-.items-container {
-  padding: 12px;
+  .item-container {
+    margin: 1.5rem;
+  }
 }
 
 .no-items {
   text-align: center;
   padding: 2rem;
+}
+
+@media (max-width: 640px) {
+  .items-wrapper {
+    justify-content: center;
+  }
 }

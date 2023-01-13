@@ -1,0 +1,21 @@
+.form-input {
+  background: #edf2f7;
+  max-width: fit-content;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  display: block;
+  width: 100%;
+  outline: none;
+  border: none;
+}
+
+@media (max-width: 640px) {
+  .form-input-wrapper {
+    padding-top: 10%;
+    input {
+      width: 100%;
+    }
+  }
+}

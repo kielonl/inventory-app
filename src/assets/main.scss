@@ -1,7 +1,18 @@
-@import url("https://fonts.googleapis.com/css?family=Alata");
+@import url("https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@200&display=swap");
 
 * {
-  font-family: "Alata";
+  font-family: "Nunito Sans", sans-serif;
   margin: 0;
   box-sizing: border-box;
+}
+
+.box-shadow--bottom {
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
+    rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+}
+
+.flex--center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
