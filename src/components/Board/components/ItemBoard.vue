@@ -46,7 +46,6 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const login = inject("login") as InjectLogin;
-//XD
 validateLogin(login.login.value.password, login.login.value.username);
 
 const state = reactive<any>({

@@ -1,34 +1,31 @@
 <template>
   <div :class="{ 'modal-backdrop': visible }"></div>
-  <Transition name="fade">
-    <div class="modal-container" v-if="visible">
-      <InputTextField :name="'title'" v-model="item.type" />
-      <FormTextArea :name="'description'" v-model="item.name" />
-      <ErrorBox
-        v-if="error.errorMessage !== ''"
-        :message="error.errorMessage"
-      />
-      <div class="modal-buttons">
-        <button
-          class="modal-update-button"
-          v-if="item.uuid !== undefined"
-          @click="updateItem()"
-          :disabled="validateItem()"
-        >
-          UPDATE
-        </button>
-        <button
-          class="modal-add-button"
-          v-if="item.uuid === undefined"
-          @click="_pushItem()"
-          :disabled="validateItem()"
-        >
-          ADD
-        </button>
-        <button class="modal-close-button" @click="_hideModal()">CANCEL</button>
+  <form @submit.prevent="updateOrAddItem()">
+    <Transition name="fade">
+      <div class="modal-container" v-if="visible">
+        <InputTextField :name="'title'" v-model="item.type" />
+        <FormTextArea :name="'description'" v-model="item.name" />
+        <ErrorBox
+          v-if="error.errorMessage !== ''"
+          :message="error.errorMessage"
+        />
+        <div class="modal-buttons">
+          <button
+            :class="{
+              'modal-update-button': item.uuid !== undefined,
+              'modal-add-button': item.uuid === undefined,
+            }"
+            :disabled="validateItem()"
+          >
+            {{ item.uuid !== undefined ? "UPDATE" : "ADD" }}
+          </button>
+          <button class="modal-close-button" @click="_hideModal()">
+            CANCEL
+          </button>
+        </div>
       </div>
-    </div>
-  </Transition>
+    </Transition>
+  </form>
 </template>
 
 <script lang="ts" setup>
@@ -75,11 +72,7 @@ const _hideModal = (): void => {
   clearItem();
 };
 
-const _pushItem = (): void => {
-  props.save();
-};
-
-const updateItem = (): void => {
+const updateOrAddItem = (): void => {
   props.save();
 };
 </script>

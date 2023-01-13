@@ -1,24 +1,21 @@
 <template>
-  <form class="login-form-wrapper">
+  <div class="login-form-wrapper">
     <div class="login-form-container">
       <img :src="logo" alt="logo" />
       <div class="login-inputs-container">
-        <FormInput :name="'Username'" v-model="login.username" />
-        <FormInput :name="'Password'" v-model="login.password" />
-        <input
-          type="submit"
-          class="login-button"
-          @click="validateLogin()"
-          value="Login"
-        />
+        <form @submit.prevent="validateLogin()">
+          <InputTextField :name="'Username'" v-model="login.username" />
+          <InputTextField :name="'Password'" v-model="login.password" />
+          <input type="submit" class="login-button" value="Login" />
+        </form>
       </div>
     </div>
-  </form>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { useRouter } from "vue-router";
-import FormInput from "@/components/ReusableComponents/InputTextField.vue";
+import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
 import logo from "../../../assets/halinowpetla.png";
 
 import type { Login } from "../../../types";
@@ -37,6 +34,7 @@ function validateLogin(): void {
   if (login.value.username === "" || login.value.password === "") {
     return;
   }
+
   updateLogin(login.value.username, login.value.password);
 
   router.push("/home");

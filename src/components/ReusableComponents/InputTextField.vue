@@ -28,5 +28,5 @@ const value = computed({
 </script>
 
 <style>
-@import url("./styles/FormInput.scss");
+@import url("./styles/InputTextField.scss");
 </style>
