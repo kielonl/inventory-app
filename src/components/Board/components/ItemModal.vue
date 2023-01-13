@@ -2,7 +2,7 @@
   <div :class="{ 'modal-backdrop': visible }"></div>
   <Transition name="fade">
     <div class="modal-container" v-if="visible">
-      <FormInput :name="'title'" v-model="item.type" />
+      <InputTextField :name="'title'" v-model="item.type" />
       <FormTextArea :name="'description'" v-model="item.name" />
       <ErrorBox
         v-if="error.errorMessage !== ''"
@@ -35,7 +35,7 @@
 import type { Item, ItemError } from "@/types";
 import { computed } from "vue";
 import ErrorBox from "./ErrorBox.vue";
-import FormInput from "@/components/ReusableComponents/InputTextField.vue";
+import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
 import FormTextArea from "@/components/ReusableComponents/InputTextArea.vue";
 
 interface Props {
