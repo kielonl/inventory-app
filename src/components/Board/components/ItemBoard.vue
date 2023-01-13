@@ -52,7 +52,7 @@ import * as ItemService from "../../../services/itemService";
 import type { InjectLogin, Item, ItemError } from "../../../types";
 import { useRouter } from "vue-router";
 
-let dirty = ref<boolean>(false);
+const dirty = ref<boolean>(false);
 const router = useRouter();
 const login = inject("login") as InjectLogin;
 validateLogin(login.login.value.password, login.login.value.username);
