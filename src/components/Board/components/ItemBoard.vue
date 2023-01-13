@@ -29,8 +29,8 @@
               {{ item.description }}
             </td>
             <td class="items-table-cell edit-remove">
-              <EditIcon />
-              <RemoveIcon />
+              <EditIcon :showEditModal="showEditModal" :uuid="item.uuid"/>
+              <RemoveIcon :removeItem="removeItem" :uuid="item.uuid" />
             </td>
           </tbody>
         </tr>
@@ -59,6 +59,7 @@ onMounted(async () => {
   if (!result) {
     return setError("Unknown error");
   }
+  console.log(result)
   state.items = result;
 });
 
@@ -144,6 +145,19 @@ const getCurrentDate = (): string => {
     d.getMonth() + 1
   }T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
 };
+
+const removeItem = async(id:string):Promise<void> =>{
+  console.log(id)
+  if (item.value.uuid === undefined) {
+    return;
+  }
+
+  const itemIndex = findItemIndex(id);
+
+  const result = await ItemService.remove(id);
+
+  console.log(result)
+}
 
 const updateItem = async (): Promise<void> => {
   if (item.value.uuid === undefined) {

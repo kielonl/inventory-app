@@ -1,5 +1,6 @@
 .items-wrapper {
   width: clamp(0px, 1000px, 1500px);
+  max-height: 80vh;
   color: white;
   display: flex;
   flex-direction: column;
@@ -9,6 +10,9 @@
   box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
     rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
   .header-row {
+    // z-index: -1;
+    top: 0px;
+    position: sticky;
     background: #2d3748;
     color: white;
   }
@@ -16,6 +20,7 @@
 
 .items-table-row,
 .header-row {
+  // z-index: -2;
   word-wrap: break-word;
   display: flex;
   justify-content: center;
