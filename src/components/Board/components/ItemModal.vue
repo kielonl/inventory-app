@@ -4,7 +4,7 @@
     <Transition name="fade">
       <div class="modal-container" v-if="visible">
         <InputTextField :name="'title'" v-model="item.type" />
-        <FormTextArea :name="'description'" v-model="item.name" />
+        <InputTextArea :name="'description'" v-model="item.name" />
         <ErrorBox
           v-if="error.errorMessage !== ''"
           :message="error.errorMessage"
@@ -33,7 +33,7 @@ import type { Item, ItemError } from "@/types";
 import { computed } from "vue";
 import ErrorBox from "./ErrorBox.vue";
 import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
-import FormTextArea from "@/components/ReusableComponents/InputTextArea.vue";
+import InputTextArea from "@/components/ReusableComponents/InputTextArea.vue";
 
 interface Props {
   modelValue: Item;
