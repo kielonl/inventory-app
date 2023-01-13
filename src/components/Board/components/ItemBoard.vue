@@ -6,29 +6,35 @@
     :visible="visible"
     :hideModal="hideModal"
   />
-  <div class="board-container box-shadow--bottom">
+  <div>
     <div class="board-add-item-button">
       <IconButton @click="showCreateModal()" :icon="'➕'" />
     </div>
-
-    <div class="items-wrapper">
-      <div v-if="state.items.length === 0" class="no-items">
-        No items received
-      </div>
-      <div
-        v-if="state.items.length"
-        v-for="item in state.items"
-        :key="item.uuid"
-        class="items-container"
-      >
-        <ItemBox
-          :type="item.type"
-          :name="item.name"
-          :uuid="item.uuid"
-          :save="save"
-          :showEditModal="showEditModal"
-        />
-      </div>
+    <div class="flex-center">
+      <table class="items-wrapper box-shadow--bottom">
+        <thead class="header-row">
+          <th class="items-table-cell items-cell-lp">Lp.</th>
+          <tbody class="items-other-cell-wrapper">
+            <td class="items-table-cell name">Name</td>
+            <td class="items-table-cell type">Type</td>
+            <td class="items-table-cell description">Description</td>
+          </tbody>
+        </thead>
+        <tr class="items-table-row" v-for="(item, index) in state.items">
+          <td class="items-table-cell items-cell-lp">{{ index + 1 }}</td>
+          <tbody class="items-other-cell-wrapper">
+            <td class="items-table-cell name">{{ item.name }}</td>
+            <td class="items-table-cell type">{{ item.type }}</td>
+            <td class="items-table-cell description cut-text">
+              {{ item.description }}
+            </td>
+            <td class="items-table-cell edit-remove">
+              <EditIcon :showEditModal="showEditModal" :uuid="item.uuid"/>
+              <RemoveIcon :removeItem="removeItem" :uuid="item.uuid" />
+            </td>
+          </tbody>
+        </tr>
+      </table>
     </div>
   </div>
 </template>
@@ -36,9 +42,10 @@
 <script lang="ts" setup>
 import { ref, reactive, onMounted, inject } from "vue";
 
-import ItemBox from "./ItemBox.vue";
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
+import EditIcon from "../../../icons/EditIcon.vue"
+import RemoveIcon from "../../../icons/RemoveIcon.vue";
 
 import * as ItemService from "../../../services/itemService";
 import type { InjectLogin, Item, ItemError } from "../../../types";
@@ -57,6 +64,7 @@ onMounted(async () => {
   if (!result) {
     return setError("Unknown error");
   }
+  console.log(result)
   state.items = result;
 });
 
@@ -148,6 +156,19 @@ const getCurrentDate = (): string => {
     d.getMonth() + 1
   }T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
 };
+
+const removeItem = async(id:string):Promise<void> =>{
+  console.log(id)
+  if (item.value.uuid === undefined) {
+    return;
+  }
+
+  const itemIndex = findItemIndex(id);
+
+  const result = await ItemService.remove(id);
+
+  console.log(result)
+}
 
 const updateItem = async (): Promise<void> => {
   if (item.value.uuid === undefined) {
