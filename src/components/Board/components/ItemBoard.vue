@@ -49,10 +49,6 @@ const router = useRouter();
 const login = inject("login") as InjectLogin;
 validateLogin(login.login.value.password, login.login.value.username);
 
-const test = useTestStore();
-
-console.log(test);
-
 const state = reactive<any>({
   items: [],
 });
