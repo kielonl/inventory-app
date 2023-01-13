@@ -8,7 +8,7 @@
   />
   <div>
     <div class="board-add-item-button">
-      <IconButton @click="showCreateModal()" :icon="'➕'" />
+      <IconButton @click="showCreateModal" :icon="'➕'" />
     </div>
     <div class="flex-center">
       <table class="items-wrapper box-shadow--bottom">
@@ -40,7 +40,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, inject } from "vue";
+import { ref, reactive, onMounted, inject, watch } from "vue";
 
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
@@ -51,6 +51,7 @@ import * as ItemService from "../../../services/itemService";
 import type { InjectLogin, Item, ItemError } from "../../../types";
 import { useRouter } from "vue-router";
 
+let dirty = ref<boolean>(false);
 const router = useRouter();
 const login = inject("login") as InjectLogin;
 validateLogin(login.login.value.password, login.login.value.username);
@@ -58,6 +59,8 @@ validateLogin(login.login.value.password, login.login.value.username);
 const state = reactive<any>({
   items: [],
 });
+
+
 
 onMounted(async () => {
   const result = await ItemService.read();
@@ -72,6 +75,7 @@ const item = ref<Item>({
   type: "",
   description: ""
 });
+
 const visible = ref<boolean>(false);
 const error = ref<ItemError>({ errorMessage: "" });
 
@@ -115,15 +119,14 @@ const showCreateModal = (): void => {
 };
 
 const showEditModal = (id: string): void => {
+
+ 
   const objectIndex = findItemIndex(id);
-
-  item.value = {
-    name: state.items[objectIndex].name,
-    type: state.items[objectIndex].type,
-    description: state.items[objectIndex].description,
-    uuid: state.items[objectIndex].uuid,
-  };
-
+  
+  item.value = {...state.items[objectIndex]}
+  watch(item.value, () =>{
+    dirty.value = true
+  })
   visible.value = true;
 };
 
@@ -139,9 +142,7 @@ const findItemIndex = (id: string | undefined): number => {
 
 const createItem = async (): Promise<void> => {
   const result = await ItemService.write({
-    name: item.value.name,
-    type: item.value.type,
-    description: item.value.description,
+    ...item.value,
     create_date: getCurrentDate(),
     update_date: getCurrentDate(),
     enabled: true,
@@ -150,13 +151,6 @@ const createItem = async (): Promise<void> => {
   state.items = [...state.items, result];
 
   hideModal();
-};
-
-const getCurrentDate = (): string => {
-  const d = new Date();
-  return `${d.getFullYear()}-${d.getDay()}-${
-    d.getMonth() + 1
-  }T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
 };
 
 const removeItem = async(id:string):Promise<void> =>{
@@ -178,16 +172,13 @@ const updateItem = async (): Promise<void> => {
   const itemIndex = findItemIndex(item.value.uuid);
 
   //check if user edited item. If not return an error
-  if (compareItems(state.items[itemIndex], item.value)) {
-    return setError("You have to change something");
+  if (!dirty.value) {
+    setError("You have to change something");
+    return;
   }
 
   const result = await ItemService.put(item.value.uuid, {
-    type: item.value.type,
-    name: item.value.name,
-    description: item.value.description,
-    uuid: item.value.uuid,
-    //change this later
+   ...item.value,
     create_date: getCurrentDate(),
     update_date: getCurrentDate(),
     enabled: true,
@@ -197,28 +188,22 @@ const updateItem = async (): Promise<void> => {
     return setError();
   }
 
-  state.items[itemIndex] = {
-    type: result.type,
-    name: result.name,
-    description:result.description,
-    uuid: item.value.uuid,
-  };
-  setError("");
-};
+  state.items[itemIndex] = {...result, uuid:item.value.uuid}
 
-const compareItems = (localItem: Item, apiItem: Item): boolean => {
-  return (
-    localItem.name === apiItem.name &&
-    localItem.type === apiItem.type &&
-    apiItem.uuid === apiItem.uuid
-    && localItem.description === localStorage.description
-  );
+  setError("");
+  dirty.value = false;
 };
 
 const validateItem = (): boolean => {
-  return item.value.name === "" || item.value.type === "";
+  return item.value.name === "" || item.value.type === "" || item.value.description === "";
 };
 
+const getCurrentDate = (): string => {
+  const d = new Date();
+  return `${d.getFullYear()}-${d.getDay()}-${
+    d.getMonth() + 1
+  }T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
+};
 
 </script>
 

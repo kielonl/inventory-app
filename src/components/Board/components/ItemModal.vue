@@ -5,7 +5,7 @@
       <div class="modal-container" v-if="visible">
         <InputTextField :name="'Name'" v-model="item.name" />
         <InputTextField :name="'Type'" v-model="item.type" />
-        <InputTextArea :name="'description'" v-model="item.description" />
+        <InputTextArea :name="'Description'" v-model="item.description" />
         <ErrorBox
           v-if="error.errorMessage !== ''"
           :message="error.errorMessage"

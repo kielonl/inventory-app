@@ -12,8 +12,8 @@
 
 <script lang="ts" setup>
 interface Props {
-  uuid: string;
-  showEditModal(uuid: string): void;
+  uuid?: string;
+  showEditModal(uuid?: string): void;
 }
 
 const props = defineProps<Props>();
