@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/require-v-for-key -->
 <template>
   <ItemModal
     v-model="item"
@@ -13,16 +14,20 @@
     </div>
     <div class="flex-center">
       <table class="items-wrapper box-shadow--bottom">
-        <thead class="header-row">
-          <th class="items-table-cell items-cell-lp">Lp.</th>
+        <th class="header-row">
+          <thead class="items-table-cell items-cell-lp">
+            Lp.
+          </thead>
           <tbody class="items-other-cell-wrapper">
             <td class="items-table-cell name">Name</td>
             <td class="items-table-cell type">Type</td>
             <td class="items-table-cell description">Description</td>
           </tbody>
-        </thead>
+        </th>
         <tr class="items-table-row" v-for="(item, index) in items.items">
-          <td class="items-table-cell items-cell-lp">{{ Number(index) + 1 }}</td>
+          <td class="items-table-cell items-cell-lp">
+            {{ Number(index) + 1 }}
+          </td>
           <tbody class="items-other-cell-wrapper">
             <td class="items-table-cell name">{{ item.name }}</td>
             <td class="items-table-cell type">{{ item.type }}</td>
@@ -30,7 +35,7 @@
               {{ item.description }}
             </td>
             <td class="items-table-cell edit-remove">
-              <EditIcon :showEditModal="showEditModal" :uuid="item.uuid"/>
+              <EditIcon :showEditModal="showEditModal" :uuid="item.uuid" />
               <RemoveIcon :removeItem="removeItem" :uuid="item.uuid" />
             </td>
           </tbody>
@@ -45,7 +50,7 @@ import { ref, onMounted, watch } from "vue";
 
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
-import EditIcon from "../../../icons/EditIcon.vue"
+import EditIcon from "../../../icons/EditIcon.vue";
 import RemoveIcon from "../../../icons/RemoveIcon.vue";
 
 import * as ItemService from "../../../services/itemService";
@@ -58,8 +63,8 @@ import { useLoginStore } from "@/stores/Login";
 const dirty = ref<boolean>(false);
 const router = useRouter();
 const login = useLoginStore();
-if(login.validateLogin()){
-  router.push('/')
+if (login.validateLogin()) {
+  router.push("/");
 }
 
 const items = useItemsStore();
@@ -69,13 +74,13 @@ onMounted(async () => {
   if (!result) {
     return setError("Unknown error");
   }
-items.setItems(result.items)
+  items.setItems(result.items);
 });
 
 const item = ref<Item>({
   name: "",
   type: "",
-  description: ""
+  description: "",
 });
 
 const visible = ref<boolean>(false);
@@ -85,7 +90,7 @@ const resetFormData = () => {
   item.value = {
     name: "",
     type: "",
-    description:"",
+    description: "",
   };
 };
 
@@ -95,7 +100,7 @@ const hideModal = () => {
 };
 
 const save = async (): Promise<void> => {
-  if (items.validateItem()) {
+  if (validateItem()) {
     return setError("Item fields cannot be empty");
   }
   if (items.findItemIndex(item.value.uuid) === -1) {
@@ -116,11 +121,11 @@ const showCreateModal = (): void => {
 
 const showEditModal = (id: string): void => {
   const objectIndex = items.findItemIndex(id);
-  item.value = {...items.items[objectIndex]}
+  item.value = { ...items.items[objectIndex] };
 
-  watch(item.value, () =>{
-    dirty.value = true
-  })
+  watch(item.value, () => {
+    dirty.value = true;
+  });
 
   visible.value = true;
 };
@@ -131,7 +136,6 @@ const setError = (errorMessage: string = "Unknown error") => {
   };
 };
 
-
 const createItem = async (): Promise<void> => {
   const result = await ItemService.write({
     ...item.value,
@@ -140,17 +144,17 @@ const createItem = async (): Promise<void> => {
     enabled: true,
   });
 
-  items.setItems([...items.items, result])
+  items.setItems([...items.items, result]);
 
   hideModal();
 };
 
-const removeItem = async(id:string):Promise<void> =>{
+const removeItem = async (id: string): Promise<void> => {
   const itemIndex = items.findItemIndex(id);
 
   await ItemService.remove(id);
-  items.removeItem(itemIndex)
-}
+  items.removeItem(itemIndex);
+};
 
 const updateItem = async (): Promise<void> => {
   if (item.value.uuid === undefined) {
@@ -161,7 +165,7 @@ const updateItem = async (): Promise<void> => {
 
   //check if user edited item. If not return an error
   const result = await ItemService.put(item.value.uuid, {
-   ...item.value,
+    ...item.value,
     create_date: getCurrentDate(),
     update_date: getCurrentDate(),
     enabled: true,
@@ -171,7 +175,7 @@ const updateItem = async (): Promise<void> => {
     return setError();
   }
 
-  items.items[itemIndex] = {...result, uuid:item.value.uuid}
+  items.items[itemIndex] = { ...result, uuid: item.value.uuid };
 
   setError("");
   dirty.value = false;
@@ -184,6 +188,13 @@ const getCurrentDate = (): string => {
   }T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
 };
 
+const validateItem = (): boolean => {
+  return (
+    item.value.name === "" ||
+    item.value.type === "" ||
+    item.value.description === ""
+  );
+};
 </script>
 
 <style lang="scss">
