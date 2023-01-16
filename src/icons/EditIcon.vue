@@ -16,5 +16,5 @@ interface Props {
   showEditModal(uuid?: string): void;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 </script>

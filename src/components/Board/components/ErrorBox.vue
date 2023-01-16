@@ -8,7 +8,7 @@
 interface Props {
   message: string;
 }
-const props = defineProps<Props>();
+defineProps<Props>();
 </script>
 
 <style lang="scss">

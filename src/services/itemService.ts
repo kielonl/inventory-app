@@ -30,7 +30,7 @@ const callApi = async (
   }
 };
 
-const read = async (): Promise<any[]> => {
+const read = async (): Promise<ServiceRead> => {
   const result = await callApi(HTTP_METHODS.GET, "/items");
 
   return result.data;

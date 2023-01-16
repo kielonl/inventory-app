@@ -31,7 +31,8 @@
 
 <script lang="ts" setup>
 import type { Item, ItemError } from "@/types";
-import { computed } from "vue";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { Transition, computed } from "vue";
 import ErrorBox from "./ErrorBox.vue";
 import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
 import InputTextArea from "@/components/ReusableComponents/InputTextArea.vue";

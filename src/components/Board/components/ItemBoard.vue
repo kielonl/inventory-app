@@ -13,16 +13,24 @@
     </div>
     <div class="flex-center">
       <table class="items-wrapper box-shadow--bottom">
-        <thead class="header-row">
-          <th class="items-table-cell items-cell-lp">Lp.</th>
+        <th class="header-row">
+          <thead class="items-table-cell items-cell-lp">
+            Lp.
+          </thead>
           <tbody class="items-other-cell-wrapper">
             <td class="items-table-cell name">Name</td>
             <td class="items-table-cell type">Type</td>
             <td class="items-table-cell description">Description</td>
           </tbody>
-        </thead>
-        <tr class="items-table-row" v-for="(item, index) in state.items">
-          <td class="items-table-cell items-cell-lp">{{ index + 1 }}</td>
+        </th>
+        <tr
+          class="items-table-row"
+          v-for="(item, index) in itemsStore.items"
+          :key="item.uuid"
+        >
+          <td class="items-table-cell items-cell-lp">
+            {{ Number(index) + 1 }}
+          </td>
           <tbody class="items-other-cell-wrapper">
             <td class="items-table-cell name">{{ item.name }}</td>
             <td class="items-table-cell type">{{ item.type }}</td>
@@ -30,7 +38,7 @@
               {{ item.description }}
             </td>
             <td class="items-table-cell edit-remove">
-              <EditIcon :showEditModal="showEditModal" :uuid="item.uuid"/>
+              <EditIcon :showEditModal="showEditModal" :uuid="item.uuid" />
               <RemoveIcon :removeItem="removeItem" :uuid="item.uuid" />
             </td>
           </tbody>
@@ -41,54 +49,51 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, reactive, onMounted, inject, watch } from "vue";
+import { ref, onMounted, watch } from "vue";
 
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
-import EditIcon from "../../../icons/EditIcon.vue"
+import EditIcon from "../../../icons/EditIcon.vue";
 import RemoveIcon from "../../../icons/RemoveIcon.vue";
 
 import * as ItemService from "../../../services/itemService";
-import type { InjectLogin, Item, ItemError } from "../../../types";
+import type { Item, ItemError } from "../../../types";
 import { useRouter } from "vue-router";
+
+import { useItemsStore } from "@/stores/Items";
+import { useLoginStore } from "@/stores/Login";
 
 const dirty = ref<boolean>(false);
 const router = useRouter();
-const login = inject("login") as InjectLogin;
-validateLogin(login.login.value.password, login.login.value.username);
+const login = useLoginStore();
+if (login.validateLogin()) {
+  router.push("/");
+}
 
-const state = reactive<any>({
-  items: [],
-});
+const itemsStore = useItemsStore();
 
 onMounted(async () => {
   const result = await ItemService.read();
   if (!result) {
     return setError("Unknown error");
   }
-  state.items = result;
+  itemsStore.setItems([...result.items]);
 });
 
 const item = ref<Item>({
   name: "",
   type: "",
-  description: ""
+  description: "",
 });
 
 const visible = ref<boolean>(false);
 const error = ref<ItemError>({ errorMessage: "" });
 
-function validateLogin(username: string, password: string) {
-  if (username == "" || password == "") {
-    return router.push("/");
-  }
-}
-
 const resetFormData = () => {
   item.value = {
     name: "",
     type: "",
-    description:"",
+    description: "",
   };
 };
 
@@ -101,7 +106,7 @@ const save = async (): Promise<void> => {
   if (validateItem()) {
     return setError("Item fields cannot be empty");
   }
-  if (findItemIndex(item.value.uuid) === -1) {
+  if (itemsStore.findItemIndex(item.value.uuid) === -1) {
     await createItem();
   } else {
     await updateItem();
@@ -118,13 +123,12 @@ const showCreateModal = (): void => {
 };
 
 const showEditModal = (id: string): void => {
-  const objectIndex = findItemIndex(id);
-  
-  item.value = {...state.items[objectIndex]}
+  const objectIndex = itemsStore.findItemIndex(id);
+  item.value = { ...itemsStore.items[objectIndex] };
 
-  watch(item.value, () =>{
-    dirty.value = true
-  })
+  watch(item.value, () => {
+    dirty.value = true;
+  });
 
   visible.value = true;
 };
@@ -135,10 +139,6 @@ const setError = (errorMessage: string = "Unknown error") => {
   };
 };
 
-const findItemIndex = (id: string | undefined): number => {
-  return state.items.findIndex((obj: any) => obj.uuid == id);
-};
-
 const createItem = async (): Promise<void> => {
   const result = await ItemService.write({
     ...item.value,
@@ -147,32 +147,28 @@ const createItem = async (): Promise<void> => {
     enabled: true,
   });
 
-  state.items = [...state.items, result];
+  itemsStore.setItems([...itemsStore.items, result]);
 
   hideModal();
 };
 
-const removeItem = async(id:string):Promise<void> =>{
-  if(id === undefined) {
-    return;
-  }
-
-  const itemIndex = findItemIndex(id);
+const removeItem = async (id: string): Promise<void> => {
+  const itemIndex = itemsStore.findItemIndex(id);
 
   await ItemService.remove(id);
-  state.items.splice(itemIndex,1)
-}
+  itemsStore.removeItem(itemIndex);
+};
 
 const updateItem = async (): Promise<void> => {
   if (item.value.uuid === undefined) {
     return;
   }
 
-  const itemIndex = findItemIndex(item.value.uuid);
+  const itemIndex = itemsStore.findItemIndex(item.value.uuid);
 
   //check if user edited item. If not return an error
   const result = await ItemService.put(item.value.uuid, {
-   ...item.value,
+    ...item.value,
     create_date: getCurrentDate(),
     update_date: getCurrentDate(),
     enabled: true,
@@ -182,14 +178,10 @@ const updateItem = async (): Promise<void> => {
     return setError();
   }
 
-  state.items[itemIndex] = {...result, uuid:item.value.uuid}
+  itemsStore.items[itemIndex] = { ...result, uuid: item.value.uuid };
 
   setError("");
   dirty.value = false;
-};
-
-const validateItem = (): boolean => {
-  return item.value.name === "" || item.value.type === "" || item.value.description === "";
 };
 
 const getCurrentDate = (): string => {
@@ -199,6 +191,13 @@ const getCurrentDate = (): string => {
   }T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
 };
 
+const validateItem = (): boolean => {
+  return (
+    item.value.name === "" ||
+    item.value.type === "" ||
+    item.value.description === ""
+  );
+};
 </script>
 
 <style lang="scss">

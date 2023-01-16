@@ -1,8 +1,11 @@
-export interface Item {
+export interface ItemStore {
   name: string;
   type: string;
   description: string;
   uuid?: string;
+}
+
+export interface Item extends ItemStore {
   create_at?: string;
   update_at?: string;
   enabled?: boolean;
@@ -21,6 +24,9 @@ export interface Login {
   password: string;
 }
 
-export interface InjectLogin {
-  login: { value: { username: string; password: string } };
+export interface ServiceRead {
+  items: Item[];
+  total: number;
+  page: number;
+  size: number;
 }
