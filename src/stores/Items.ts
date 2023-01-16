@@ -1,7 +1,8 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
+import type { ItemsStore } from "@/src/types";
 
-export const useItemsStore = defineStore("itemsStore", {
+export const useItemsStore = defineStore<ItemsStore>("itemsStore", {
   state: () => ({ items: [] }),
   getters: {},
   actions: {

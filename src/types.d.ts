@@ -24,3 +24,22 @@ export interface Login {
 export interface InjectLogin {
   login: { value: { username: string; password: string } };
 }
+
+export interface ItemsStore {
+  setItems(value: any[]): void;
+  removeItem(itemIndex: number): never[];
+  findItemIndex(id: string | undefined): number;
+  validateItem(): boolean;
+}
+
+export interface LoginStore {
+  login: {
+      username: string;
+      password: string;
+  };
+}, {}, {
+  setLogin(value: {
+      ...;
+  }): void;
+  validateLogin(): boolean;
+}

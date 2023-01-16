@@ -16,7 +16,7 @@
 <script lang="ts" setup>
 import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
 import { useRouter } from "vue-router";
-import { ref, inject } from "vue";
+import { ref } from "vue";
 
 import { useLoginStore } from "@/stores/Login";
 import type { Login } from "../../../types";
@@ -28,7 +28,7 @@ const login = ref<Login>({
   password: "",
 });
 
-const loginStore = useLoginStore();
+const loginStore = useLoginStore() as any;
 
 function validateLogin(): void {
   if (login.value.username === "" || login.value.password === "") {

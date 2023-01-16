@@ -50,8 +50,9 @@ import RemoveIcon from "../../../icons/RemoveIcon.vue";
 
 import * as ItemService from "../../../services/itemService";
 import type { Item, ItemError } from "../../../types";
-import {useItemsStore} from "@/stores/Items";
 import { useRouter } from "vue-router";
+
+import { useItemsStore } from "@/stores/Items";
 import { useLoginStore } from "@/stores/Login";
 
 const dirty = ref<boolean>(false);
