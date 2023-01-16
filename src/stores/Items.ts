@@ -9,6 +9,7 @@ export const useItemsStore = defineStore("itemsStore", {
   actions: {
     setItems(value: any[]): void {
       this.items = [...value];
+      console.log(this.items);
     },
     removeItem(itemIndex: number): void {
       this.items.splice(itemIndex, 1);

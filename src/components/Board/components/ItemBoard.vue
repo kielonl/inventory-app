@@ -1,4 +1,3 @@
-<!-- eslint-disable vue/require-v-for-key -->
 <template>
   <ItemModal
     v-model="item"
@@ -24,7 +23,11 @@
             <td class="items-table-cell description">Description</td>
           </tbody>
         </th>
-        <tr class="items-table-row" v-for="(item, index) in items.items">
+        <tr
+          class="items-table-row"
+          v-for="(item, index) in itemsStore.items"
+          :key="item.uuid"
+        >
           <td class="items-table-cell items-cell-lp">
             {{ Number(index) + 1 }}
           </td>
@@ -67,14 +70,14 @@ if (login.validateLogin()) {
   router.push("/");
 }
 
-const items = useItemsStore();
+const itemsStore = useItemsStore();
 
 onMounted(async () => {
   const result = await ItemService.read();
   if (!result) {
     return setError("Unknown error");
   }
-  items.setItems(result.items);
+  itemsStore.setItems([...result.items]);
 });
 
 const item = ref<Item>({
@@ -103,7 +106,7 @@ const save = async (): Promise<void> => {
   if (validateItem()) {
     return setError("Item fields cannot be empty");
   }
-  if (items.findItemIndex(item.value.uuid) === -1) {
+  if (itemsStore.findItemIndex(item.value.uuid) === -1) {
     await createItem();
   } else {
     await updateItem();
@@ -120,8 +123,8 @@ const showCreateModal = (): void => {
 };
 
 const showEditModal = (id: string): void => {
-  const objectIndex = items.findItemIndex(id);
-  item.value = { ...items.items[objectIndex] };
+  const objectIndex = itemsStore.findItemIndex(id);
+  item.value = { ...itemsStore.items[objectIndex] };
 
   watch(item.value, () => {
     dirty.value = true;
@@ -144,16 +147,16 @@ const createItem = async (): Promise<void> => {
     enabled: true,
   });
 
-  items.setItems([...items.items, result]);
+  itemsStore.setItems([...itemsStore.items, result]);
 
   hideModal();
 };
 
 const removeItem = async (id: string): Promise<void> => {
-  const itemIndex = items.findItemIndex(id);
+  const itemIndex = itemsStore.findItemIndex(id);
 
   await ItemService.remove(id);
-  items.removeItem(itemIndex);
+  itemsStore.removeItem(itemIndex);
 };
 
 const updateItem = async (): Promise<void> => {
@@ -161,7 +164,7 @@ const updateItem = async (): Promise<void> => {
     return;
   }
 
-  const itemIndex = items.findItemIndex(item.value.uuid);
+  const itemIndex = itemsStore.findItemIndex(item.value.uuid);
 
   //check if user edited item. If not return an error
   const result = await ItemService.put(item.value.uuid, {
@@ -175,7 +178,7 @@ const updateItem = async (): Promise<void> => {
     return setError();
   }
 
-  items.items[itemIndex] = { ...result, uuid: item.value.uuid };
+  itemsStore.items[itemIndex] = { ...result, uuid: item.value.uuid };
 
   setError("");
   dirty.value = false;
