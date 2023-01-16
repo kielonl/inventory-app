@@ -39,7 +39,6 @@ function validateLogin(): void {
     username: login.value.username,
     password: login.value.password,
   });
-
   router.push("/home");
 }
 </script>

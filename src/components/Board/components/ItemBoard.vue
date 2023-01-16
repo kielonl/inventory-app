@@ -81,8 +81,6 @@ const item = ref<Item>({
 const visible = ref<boolean>(false);
 const error = ref<ItemError>({ errorMessage: "" });
 
-
-
 const resetFormData = () => {
   item.value = {
     name: "",
@@ -179,8 +177,6 @@ const updateItem = async (): Promise<void> => {
   setError("");
   dirty.value = false;
 };
-
-
 
 const getCurrentDate = (): string => {
   const d = new Date();
