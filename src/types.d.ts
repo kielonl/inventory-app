@@ -6,8 +6,8 @@ export interface ItemStore {
 }
 
 export interface Item extends ItemStore {
-  create_at?: string;
-  update_at?: string;
+  create_date?: string;
+  update_date?: string;
   enabled?: boolean;
 }
 

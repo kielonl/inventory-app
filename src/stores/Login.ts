@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { login } from "@/services/itemService";
 
 export const useLoginStore = defineStore("loginStore", {
   state: () => ({ login: { username: "", password: "" } }),
@@ -9,6 +10,14 @@ export const useLoginStore = defineStore("loginStore", {
     },
     validateLogin() {
       return this.login.username === "" || this.login.password === "";
+    },
+    async loginUser(username: string, password: string) {
+      const result = await login(username, password);
+
+      this.setLogin({
+        username: result.username,
+        password: result.password,
+      });
     },
   },
 });

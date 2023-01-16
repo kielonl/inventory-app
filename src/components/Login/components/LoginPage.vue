@@ -30,15 +30,13 @@ const login = ref<Login>({
 
 const loginStore = useLoginStore() as any;
 
-function validateLogin(): void {
+async function validateLogin(): Promise<void> {
   if (login.value.username === "" || login.value.password === "") {
     return;
   }
 
-  loginStore.setLogin({
-    username: login.value.username,
-    password: login.value.password,
-  });
+  await loginStore.loginUser(login.value.username, login.value.password);
+
   router.push("/home");
 }
 </script>
