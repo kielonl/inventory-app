@@ -69,7 +69,6 @@ onMounted(async () => {
   if (!result) {
     return setError("Unknown error");
   }
-  console.log(result)
 items.setItems(result.items)
 });
 
@@ -117,7 +116,6 @@ const showCreateModal = (): void => {
 
 const showEditModal = (id: string): void => {
   const objectIndex = items.findItemIndex(id);
-    console.log(items.items[objectIndex])
   item.value = {...items.items[objectIndex]}
 
   watch(item.value, () =>{
