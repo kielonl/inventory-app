@@ -57,20 +57,20 @@ import { useLoginStore } from "@/stores/Login";
 
 const dirty = ref<boolean>(false);
 const router = useRouter();
-const login = useLoginStore() as any;
+const login = useLoginStore();
 if(login.validateLogin()){
   router.push('/')
 }
 
-const items = useItemsStore() as any;
+const items = useItemsStore();
 
 onMounted(async () => {
   const result = await ItemService.read();
   if (!result) {
     return setError("Unknown error");
   }
-
-  items.setItems(result)
+  console.log(result)
+items.setItems(result.items)
 });
 
 const item = ref<Item>({
@@ -117,7 +117,7 @@ const showCreateModal = (): void => {
 
 const showEditModal = (id: string): void => {
   const objectIndex = items.findItemIndex(id);
-  
+    console.log(items.items[objectIndex])
   item.value = {...items.items[objectIndex]}
 
   watch(item.value, () =>{

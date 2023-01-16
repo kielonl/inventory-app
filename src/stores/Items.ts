@@ -1,15 +1,16 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import type { ItemsStore } from "@/src/types";
 
-export const useItemsStore = defineStore<ItemsStore>("itemsStore", {
-  state: () => ({ items: [] }),
+export const useItemsStore = defineStore("itemsStore", {
+  state: () => ({
+    items: [] as ItemStore[],
+  }),
   getters: {},
   actions: {
     setItems(value: any[]): void {
       this.items = [...value];
     },
-    removeItem(itemIndex: number) {
+    removeItem(itemIndex: number): void {
       return this.items.splice(itemIndex, 1);
     },
     findItemIndex(id: string | undefined): number {

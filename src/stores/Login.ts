@@ -1,10 +1,8 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import type { LoginStore } from "@/src/types";
-
 import { useRouter } from "vue-router";
 
-export const useLoginStore = defineStore<LoginStore>("loginStore", {
+export const useLoginStore = defineStore("loginStore", {
   state: () => ({ login: { username: "", password: "" } }),
   getters: {},
   actions: {
