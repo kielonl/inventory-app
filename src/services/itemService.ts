@@ -1,34 +1,6 @@
-import axios from "axios";
-
-const HTTP_METHODS = {
-  GET: "GET",
-  POST: "POST",
-  PUT: "PUT",
-  DELETE: "DELETE",
-};
-const apiUrl = import.meta.env.VITE_API_URL;
-//change data type later
-const callApi = async (
-  HTTPMethod: HTTP_METHODS,
-  url: string,
-  data: any
-): Promise => {
-  try {
-    return await axios({
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods":
-          "GET, POST, PATCH, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
-      },
-      method: HTTPMethod,
-      url: `${apiUrl}${url}`,
-      data,
-    });
-  } catch (error) {
-    return error;
-  }
-};
+import type { Item, ServiceRead, UpdateItem, ItemError } from "@/types";
+import { HTTP_METHODS } from "@/constants";
+import { callApi } from "../api/callApi";
 
 const read = async (): Promise<ServiceRead> => {
   const result = await callApi(HTTP_METHODS.GET, "/items");
