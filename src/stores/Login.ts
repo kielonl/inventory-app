@@ -1,5 +1,5 @@
+import { login } from "@/services/userService";
 import { defineStore } from "pinia";
-import { login } from "@/services/itemService";
 
 export const useLoginStore = defineStore("loginStore", {
   state: () => ({ login: { username: "", password: "" } }),

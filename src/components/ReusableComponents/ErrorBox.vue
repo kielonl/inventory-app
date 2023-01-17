@@ -12,5 +12,5 @@ defineProps<Props>();
 </script>
 
 <style lang="scss">
-@import "../styles/ErrorBox.scss";
+@import url("@//components/ReusableComponents/styles/ErrorBox.scss");
 </style>

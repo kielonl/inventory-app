@@ -1,38 +1,6 @@
-import axios from "axios";
 import type { Item, ServiceRead, UpdateItem, ItemError } from "@/types";
-
-enum HTTPMETHODS {
-  GET = "GET",
-  POST = "POST",
-  PUT = "PUT",
-  UPDATE = "UPDATE",
-  DELETE = "DELETE",
-}
-
-const apiUrl = import.meta.env.VITE_API_URL;
-//change data type later
-const callApi = async (
-  HTTPMethod: HTTPMETHODS,
-  url: string,
-  data?: any
-): Promise<any> => {
-  try {
-    return await axios({
-      headers: {
-        "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Methods":
-          "GET, POST, PATCH, PUT, DELETE, OPTIONS",
-        "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
-        "content-type": "application/x-www-form-urlencoded",
-      },
-      method: HTTPMethod,
-      url: `${apiUrl}${url}`,
-      data,
-    });
-  } catch (error) {
-    return error;
-  }
-};
+import { HTTPMETHODS } from "@/constants/HTTPMETHODS";
+import { callApi } from "../api/callApi";
 
 const read = async (): Promise<ServiceRead> => {
   const result = await callApi(HTTPMETHODS.GET, "/items");
@@ -64,23 +32,4 @@ const remove = async (id: string): Promise<ItemError> => {
   return result.data;
 };
 
-const register = async (name: string, password: string): Promise<any> => {
-  const result = await callApi(HTTPMETHODS.POST, "/users/create", {
-    name,
-    password,
-    is_admin: false,
-  });
-
-  return result.data;
-};
-
-const login = async (username: string, password: string) => {
-  const result = await callApi(HTTPMETHODS.POST, "/token", {
-    username,
-    password,
-  });
-
-  return result.data;
-};
-
-export { read, readById, write, put, remove, register, login };
+export { read, readById, write, put, remove };
