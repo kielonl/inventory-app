@@ -19,7 +19,7 @@ export interface ItemError {
   errorMessage: string;
 }
 
-export interface Login {
+export interface User {
   username: string;
   password: string;
 }

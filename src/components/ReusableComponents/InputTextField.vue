@@ -4,7 +4,7 @@
     <input
       class="form-input box-shadow--bottom"
       :class="{ 'input-not-filled': isError && modelValue === '' }"
-      :type="name == 'Password' ? name : 'text'"
+      :type="inputType"
       spellcheck="false"
       placeholder="..."
       v-model="value"
@@ -19,6 +19,7 @@ interface Props {
   name: string;
   modelValue?: string;
   isError?: boolean;
+  inputType?: string;
 }
 
 const props = defineProps<Props>();

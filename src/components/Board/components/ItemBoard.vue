@@ -140,7 +140,7 @@ const setError = (errorMessage: string = "Unknown error") => {
 };
 
 const createItem = async (): Promise<void> => {
-  const result = await ItemService.write({ ...item.value });
+  const result = await ItemService.write(item.value);
 
   itemsStore.setItems([...itemsStore.items, result]);
 
@@ -164,9 +164,7 @@ const updateItem = async (): Promise<void> => {
   //check if user edited item. If not return an error
   const result = await ItemService.put(item.value.uuid, {
     ...item.value,
-    create_date: getCurrentDate(),
     update_date: getCurrentDate(),
-    enabled: true,
   });
 
   if (result === undefined) {

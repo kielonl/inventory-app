@@ -13,6 +13,7 @@
             :name="'Password'"
             v-model="login.password"
             :isError="isError.password"
+            :inputType="'password'"
           />
           <input type="submit" class="login-button" value="Login" />
         </form>
@@ -28,12 +29,12 @@ import { useRouter } from "vue-router";
 import { ref } from "vue";
 
 import { useLoginStore } from "@/stores/Login";
-import type { Login } from "../../../types";
+import type { User } from "../../../types";
 import logo from "../../../assets/halinowpetla.png";
 import ErrorBox from "@/components/ReusableComponents/ErrorBox.vue";
 
 const router = useRouter();
-const login = ref<Login>({
+const login = ref<User>({
   username: "",
   password: "",
 });
@@ -47,19 +48,20 @@ const errorMessage = ref<string>("");
 
 const loginStore = useLoginStore() as any;
 
-const validateLogin = (): void => {
+const validateLogin = (): boolean => {
   if (login.value.username === "") {
     isError.value.username = true;
+    return false;
   }
   if (login.value.password === "") {
     isError.value.password = true;
+    return false;
   }
-  return;
+  return true;
 };
 
 const loginUser = async () => {
-  validateLogin();
-
+  if (!validateLogin()) return;
   await loginStore.loginUser(login.value.username, login.value.password);
   router.push("/home");
 };
