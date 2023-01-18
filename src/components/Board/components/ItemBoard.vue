@@ -73,11 +73,7 @@ if (login.validateLogin()) {
 const itemsStore = useItemsStore();
 
 onMounted(async () => {
-  const result = await ItemService.read();
-  if (!result) {
-    return setError("Unknown error");
-  }
-  itemsStore.setItems([...result.items]);
+  await fetchItems();
 });
 
 const item = ref<Item>({
@@ -140,18 +136,14 @@ const setError = (errorMessage: string = "Unknown error") => {
 };
 
 const createItem = async (): Promise<void> => {
-  const result = await ItemService.write(item.value);
-
-  itemsStore.setItems([...itemsStore.items, result]);
-
+  await ItemService.write(item.value);
+  await fetchItems();
   hideModal();
 };
 
 const removeItem = async (id: string): Promise<void> => {
-  const itemIndex = itemsStore.findItemIndex(id);
-
   await ItemService.remove(id);
-  itemsStore.removeItem(itemIndex);
+  await fetchItems();
 };
 
 const updateItem = async (): Promise<void> => {
@@ -159,22 +151,25 @@ const updateItem = async (): Promise<void> => {
     return;
   }
 
-  const itemIndex = itemsStore.findItemIndex(item.value.uuid);
-
   //check if user edited item. If not return an error
-  const result = await ItemService.put(item.value.uuid, {
+  await ItemService.put(item.value.uuid, {
     ...item.value,
     update_date: getCurrentDate(),
   });
 
-  if (result === undefined) {
-    return setError();
-  }
-
-  itemsStore.items[itemIndex] = { ...result, uuid: item.value.uuid };
-
+  await fetchItems();
   setError("");
   dirty.value = false;
+};
+
+const fetchItems = async () => {
+  const result = await ItemService.read();
+  if (!result) {
+    return setError("Failed to fetch items");
+  }
+  itemsStore.setItems([...result.items]);
+
+  return result;
 };
 
 const getCurrentDate = (): string => {
