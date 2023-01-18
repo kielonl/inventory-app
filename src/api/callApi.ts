@@ -15,7 +15,7 @@ export const callApi = async (
         "Access-Control-Allow-Methods":
           "GET, POST, PATCH, PUT, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
-        "content-type": "application/x-www-form-urlencoded",
+        "content-type": "application/json",
       },
       method: HTTPMethod,
       url: `${apiUrl}${url}`,

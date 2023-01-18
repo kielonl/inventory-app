@@ -11,6 +11,14 @@
   border: none;
 }
 
+.form-input:focus {
+  box-shadow: 0 0 0 0.1rem #3182ce;
+}
+
+.input-not-filled {
+  outline: 1px solid red;
+}
+
 @media (max-width: 640px) {
   .form-input-wrapper {
     padding-top: 10%;
