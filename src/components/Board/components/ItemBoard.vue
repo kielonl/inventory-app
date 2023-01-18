@@ -8,6 +8,7 @@
     :dirty="dirty"
   />
   <div>
+    <LoadingIcon v-if="isLoading" />
     <div class="board-add-item-button">
       <IconButton @click="showCreateModal" :icon="'➕'" />
     </div>
@@ -62,10 +63,13 @@ import { useRouter } from "vue-router";
 
 import { useItemsStore } from "@/stores/Items";
 import { useLoginStore } from "@/stores/Login";
+import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
 
 const dirty = ref<boolean>(false);
 const router = useRouter();
 const login = useLoginStore();
+const isLoading = ref<boolean>(false);
+
 if (login.validateLogin()) {
   router.push("/");
 }
@@ -85,6 +89,10 @@ const item = ref<Item>({
 const visible = ref<boolean>(false);
 const error = ref<ItemError>({ errorMessage: "" });
 
+const setLoading = async () => {
+  isLoading.value = !isLoading.value;
+};
+
 const resetFormData = () => {
   item.value = {
     name: "",
@@ -99,6 +107,8 @@ const hideModal = () => {
 };
 
 const save = async (): Promise<void> => {
+  if (isLoading.value) return;
+
   if (validateItem()) {
     return setError("Item fields cannot be empty");
   }
@@ -115,10 +125,12 @@ const save = async (): Promise<void> => {
 };
 
 const showCreateModal = (): void => {
+  if (isLoading.value) return;
   visible.value = true;
 };
 
 const showEditModal = (id: string): void => {
+  if (isLoading.value) return;
   const objectIndex = itemsStore.findItemIndex(id);
   item.value = { ...itemsStore.items[objectIndex] };
 
@@ -136,17 +148,23 @@ const setError = (errorMessage: string = "Unknown error") => {
 };
 
 const createItem = async (): Promise<void> => {
+  if (isLoading.value) return;
+
   await ItemService.write(item.value);
   await fetchItems();
   hideModal();
 };
 
 const removeItem = async (id: string): Promise<void> => {
+  if (isLoading.value) return;
+
   await ItemService.remove(id);
   await fetchItems();
 };
 
 const updateItem = async (): Promise<void> => {
+  if (isLoading.value) return;
+
   if (item.value.uuid === undefined) {
     return;
   }
@@ -163,12 +181,14 @@ const updateItem = async (): Promise<void> => {
 };
 
 const fetchItems = async () => {
+  await setLoading();
   const result = await ItemService.read();
   if (!result) {
     return setError("Failed to fetch items");
   }
   itemsStore.setItems([...result.items]);
 
+  await setLoading();
   return result;
 };
 
