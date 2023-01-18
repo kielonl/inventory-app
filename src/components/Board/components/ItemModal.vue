@@ -30,6 +30,7 @@
               'button button--blue': !item.uuid,
             }"
             :value="item.uuid !== undefined ? 'UPDATE' : 'ADD'"
+            :disabled="item.uuid !== undefined && !dirty"
           />
           <button class="button button--red" @click="_hideModal()">
             CANCEL

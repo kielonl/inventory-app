@@ -71,7 +71,7 @@ const login = useLoginStore();
 const isLoading = ref<boolean>(false);
 
 if (login.validateLogin()) {
-  // router.push("/");
+  router.push("/");
 }
 
 const itemsStore = useItemsStore();

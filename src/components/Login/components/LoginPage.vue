@@ -59,7 +59,7 @@ const validateLogin = (): void => {
 const loginUser = async () => {
   validateLogin();
   await loginStore.loginUser(login.value.username, login.value.password);
-  // router.push("/home");
+  router.push("/home");
 };
 </script>
 

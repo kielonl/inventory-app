@@ -9,7 +9,7 @@
   border-radius: 0.3rem;
 
   .header-row {
-    z-index: -1;
+    z-index: 1;
     top: 0px;
     position: sticky;
     background: #2d3748;
@@ -19,11 +19,14 @@
 
 .items-table-row,
 .header-row {
-  z-index: -2;
   word-wrap: break-word;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.edit-remove {
+  z-index: 0;
 }
 
 .items-table-row:nth-child(even) {
@@ -50,9 +53,6 @@
 .type,
 .description {
   width: 30%;
-}
-.edit-remove {
-  // width: 5rem;
 }
 
 .description {
