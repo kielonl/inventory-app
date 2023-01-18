@@ -89,8 +89,8 @@ const item = ref<Item>({
 const visible = ref<boolean>(false);
 const error = ref<ItemError>({ errorMessage: "" });
 
-const setLoading = async () => {
-  isLoading.value = !isLoading.value;
+const setLoading = async (value: boolean) => {
+  isLoading.value = value;
 };
 
 const resetFormData = () => {
@@ -181,14 +181,14 @@ const updateItem = async (): Promise<void> => {
 };
 
 const fetchItems = async () => {
-  await setLoading();
+  await setLoading(true);
   const result = await ItemService.read();
   if (!result) {
     return setError("Failed to fetch items");
   }
-  itemsStore.setItems([...result.items]);
+  itemsStore.setItems(result.items);
 
-  await setLoading();
+  await setLoading(false);
   return result;
 };
 
