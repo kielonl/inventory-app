@@ -140,12 +140,7 @@ const setError = (errorMessage: string = "Unknown error") => {
 };
 
 const createItem = async (): Promise<void> => {
-  const result = await ItemService.write({
-    ...item.value,
-    // create_date: getCurrentDate(),
-    // update_date: getCurrentDate(),
-    // enabled: true,
-  });
+  const result = await ItemService.write({ ...item.value });
 
   itemsStore.setItems([...itemsStore.items, result]);
 
