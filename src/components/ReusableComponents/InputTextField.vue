@@ -3,6 +3,8 @@
     <label :for="name">{{ name }}</label>
     <input
       class="form-input box-shadow--bottom"
+      :class="{ 'input-not-filled': isError && modelValue === '' }"
+      :type="name == 'Password' ? name : 'text'"
       spellcheck="false"
       placeholder="..."
       v-model="value"
@@ -16,6 +18,7 @@ import { computed } from "vue";
 interface Props {
   name: string;
   modelValue?: string;
+  isError?: boolean;
 }
 
 const props = defineProps<Props>();

@@ -3,6 +3,11 @@ import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
+export enum ENDPOINTS {
+  items = "items",
+  users = "users",
+}
+
 export const callApi = async (
   HTTPMethod: HTTP_METHODS,
   url: string,
@@ -15,7 +20,7 @@ export const callApi = async (
         "Access-Control-Allow-Methods":
           "GET, POST, PATCH, PUT, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Origin, Content-Type, X-Auth-Token",
-        "content-type": "application/x-www-form-urlencoded",
+        "content-type": "application/json",
       },
       method: HTTPMethod,
       url: `${apiUrl}${url}`,

@@ -11,10 +11,12 @@ const register = async (name: string, password: string): Promise<any> => {
   return result.data;
 };
 
-const login = async (username: string, password: string) => {
-  const result = await callApi(HTTP_METHODS.POST, "/token", {
-    username,
+const login = async (name: string, password: string) => {
+  console.log(name);
+  const result = await callApi(HTTP_METHODS.POST, "/login", {
+    name,
     password,
+    is_admin: false,
   });
 
   return result.data;

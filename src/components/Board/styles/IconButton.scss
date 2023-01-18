@@ -1,19 +1,18 @@
 .add-item-container {
   padding: 12px;
+}
 
-  button {
-    width: 100%;
+.add-item-container button {
+  width: 100%;
+  color: #a0aec0;
+  background: #edf2f7;
+  border-radius: 0.5rem;
+  outline: none;
+  border: none;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
 
-    color: #a0aec0;
-    background: #edf2f7;
-    border-radius: 0.5rem;
-    outline: none;
-    border: none;
-    padding-top: 0.5rem;
-    padding-bottom: 0.5rem;
-
-    &:hover {
-      background: #e2e8f0;
-    }
-  }
+.add-item-container button:hover {
+  background: #e2e8f0;
 }
