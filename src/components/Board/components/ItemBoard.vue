@@ -8,6 +8,7 @@
     :dirty="dirty"
   />
   <div>
+    <LoadingIcon v-if="isLoading" />
     <div class="board-add-item-button">
       <IconButton @click="showCreateModal" :icon="'➕'" />
     </div>
@@ -62,10 +63,13 @@ import { useRouter } from "vue-router";
 
 import { useItemsStore } from "@/stores/Items";
 import { useLoginStore } from "@/stores/Login";
+import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
 
 const dirty = ref<boolean>(false);
 const router = useRouter();
 const login = useLoginStore();
+const isLoading = ref<boolean>(false);
+
 if (login.validateLogin()) {
   router.push("/");
 }
@@ -73,11 +77,7 @@ if (login.validateLogin()) {
 const itemsStore = useItemsStore();
 
 onMounted(async () => {
-  const result = await ItemService.read();
-  if (!result) {
-    return setError("Unknown error");
-  }
-  itemsStore.setItems([...result.items]);
+  await fetchItems();
 });
 
 const item = ref<Item>({
@@ -88,6 +88,14 @@ const item = ref<Item>({
 
 const visible = ref<boolean>(false);
 const error = ref<ItemError>({ errorMessage: "" });
+
+const showLoading = async () => {
+  isLoading.value = true;
+};
+
+const hideLoading = async () => {
+  isLoading.value = false;
+};
 
 const resetFormData = () => {
   item.value = {
@@ -103,6 +111,8 @@ const hideModal = () => {
 };
 
 const save = async (): Promise<void> => {
+  if (isLoading.value) return;
+
   if (validateItem()) {
     return setError("Item fields cannot be empty");
   }
@@ -119,10 +129,12 @@ const save = async (): Promise<void> => {
 };
 
 const showCreateModal = (): void => {
+  if (isLoading.value) return;
   visible.value = true;
 };
 
 const showEditModal = (id: string): void => {
+  if (isLoading.value) return;
   const objectIndex = itemsStore.findItemIndex(id);
   item.value = { ...itemsStore.items[objectIndex] };
 
@@ -140,41 +152,48 @@ const setError = (errorMessage: string = "Unknown error") => {
 };
 
 const createItem = async (): Promise<void> => {
-  const result = await ItemService.write(item.value);
+  if (isLoading.value) return;
 
-  itemsStore.setItems([...itemsStore.items, result]);
-
+  await ItemService.write(item.value);
+  await fetchItems();
   hideModal();
 };
 
 const removeItem = async (id: string): Promise<void> => {
-  const itemIndex = itemsStore.findItemIndex(id);
+  if (isLoading.value) return;
 
   await ItemService.remove(id);
-  itemsStore.removeItem(itemIndex);
+  await fetchItems();
 };
 
 const updateItem = async (): Promise<void> => {
+  if (isLoading.value) return;
+
   if (item.value.uuid === undefined) {
     return;
   }
 
-  const itemIndex = itemsStore.findItemIndex(item.value.uuid);
-
   //check if user edited item. If not return an error
-  const result = await ItemService.put(item.value.uuid, {
+  await ItemService.put(item.value.uuid, {
     ...item.value,
     update_date: getCurrentDate(),
   });
 
-  if (result === undefined) {
-    return setError();
-  }
-
-  itemsStore.items[itemIndex] = { ...result, uuid: item.value.uuid };
-
+  await fetchItems();
   setError("");
   dirty.value = false;
+};
+
+const fetchItems = async () => {
+  await showLoading();
+  const result = await ItemService.read();
+  if (!result) {
+    return setError("Failed to fetch items");
+  }
+  itemsStore.setItems(result.items);
+
+  await hideLoading();
+  return result;
 };
 
 const getCurrentDate = (): string => {
