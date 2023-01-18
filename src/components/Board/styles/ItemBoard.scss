@@ -9,7 +9,7 @@
   border-radius: 0.3rem;
 
   .header-row {
-    // z-index: -1;
+    z-index: -1;
     top: 0px;
     position: sticky;
     background: #2d3748;
@@ -19,7 +19,7 @@
 
 .items-table-row,
 .header-row {
-  // z-index: -2;
+  z-index: -2;
   word-wrap: break-word;
   display: flex;
   justify-content: center;

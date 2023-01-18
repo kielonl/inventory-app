@@ -3,7 +3,7 @@
     <label :for="name">{{ name }}</label>
     <input
       class="form-input box-shadow--bottom"
-      :class="{ 'input-not-filled': isError && modelValue === '' }"
+      :class="{ 'input-not-filled': isError }"
       :type="inputType"
       spellcheck="false"
       placeholder="..."

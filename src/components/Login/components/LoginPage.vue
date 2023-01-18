@@ -48,22 +48,18 @@ const errorMessage = ref<string>("");
 
 const loginStore = useLoginStore() as any;
 
-const validateLogin = (): boolean => {
-  if (login.value.username === "") {
-    isError.value.username = true;
-    return false;
-  }
-  if (login.value.password === "") {
-    isError.value.password = true;
-    return false;
-  }
-  return true;
+const validateLogin = (): void => {
+  isError.value = {
+    username: login.value.username === "",
+    password: login.value.password === "",
+  };
+  if (login.value.username === "" || login.value.password == "") return;
 };
 
 const loginUser = async () => {
-  if (!validateLogin()) return;
+  validateLogin();
   await loginStore.loginUser(login.value.username, login.value.password);
-  router.push("/home");
+  // router.push("/home");
 };
 </script>
 

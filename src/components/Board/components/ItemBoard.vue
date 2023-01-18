@@ -56,6 +56,7 @@ import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
 import EditIcon from "../../../icons/EditIcon.vue";
 import RemoveIcon from "../../../icons/RemoveIcon.vue";
+import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
 
 import * as ItemService from "../../../services/itemService";
 import type { Item, ItemError } from "../../../types";
@@ -63,7 +64,6 @@ import { useRouter } from "vue-router";
 
 import { useItemsStore } from "@/stores/Items";
 import { useLoginStore } from "@/stores/Login";
-import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
 
 const dirty = ref<boolean>(false);
 const router = useRouter();
@@ -71,7 +71,7 @@ const login = useLoginStore();
 const isLoading = ref<boolean>(false);
 
 if (login.validateLogin()) {
-  router.push("/");
+  // router.push("/");
 }
 
 const itemsStore = useItemsStore();
