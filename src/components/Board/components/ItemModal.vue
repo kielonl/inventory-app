@@ -32,7 +32,11 @@
             :value="item.uuid !== undefined ? 'UPDATE' : 'ADD'"
             :disabled="item.uuid !== undefined && !dirty"
           />
-          <button class="button button--red" @click="_hideModal()">
+          <button
+            type="button"
+            class="button button--red"
+            @click="_hideModal()"
+          >
             CANCEL
           </button>
         </div>
