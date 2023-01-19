@@ -53,11 +53,11 @@ const validateLogin = (): void => {
     username: login.value.username === "",
     password: login.value.password === "",
   };
-  if (login.value.username === "" || login.value.password == "") return;
 };
 
 const loginUser = async () => {
   validateLogin();
+  if (login.value.username === "" || login.value.password === "") return;
   await loginStore.loginUser(login.value.username, login.value.password);
   router.push("/home");
 };

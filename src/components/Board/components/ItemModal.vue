@@ -80,7 +80,13 @@ const validateItem = (): void => {
     description: item.value.description === "",
   };
 
-  saveItem();
+  if (
+    item.value.name !== "" ||
+    item.value.type !== "" ||
+    item.value.description !== ""
+  ) {
+    props.save();
+  }
 };
 
 const clearItem = (): void => {
@@ -88,17 +94,13 @@ const clearItem = (): void => {
     name: "",
     type: "",
     description: "",
-    uuid: item.value.uuid,
+    uuid: undefined,
   };
 };
 
 const _hideModal = (): void => {
   props.hideModal();
   clearItem();
-};
-
-const saveItem = (): void => {
-  props.save();
 };
 </script>
 

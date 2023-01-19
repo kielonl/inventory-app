@@ -113,9 +113,6 @@ const hideModal = () => {
 const save = async (): Promise<void> => {
   if (isLoading.value) return;
 
-  if (validateItem()) {
-    return setError("Item fields cannot be empty");
-  }
   if (itemsStore.findItemIndex(item.value.uuid) === -1) {
     await createItem();
   } else {
@@ -201,14 +198,6 @@ const getCurrentDate = (): string => {
   return `${d.getFullYear()}-${d.getDay()}-${
     d.getMonth() + 1
   }T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
-};
-
-const validateItem = (): boolean => {
-  return (
-    item.value.name === "" ||
-    item.value.type === "" ||
-    item.value.description === ""
-  );
 };
 </script>
 
