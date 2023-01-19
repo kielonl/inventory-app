@@ -1,9 +1,12 @@
 import type { Item, ServiceRead, UpdateItem, ItemError } from "@/types";
-import { HTTP_METHODS, ORDER } from "@/constants";
+import { HTTP_METHODS, COLUMNS, ORDERS } from "@/constants";
 import { callApi } from "../api/callApi";
 
-const read = async (order: ORDER): Promise<ServiceRead> => {
-  const result = await callApi(HTTP_METHODS.GET, `/items/${order}`);
+const read = async (column: COLUMNS, order: ORDERS): Promise<ServiceRead> => {
+  const result = await callApi(
+    HTTP_METHODS.GET,
+    `/items/?skip=0&limit=100&sort=${column}&order=${order}&page=1&size=50`
+  );
 
   return result.data;
 };

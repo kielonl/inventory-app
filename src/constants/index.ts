@@ -6,8 +6,14 @@ export enum HTTP_METHODS {
   DELETE = "DELETE",
 }
 
-export enum ORDER {
+export enum COLUMNS {
   TYPE = "type",
   NAME = "name",
   DESCRIPTION = "description",
+  value = "value",
+}
+
+export enum ORDERS {
+  ASC = "asc",
+  DESC = "desc",
 }

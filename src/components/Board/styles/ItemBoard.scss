@@ -92,7 +92,16 @@
   margin-right: 0.2rem;
   svg {
     margin: 0rem;
+    transition: transform 300ms;
   }
+}
+
+.arrow-up {
+  transform: rorate(0deg);
+}
+
+.arrow-down {
+  transform: rotate(180deg);
 }
 
 svg {

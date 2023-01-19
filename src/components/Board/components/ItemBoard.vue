@@ -19,21 +19,39 @@
           <tbody class="items-other-cell-wrapper">
             <td
               class="items-table-cell name header-name"
-              @click="changeOrder(ORDER.NAME)"
+              @click="changeOrder(COLUMNS.NAME)"
             >
-              Name<ArrowUp :disabled="orderBy !== ORDER.NAME" />
+              Name
+              <ArrowUp
+                :class="{
+                  'arrow-down': sort.order === ORDERS.DESC,
+                  'arrow-up': sort.order === ORDERS.ASC,
+                }"
+              />
             </td>
             <td
               class="items-table-cell type header-type"
-              @click="changeOrder(ORDER.TYPE)"
+              @click="changeOrder(COLUMNS.TYPE)"
             >
-              Type<ArrowUp :disabled="orderBy !== ORDER.TYPE" />
+              Type
+              <ArrowUp
+                :class="{
+                  'arrow-down': sort.order === ORDERS.DESC,
+                  'arrow-up': sort.order === ORDERS.ASC,
+                }"
+              />
             </td>
             <td
               class="items-table-cell description header-description"
-              @click="changeOrder(ORDER.DESCRIPTION)"
+              @click="changeOrder(COLUMNS.DESCRIPTION)"
             >
-              Description<ArrowUp :disabled="orderBy !== ORDER.DESCRIPTION" />
+              Description
+              <ArrowUp
+                :class="{
+                  'arrow-down': sort.order === ORDERS.DESC,
+                  'arrow-up': sort.order === ORDERS.ASC,
+                }"
+              />
             </td>
           </tbody>
         </th>
@@ -68,10 +86,11 @@ import EditIcon from "../../../icons/EditIcon.vue";
 import RemoveIcon from "../../../icons/RemoveIcon.vue";
 import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
 import ArrowUp from "@/icons/ArrowUpIcon.vue";
+import ArrowDown from "@/icons/ArrowDownIcon.vue";
 
 import * as ItemService from "../../../services/itemService";
 import type { Item, ItemError } from "../../../types";
-import { ORDER } from "@/constants";
+import { ORDERS, COLUMNS } from "@/constants";
 import { useRouter } from "vue-router";
 
 import { useItemsStore } from "@/stores/Items";
@@ -81,7 +100,10 @@ const dirty = ref<boolean>(false);
 const router = useRouter();
 const login = useLoginStore();
 const isLoading = ref<boolean>(false);
-const orderBy = ref<ORDER>(ORDER.NAME);
+const sort = ref<{ by: COLUMNS; order: ORDERS }>({
+  by: COLUMNS.NAME,
+  order: ORDERS.ASC,
+});
 
 if (login.validateLogin()) {
   // router.push("/");
@@ -102,10 +124,13 @@ const item = ref<Item>({
 const visible = ref<boolean>(false);
 const error = ref<ItemError>({ errorMessage: "" });
 
-const changeOrder = async (order: ORDER) => {
-  if (order === orderBy.value) return;
+const changeOrder = async (order: COLUMNS) => {
+  if (order === sort.value.by) {
+    sort.value.order =
+      sort.value.order === ORDERS.ASC ? ORDERS.DESC : ORDERS.ASC;
+  }
 
-  orderBy.value = order;
+  sort.value.by = order;
 
   await fetchItems();
 };
@@ -204,8 +229,7 @@ const updateItem = async (): Promise<void> => {
 
 const fetchItems = async () => {
   await showLoading();
-  //@ts-ignore
-  const result = await ItemService.read("string");
+  const result = await ItemService.read(sort.value.by, sort.value.order);
   if (!result) {
     return setError("Failed to fetch items");
   }
