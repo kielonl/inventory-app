@@ -1,25 +1,37 @@
 <template>
   <div :class="{ 'modal-backdrop': visible }"></div>
-  <form @submit.prevent="saveItem()">
+  <form @submit.prevent="validateItem()">
     <Transition name="fade">
       <div class="modal-container" v-if="visible">
-        <InputTextField :name="'Name'" v-model="item.name" />
-        <InputTextField :name="'Type'" v-model="item.type" />
-        <InputTextArea :name="'Description'" v-model="item.description" />
+        <InputTextField
+          :name="'Name'"
+          v-model="item.name"
+          :isError="isError.name"
+        />
+        <InputTextField
+          :name="'Type'"
+          v-model="item.type"
+          :isError="isError.type"
+        />
+        <InputTextArea
+          :name="'Description'"
+          v-model="item.description"
+          :isError="isError.description"
+        />
         <ErrorBox
           v-if="error.errorMessage !== ''"
           :message="error.errorMessage"
         />
         <div class="modal-buttons">
-          <button
+          <input
+            type="submit"
             :class="{
               'button button--green': item.uuid,
               'button button--blue': !item.uuid,
             }"
-            :disabled="validateItem()"
-          >
-            {{ item.uuid !== undefined ? "UPDATE" : "ADD" }}
-          </button>
+            :value="item.uuid !== undefined ? 'UPDATE' : 'ADD'"
+            :disabled="item.uuid !== undefined && !dirty"
+          />
           <button class="button button--red" @click="_hideModal()">
             CANCEL
           </button>
@@ -32,7 +44,7 @@
 <script lang="ts" setup>
 import type { Item, ItemError } from "@/types";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Transition, computed } from "vue";
+import { Transition, computed, ref } from "vue";
 import ErrorBox from "@/components/ReusableComponents/ErrorBox.vue";
 import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
 import InputTextArea from "@/components/ReusableComponents/InputTextArea.vue";
@@ -53,17 +65,28 @@ const item = computed({
   set: (value: any) => emit("update:modelValue", value),
 });
 
-const validateItem = (): boolean => {
-  if (item.value.uuid !== undefined) return !props.dirty;
-  else
-    return (
-      item.value.name === "" ||
-      item.value.type === "" ||
-      item.value.description === "" ||
-      item.value.name.length > 16 ||
-      item.value.type.length > 16 ||
-      item.value.description.length > 80
-    );
+const isError = ref<{ name: boolean; type: boolean; description: boolean }>({
+  name: false,
+  type: false,
+  description: false,
+});
+
+const validateItem = (): void => {
+  if (item.value.uuid !== undefined) !props.dirty;
+
+  isError.value = {
+    name: item.value.name === "",
+    type: item.value.type === "",
+    description: item.value.description === "",
+  };
+
+  if (
+    item.value.name !== "" ||
+    item.value.type !== "" ||
+    item.value.description !== ""
+  ) {
+    props.save();
+  }
 };
 
 const clearItem = (): void => {
@@ -71,17 +94,13 @@ const clearItem = (): void => {
     name: "",
     type: "",
     description: "",
-    uuid: item.value.uuid,
+    uuid: undefined,
   };
 };
 
 const _hideModal = (): void => {
   props.hideModal();
   clearItem();
-};
-
-const saveItem = (): void => {
-  props.save();
 };
 </script>
 

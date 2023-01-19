@@ -3,6 +3,7 @@
     <label :for="name">{{ name }}</label>
     <textarea
       class="form-textarea box-shadow--bottom"
+      :class="{ 'input-not-filled': isError }"
       spellcheck="false"
       placeholder="..."
       v-model="value"
@@ -16,6 +17,7 @@ import { computed } from "vue";
 interface Props {
   name: string;
   modelValue: string;
+  isError: boolean;
 }
 
 const props = defineProps<Props>();

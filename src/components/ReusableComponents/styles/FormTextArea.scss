@@ -11,6 +11,10 @@
   width: 100%;
 }
 
+.input-not-filled {
+  outline: 1px solid red;
+}
+
 @media (max-width: 640px) {
   .form-textarea {
     height: 15rem;

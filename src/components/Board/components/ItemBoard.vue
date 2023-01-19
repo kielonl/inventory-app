@@ -56,6 +56,7 @@ import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
 import EditIcon from "../../../icons/EditIcon.vue";
 import RemoveIcon from "../../../icons/RemoveIcon.vue";
+import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
 
 import * as ItemService from "../../../services/itemService";
 import type { Item, ItemError } from "../../../types";
@@ -63,7 +64,6 @@ import { useRouter } from "vue-router";
 
 import { useItemsStore } from "@/stores/Items";
 import { useLoginStore } from "@/stores/Login";
-import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
 
 const dirty = ref<boolean>(false);
 const router = useRouter();
@@ -113,9 +113,6 @@ const hideModal = () => {
 const save = async (): Promise<void> => {
   if (isLoading.value) return;
 
-  if (validateItem()) {
-    return setError("Item fields cannot be empty");
-  }
   if (itemsStore.findItemIndex(item.value.uuid) === -1) {
     await createItem();
   } else {
@@ -201,14 +198,6 @@ const getCurrentDate = (): string => {
   return `${d.getFullYear()}-${d.getDay()}-${
     d.getMonth() + 1
   }T${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
-};
-
-const validateItem = (): boolean => {
-  return (
-    item.value.name === "" ||
-    item.value.type === "" ||
-    item.value.description === ""
-  );
 };
 </script>
 
