@@ -8,30 +8,40 @@
     :dirty="dirty"
   />
   <div>
-    <LoadingIcon v-if="isLoading" />
     <div class="board-add-item-button">
       <IconButton @click="showCreateModal" :icon="'➕'" />
     </div>
     <div class="flex-center">
       <table class="items-wrapper box-shadow--bottom">
+        <LoadingIcon v-if="isLoading" />
+
         <th class="header-row">
-          <thead class="items-table-cell items-cell-lp">
-            Lp.
-          </thead>
           <tbody class="items-other-cell-wrapper">
-            <td class="items-table-cell name">Name</td>
-            <td class="items-table-cell type">Type</td>
-            <td class="items-table-cell description">Description</td>
+            <td
+              class="items-table-cell name header-name"
+              @click="changeOrder(ORDER.NAME)"
+            >
+              Name<ArrowUp :disabled="orderBy !== ORDER.NAME" />
+            </td>
+            <td
+              class="items-table-cell type header-type"
+              @click="changeOrder(ORDER.TYPE)"
+            >
+              Type<ArrowUp :disabled="orderBy !== ORDER.TYPE" />
+            </td>
+            <td
+              class="items-table-cell description header-description"
+              @click="changeOrder(ORDER.DESCRIPTION)"
+            >
+              Description<ArrowUp :disabled="orderBy !== ORDER.DESCRIPTION" />
+            </td>
           </tbody>
         </th>
         <tr
           class="items-table-row"
-          v-for="(item, index) in itemsStore.items"
+          v-for="item in itemsStore.items"
           :key="item.uuid"
         >
-          <td class="items-table-cell items-cell-lp">
-            {{ Number(index) + 1 }}
-          </td>
           <tbody class="items-other-cell-wrapper">
             <td class="items-table-cell name">{{ item.name }}</td>
             <td class="items-table-cell type">{{ item.type }}</td>
@@ -57,9 +67,11 @@ import IconButton from "./IconButton.vue";
 import EditIcon from "../../../icons/EditIcon.vue";
 import RemoveIcon from "../../../icons/RemoveIcon.vue";
 import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
+import ArrowUp from "@/icons/ArrowUpIcon.vue";
 
 import * as ItemService from "../../../services/itemService";
 import type { Item, ItemError } from "../../../types";
+import { ORDER } from "@/constants";
 import { useRouter } from "vue-router";
 
 import { useItemsStore } from "@/stores/Items";
@@ -69,9 +81,10 @@ const dirty = ref<boolean>(false);
 const router = useRouter();
 const login = useLoginStore();
 const isLoading = ref<boolean>(false);
+const orderBy = ref<ORDER>(ORDER.NAME);
 
 if (login.validateLogin()) {
-  router.push("/");
+  // router.push("/");
 }
 
 const itemsStore = useItemsStore();
@@ -88,6 +101,14 @@ const item = ref<Item>({
 
 const visible = ref<boolean>(false);
 const error = ref<ItemError>({ errorMessage: "" });
+
+const changeOrder = async (order: ORDER) => {
+  if (order === orderBy.value) return;
+
+  orderBy.value = order;
+
+  await fetchItems();
+};
 
 const showLoading = async () => {
   isLoading.value = true;
@@ -183,7 +204,8 @@ const updateItem = async (): Promise<void> => {
 
 const fetchItems = async () => {
   await showLoading();
-  const result = await ItemService.read();
+  //@ts-ignore
+  const result = await ItemService.read("string");
   if (!result) {
     return setError("Failed to fetch items");
   }

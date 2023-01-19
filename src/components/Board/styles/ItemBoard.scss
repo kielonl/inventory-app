@@ -7,6 +7,7 @@
   overflow-y: scroll;
   color: black;
   border-radius: 0.3rem;
+  position: relative;
 
   .header-row {
     z-index: 1;
@@ -80,6 +81,18 @@
 .no-items {
   text-align: center;
   padding: 2rem;
+}
+
+.header-name,
+.header-type,
+.header-description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0.2rem;
+  svg {
+    margin: 0rem;
+  }
 }
 
 svg {

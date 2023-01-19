@@ -13,9 +13,10 @@ export const useLoginStore = defineStore("loginStore", {
     },
     async loginUser(username: string, password: string) {
       const result = await login(username, password);
+      if (!result.success) return;
       this.setLogin({
-        username: result.username,
-        password: result.password,
+        username: username,
+        password: password,
       });
     },
   },

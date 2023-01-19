@@ -1,9 +1,9 @@
 import type { Item, ServiceRead, UpdateItem, ItemError } from "@/types";
-import { HTTP_METHODS } from "@/constants";
+import { HTTP_METHODS, ORDER } from "@/constants";
 import { callApi } from "../api/callApi";
 
-const read = async (): Promise<ServiceRead> => {
-  const result = await callApi(HTTP_METHODS.GET, "/items");
+const read = async (order: ORDER): Promise<ServiceRead> => {
+  const result = await callApi(HTTP_METHODS.GET, `/items/${order}`);
 
   return result.data;
 };

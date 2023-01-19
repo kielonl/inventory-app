@@ -5,3 +5,9 @@ export enum HTTP_METHODS {
   UPDATE = "UPDATE",
   DELETE = "DELETE",
 }
+
+export enum ORDER {
+  TYPE = "type",
+  NAME = "name",
+  DESCRIPTION = "description",
+}
