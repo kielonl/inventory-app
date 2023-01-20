@@ -3,7 +3,10 @@ import { HTTP_METHODS } from "@/constants";
 import { callApi } from "../api/callApi";
 
 const read = async (): Promise<ServiceRead> => {
-  const result = await callApi(HTTP_METHODS.GET, "/items");
+  const result = await callApi(
+    HTTP_METHODS.GET,
+    "/items/?skip=0&limit=100&sort=name&order=asc&page=1&size=50"
+  );
 
   return result.data;
 };
