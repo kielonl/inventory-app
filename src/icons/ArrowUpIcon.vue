@@ -6,6 +6,7 @@
       'arrow-down': sort.order === ORDERS.DESC && sort.by === column,
       'arrow-up': sort.order === ORDERS.ASC && sort.by === column,
     }"
+    class="arrow-icon'"
   >
     <path
       :fill="sort.by === column ? '#FFFFFF' : '#718096'"

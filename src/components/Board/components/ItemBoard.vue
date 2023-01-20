@@ -11,53 +11,13 @@
     <div class="board-add-item-button">
       <IconButton @click="showCreateModal" :icon="'➕'" />
     </div>
-    <div class="flex-center">
-      <table class="items-wrapper box-shadow--bottom">
-        <LoadingIcon v-if="isLoading" />
-
-        <th class="header-row">
-          <tbody class="items-other-cell-wrapper">
-            <td
-              class="items-table-cell name header-name"
-              @click="changeOrder(COLUMNS.NAME)"
-            >
-              Name
-              <ArrowUp :sort="sort" :column="COLUMNS.NAME" />
-            </td>
-            <td
-              class="items-table-cell type header-type"
-              @click="changeOrder(COLUMNS.TYPE)"
-            >
-              Type
-              <ArrowUp :sort="sort" :column="COLUMNS.TYPE" />
-            </td>
-            <td
-              class="items-table-cell description header-description"
-              @click="changeOrder(COLUMNS.DESCRIPTION)"
-            >
-              Description
-              <ArrowUp :sort="sort" :column="COLUMNS.DESCRIPTION" />
-            </td>
-          </tbody>
-        </th>
-        <tr
-          class="items-table-row"
-          v-for="item in itemsStore.items"
-          :key="item.uuid"
-        >
-          <tbody class="items-other-cell-wrapper">
-            <td class="items-table-cell name">{{ item.name }}</td>
-            <td class="items-table-cell type">{{ item.type }}</td>
-            <td class="items-table-cell description cut-text">
-              {{ item.description }}
-            </td>
-            <td class="items-table-cell edit-remove">
-              <EditIcon :showEditModal="showEditModal" :uuid="item.uuid" />
-              <RemoveIcon :removeItem="removeItem" :uuid="item.uuid" />
-            </td>
-          </tbody>
-        </tr>
-      </table>
+    <div class="flex--center">
+      <ItemTable
+        :isLoading="isLoading"
+        :setError="setError"
+        :showCreateModal="showCreateModal"
+        :showEditModal="showEditModal"
+      />
     </div>
   </div>
 </template>
@@ -67,10 +27,6 @@ import { ref, onMounted, watch } from "vue";
 
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
-import EditIcon from "../../../icons/EditIcon.vue";
-import RemoveIcon from "../../../icons/RemoveIcon.vue";
-import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
-import ArrowUp from "@/icons/ArrowUpIcon.vue";
 
 import * as ItemService from "../../../services/itemService";
 import type { Item, ItemError } from "../../../types";
@@ -79,6 +35,7 @@ import { useRouter } from "vue-router";
 
 import { useItemsStore } from "@/stores/Items";
 import { useLoginStore } from "@/stores/Login";
+import ItemTable from "./ItemTable.vue";
 
 const dirty = ref<boolean>(false);
 const router = useRouter();
@@ -90,13 +47,13 @@ const sort = ref<{ by: COLUMNS; order: ORDERS }>({
 });
 
 if (login.validateLogin()) {
-  router.push("/");
+  // router.push("/");
 }
 
 const itemsStore = useItemsStore();
 
 onMounted(async () => {
-  await fetchItems();
+  await itemsStore.fetchItems(sort.value.by, sort.value.order, setError);
 });
 
 const item = ref<Item>({
@@ -107,26 +64,6 @@ const item = ref<Item>({
 
 const visible = ref<boolean>(false);
 const error = ref<ItemError>({ errorMessage: "" });
-
-const changeOrder = async (order: COLUMNS) => {
-  if (order === sort.value.by) {
-    sort.value.order =
-      sort.value.order === ORDERS.ASC ? ORDERS.DESC : ORDERS.ASC;
-  } else {
-    sort.value.order = ORDERS.ASC;
-  }
-
-  sort.value.by = order;
-  await fetchItems();
-};
-
-const showLoading = async () => {
-  isLoading.value = true;
-};
-
-const hideLoading = async () => {
-  isLoading.value = false;
-};
 
 const resetFormData = () => {
   item.value = {
@@ -183,15 +120,9 @@ const createItem = async (): Promise<void> => {
   if (isLoading.value) return;
 
   await ItemService.write(item.value);
-  await fetchItems();
+  await itemsStore.fetchItems(sort.value.by, sort.value.order, setError);
+
   hideModal();
-};
-
-const removeItem = async (id: string): Promise<void> => {
-  if (isLoading.value) return;
-
-  await ItemService.remove(id);
-  await fetchItems();
 };
 
 const updateItem = async (): Promise<void> => {
@@ -206,21 +137,9 @@ const updateItem = async (): Promise<void> => {
     update_date: getCurrentDate(),
   });
 
-  await fetchItems();
+  await itemsStore.fetchItems(sort.value.by, sort.value.order, setError);
   setError("");
   dirty.value = false;
-};
-
-const fetchItems = async () => {
-  await showLoading();
-  const result = await ItemService.read(sort.value.by, sort.value.order);
-  if (!result) {
-    return setError("Failed to fetch items");
-  }
-  itemsStore.setItems(result.items);
-
-  await hideLoading();
-  return result;
 };
 
 const getCurrentDate = (): string => {
@@ -231,6 +150,4 @@ const getCurrentDate = (): string => {
 };
 </script>
 
-<style lang="scss">
-@import "../styles/ItemBoard.scss";
-</style>
+<style lang="scss"></style>
