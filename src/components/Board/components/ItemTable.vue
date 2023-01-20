@@ -57,9 +57,10 @@ import { ORDERS, COLUMNS } from "@/constants";
 import { useItemsStore } from "@/stores/Items";
 import * as ItemService from "@/services/itemService";
 
-import { ref } from "vue";
+import { computed, onMounted } from "vue";
 
 interface Props {
+  sort: { by: COLUMNS; order: ORDERS };
   isLoading: boolean;
   setError: (detail: string) => void;
   showCreateModal(): void;
@@ -67,11 +68,17 @@ interface Props {
 }
 
 const props = defineProps<Props>();
+const emit = defineEmits(["update:sort"]);
+
+const sort = computed({
+  get: () => props.sort,
+  set: (value: any) => emit("update:sort", value),
+});
 
 const itemsStore = useItemsStore();
-const sort = ref<{ by: COLUMNS; order: ORDERS }>({
-  by: COLUMNS.NAME,
-  order: ORDERS.ASC,
+
+onMounted(async () => {
+  await itemsStore.fetchItems(sort.value.by, sort.value.order, props.setError);
 });
 
 const changeOrder = async (order: COLUMNS) => {

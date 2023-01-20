@@ -13,6 +13,7 @@
     </div>
     <div class="flex--center">
       <ItemTable
+        :sort="sort"
         :isLoading="isLoading"
         :setError="setError"
         :showCreateModal="showCreateModal"
@@ -23,10 +24,11 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch } from "vue";
+import { ref, watch } from "vue";
 
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
+import ItemTable from "./ItemTable.vue";
 
 import * as ItemService from "../../../services/itemService";
 import type { Item, ItemError } from "../../../types";
@@ -35,7 +37,6 @@ import { useRouter } from "vue-router";
 
 import { useItemsStore } from "@/stores/Items";
 import { useLoginStore } from "@/stores/Login";
-import ItemTable from "./ItemTable.vue";
 
 const dirty = ref<boolean>(false);
 const router = useRouter();
@@ -47,14 +48,10 @@ const sort = ref<{ by: COLUMNS; order: ORDERS }>({
 });
 
 if (login.validateLogin()) {
-  // router.push("/");
+  router.push("/");
 }
 
 const itemsStore = useItemsStore();
-
-onMounted(async () => {
-  await itemsStore.fetchItems(sort.value.by, sort.value.order, setError);
-});
 
 const item = ref<Item>({
   name: "",
