@@ -111,7 +111,7 @@ const removeItem = async (id: string | undefined): Promise<void> => {
 };
 
 const changeOrder = async (column: COLUMNS) => {
-  sort.changeOrder(column);
+  itemsStore.changeOrder(column);
   await itemsStore.fetchItems(sort.orderBy, sort.hierarchy, props.setError);
 };
 </script>

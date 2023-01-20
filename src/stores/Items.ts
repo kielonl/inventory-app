@@ -1,7 +1,10 @@
 import { defineStore } from "pinia";
 import type { ItemStore } from "@/types";
 import * as ItemService from "@/services/itemService";
-import type { COLUMNS, ORDERS } from "@/constants";
+import { COLUMNS, ORDERS } from "@/constants";
+import { useSortStore } from "./Sort";
+
+const sort = useSortStore();
 
 export const useItemsStore = defineStore("itemsStore", {
   state: () => ({
@@ -30,6 +33,15 @@ export const useItemsStore = defineStore("itemsStore", {
       this.setItems(result.items);
 
       return result;
+    },
+    changeOrder(column: COLUMNS) {
+      if (column === sort.orderBy) {
+        sort.hierarchy *= -1;
+      } else {
+        sort.hierarchy = ORDERS.ASC;
+      }
+
+      sort.orderBy = column;
     },
   },
 });
