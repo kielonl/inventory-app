@@ -2,7 +2,8 @@
   <svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 576 512"
-    class="arrow-icon'"
+    class="arrow-icon arrow-up"
+    :class="{ 'arrow-down': rotated }"
   >
     <path
       :fill="disabled ? '#FFFFFF' : '#718096'"
@@ -14,6 +15,7 @@
 <script setup lang="ts">
 interface Props {
   disabled: boolean;
+  rotated: boolean;
 }
 
 defineProps<Props>();

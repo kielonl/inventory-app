@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
@@ -46,6 +46,10 @@ if (login.validateLogin()) {
 }
 
 const itemsStore = useItemsStore();
+
+onMounted(() => {
+  itemsStore.fetchItems(setError);
+});
 
 const item = ref<Item>({
   name: "",
@@ -111,11 +115,7 @@ const createItem = async (): Promise<void> => {
   if (isLoading.value) return;
 
   await ItemService.write(item.value);
-  await itemsStore.fetchItems(
-    itemsStore.sort.orderBy,
-    itemsStore.sort.hierarchy,
-    setError
-  );
+  await itemsStore.fetchItems(setError);
 
   hideModal();
 };
@@ -132,11 +132,7 @@ const updateItem = async (): Promise<void> => {
     update_date: getCurrentDate(),
   });
 
-  await itemsStore.fetchItems(
-    itemsStore.sort.orderBy,
-    itemsStore.sort.hierarchy,
-    setError
-  );
+  await itemsStore.fetchItems(setError);
   setError("");
   dirty.value = false;
 };

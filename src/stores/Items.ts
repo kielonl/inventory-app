@@ -19,12 +19,11 @@ export const useItemsStore = defineStore("itemsStore", {
     findItemIndex(id: string | undefined): number {
       return this.items.findIndex((obj: any) => obj.uuid === id);
     },
-    async fetchItems(
-      sortBy: COLUMNS,
-      sortOrder: ORDERS,
-      setError: (detail: string) => void
-    ) {
-      const result = await ItemService.read(sortBy, sortOrder);
+    async fetchItems(setError: (detail: string) => void) {
+      const result = await ItemService.read(
+        this.sort.orderBy,
+        this.sort.hierarchy
+      );
       if (!result) {
         return setError("Failed to fetch items");
       }

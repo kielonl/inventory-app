@@ -7,10 +7,9 @@ export enum HTTP_METHODS {
 }
 
 export enum COLUMNS {
-  TYPE = "type",
   NAME = "name",
+  TYPE = "type",
   DESCRIPTION = "description",
-  value = "value",
 }
 
 export enum ORDERS {
