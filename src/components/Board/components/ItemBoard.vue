@@ -35,7 +35,6 @@ import { useRouter } from "vue-router";
 
 import { useItemsStore } from "@/stores/Items";
 import { useLoginStore } from "@/stores/Login";
-import { useSortStore } from "@/stores/Sort";
 
 const dirty = ref<boolean>(false);
 const router = useRouter();
@@ -47,7 +46,6 @@ if (login.validateLogin()) {
 }
 
 const itemsStore = useItemsStore();
-const sort = useSortStore();
 
 const item = ref<Item>({
   name: "",
@@ -113,7 +111,11 @@ const createItem = async (): Promise<void> => {
   if (isLoading.value) return;
 
   await ItemService.write(item.value);
-  await itemsStore.fetchItems(sort.orderBy, sort.hierarchy, setError);
+  await itemsStore.fetchItems(
+    itemsStore.sort.orderBy,
+    itemsStore.sort.hierarchy,
+    setError
+  );
 
   hideModal();
 };
@@ -130,7 +132,11 @@ const updateItem = async (): Promise<void> => {
     update_date: getCurrentDate(),
   });
 
-  await itemsStore.fetchItems(sort.orderBy, sort.hierarchy, setError);
+  await itemsStore.fetchItems(
+    itemsStore.sort.orderBy,
+    itemsStore.sort.hierarchy,
+    setError
+  );
   setError("");
   dirty.value = false;
 };

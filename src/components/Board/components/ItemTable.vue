@@ -12,11 +12,13 @@
           <ArrowUp
             :class="{
               'arrow-down':
-                sort.hierarchy === ORDERS.DESC && sort.orderBy === COLUMNS.NAME,
+                itemsStore.sort.hierarchy === ORDERS.DESC &&
+                itemsStore.sort.orderBy === COLUMNS.NAME,
               'arrow-up':
-                sort.hierarchy === ORDERS.ASC && sort.orderBy === COLUMNS.NAME,
+                itemsStore.sort.hierarchy === ORDERS.ASC &&
+                itemsStore.sort.orderBy === COLUMNS.NAME,
             }"
-            :disabled="sort.orderBy === COLUMNS.NAME"
+            :disabled="itemsStore.sort.orderBy === COLUMNS.NAME"
           />
         </td>
         <td
@@ -27,11 +29,13 @@
           <ArrowUp
             :class="{
               'arrow-down':
-                sort.hierarchy === ORDERS.DESC && sort.orderBy === COLUMNS.TYPE,
+                itemsStore.sort.hierarchy === ORDERS.DESC &&
+                itemsStore.sort.orderBy === COLUMNS.TYPE,
               'arrow-up':
-                sort.hierarchy === ORDERS.ASC && sort.orderBy === COLUMNS.TYPE,
+                itemsStore.sort.hierarchy === ORDERS.ASC &&
+                itemsStore.sort.orderBy === COLUMNS.TYPE,
             }"
-            :disabled="sort.orderBy === COLUMNS.TYPE"
+            :disabled="itemsStore.sort.orderBy === COLUMNS.TYPE"
           />
         </td>
         <td
@@ -42,13 +46,13 @@
           <ArrowUp
             :class="{
               'arrow-down':
-                sort.hierarchy === ORDERS.DESC &&
-                sort.orderBy === COLUMNS.DESCRIPTION,
+                itemsStore.sort.hierarchy === ORDERS.DESC &&
+                itemsStore.sort.orderBy === COLUMNS.DESCRIPTION,
               'arrow-up':
-                sort.hierarchy === ORDERS.ASC &&
-                sort.orderBy === COLUMNS.DESCRIPTION,
+                itemsStore.sort.hierarchy === ORDERS.ASC &&
+                itemsStore.sort.orderBy === COLUMNS.DESCRIPTION,
             }"
-            :disabled="sort.orderBy === COLUMNS.DESCRIPTION"
+            :disabled="itemsStore.sort.orderBy === COLUMNS.DESCRIPTION"
           />
         </td>
       </tr>
@@ -84,7 +88,6 @@ import { useItemsStore } from "@/stores/Items";
 import * as ItemService from "@/services/itemService";
 
 import { onMounted } from "vue";
-import { useSortStore } from "@/stores/Sort";
 
 interface Props {
   isLoading: boolean;
@@ -96,10 +99,13 @@ interface Props {
 const props = defineProps<Props>();
 
 const itemsStore = useItemsStore();
-const sort = useSortStore();
 
 onMounted(() => {
-  itemsStore.fetchItems(sort.orderBy, sort.hierarchy, props.setError);
+  itemsStore.fetchItems(
+    itemsStore.sort.orderBy,
+    itemsStore.sort.hierarchy,
+    props.setError
+  );
 });
 
 const removeItem = async (id: string | undefined): Promise<void> => {
@@ -107,12 +113,20 @@ const removeItem = async (id: string | undefined): Promise<void> => {
   if (props.isLoading) return;
 
   await ItemService.remove(id);
-  await itemsStore.fetchItems(sort.orderBy, sort.hierarchy, props.setError);
+  await itemsStore.fetchItems(
+    itemsStore.sort.orderBy,
+    itemsStore.sort.hierarchy,
+    props.setError
+  );
 };
 
 const changeOrder = async (column: COLUMNS) => {
   itemsStore.changeOrder(column);
-  await itemsStore.fetchItems(sort.orderBy, sort.hierarchy, props.setError);
+  await itemsStore.fetchItems(
+    itemsStore.sort.orderBy,
+    itemsStore.sort.hierarchy,
+    props.setError
+  );
 };
 </script>
 
