@@ -1,6 +1,6 @@
 <template>
   <svg
-    @click="showEditModal(uuid)"
+    @click="showEditModal"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 512 512"
   >
@@ -12,8 +12,7 @@
 
 <script lang="ts" setup>
 interface Props {
-  uuid?: string;
-  showEditModal(uuid?: string): void;
+  showEditModal(): void;
 }
 
 defineProps<Props>();

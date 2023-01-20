@@ -13,7 +13,6 @@
     </div>
     <div class="flex--center">
       <ItemTable
-        :sort="sort"
         :isLoading="isLoading"
         :setError="setError"
         :showCreateModal="showCreateModal"
@@ -32,26 +31,23 @@ import ItemTable from "./ItemTable.vue";
 
 import * as ItemService from "../../../services/itemService";
 import type { Item, ItemError } from "../../../types";
-import { ORDERS, COLUMNS } from "@/constants";
 import { useRouter } from "vue-router";
 
 import { useItemsStore } from "@/stores/Items";
 import { useLoginStore } from "@/stores/Login";
+import { useSortStore } from "@/stores/Sort";
 
 const dirty = ref<boolean>(false);
 const router = useRouter();
 const login = useLoginStore();
 const isLoading = ref<boolean>(false);
-const sort = ref<{ by: COLUMNS; order: ORDERS }>({
-  by: COLUMNS.NAME,
-  order: ORDERS.ASC,
-});
 
 if (login.validateLogin()) {
   router.push("/");
 }
 
 const itemsStore = useItemsStore();
+const sort = useSortStore();
 
 const item = ref<Item>({
   name: "",
@@ -117,7 +113,7 @@ const createItem = async (): Promise<void> => {
   if (isLoading.value) return;
 
   await ItemService.write(item.value);
-  await itemsStore.fetchItems(sort.value.by, sort.value.order, setError);
+  await itemsStore.fetchItems(sort.orderBy, sort.order, setError);
 
   hideModal();
 };
@@ -134,7 +130,7 @@ const updateItem = async (): Promise<void> => {
     update_date: getCurrentDate(),
   });
 
-  await itemsStore.fetchItems(sort.value.by, sort.value.order, setError);
+  await itemsStore.fetchItems(sort.orderBy, sort.order, setError);
   setError("");
   dirty.value = false;
 };

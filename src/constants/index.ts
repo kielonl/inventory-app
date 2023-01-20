@@ -14,6 +14,6 @@ export enum COLUMNS {
 }
 
 export enum ORDERS {
-  ASC = "asc",
-  DESC = "desc",
+  ASC = 1,
+  DESC = -1,
 }

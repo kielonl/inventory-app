@@ -2,48 +2,74 @@
   <table class="items-wrapper box-shadow--bottom">
     <LoadingIcon v-if="isLoading" />
 
-    <th class="header-row">
-      <thead class="items-other-cell-wrapper">
+    <thead class="header-row">
+      <tr class="items-other-cell-wrapper">
         <td
           class="items-table-cell name header-name"
           @click="changeOrder(COLUMNS.NAME)"
         >
           Name
-          <ArrowUp :sort="sort" :column="COLUMNS.NAME" />
+          <ArrowUp
+            :class="{
+              'arrow-down':
+                sort.order === ORDERS.DESC && sort.orderBy === COLUMNS.NAME,
+              'arrow-up':
+                sort.order === ORDERS.ASC && sort.orderBy === COLUMNS.NAME,
+            }"
+            :disabled="sort.orderBy === COLUMNS.NAME"
+          />
         </td>
         <td
           class="items-table-cell type header-type"
           @click="changeOrder(COLUMNS.TYPE)"
         >
           Type
-          <ArrowUp :sort="sort" :column="COLUMNS.TYPE" />
+          <ArrowUp
+            :class="{
+              'arrow-down':
+                sort.order === ORDERS.DESC && sort.orderBy === COLUMNS.TYPE,
+              'arrow-up':
+                sort.order === ORDERS.ASC && sort.orderBy === COLUMNS.TYPE,
+            }"
+            :disabled="sort.orderBy === COLUMNS.TYPE"
+          />
         </td>
         <td
           class="items-table-cell description header-description"
           @click="changeOrder(COLUMNS.DESCRIPTION)"
         >
           Description
-          <ArrowUp :sort="sort" :column="COLUMNS.DESCRIPTION" />
+          <ArrowUp
+            :class="{
+              'arrow-down':
+                sort.order === ORDERS.DESC &&
+                sort.orderBy === COLUMNS.DESCRIPTION,
+              'arrow-up':
+                sort.order === ORDERS.ASC &&
+                sort.orderBy === COLUMNS.DESCRIPTION,
+            }"
+            :disabled="sort.orderBy === COLUMNS.DESCRIPTION"
+          />
         </td>
-      </thead>
-    </th>
-    <tr
+      </tr>
+    </thead>
+    <tbody
       class="items-table-row"
       v-for="item in itemsStore.items"
       :key="item.uuid"
     >
-      <tbody class="items-other-cell-wrapper">
+      <tr class="items-other-cell-wrapper">
         <td class="items-table-cell name">{{ item.name }}</td>
         <td class="items-table-cell type">{{ item.type }}</td>
         <td class="items-table-cell description cut-text">
           {{ item.description }}
         </td>
         <td class="items-table-cell edit-remove">
-          <EditIcon :showEditModal="showEditModal" :uuid="item.uuid" />
-          <RemoveIcon :removeItem="removeItem" :uuid="item.uuid" />
+          <EditIcon :showEditModal="() => showEditModal(item.uuid)" />
+          <RemoveIcon :removeItem="() => removeItem(item.uuid)" />
         </td>
-      </tbody>
-    </tr>
+      </tr>
+    </tbody>
   </table>
 </template>
 
@@ -51,53 +77,42 @@
 import EditIcon from "../../../icons/EditIcon.vue";
 import RemoveIcon from "../../../icons/RemoveIcon.vue";
 import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
-import ArrowUp from "@/icons/ArrowUpIcon.vue";
+import ArrowUp from "@/icons/ArrowIcon.vue";
 
 import { ORDERS, COLUMNS } from "@/constants";
 import { useItemsStore } from "@/stores/Items";
 import * as ItemService from "@/services/itemService";
 
-import { computed, onMounted } from "vue";
+import { onMounted } from "vue";
+import { useSortStore } from "@/stores/Sort";
 
 interface Props {
-  sort: { by: COLUMNS; order: ORDERS };
   isLoading: boolean;
   setError: (detail: string) => void;
   showCreateModal(): void;
-  showEditModal(id: string): void;
+  showEditModal(id?: string): void;
 }
 
 const props = defineProps<Props>();
-const emit = defineEmits(["update:sort"]);
-
-const sort = computed({
-  get: () => props.sort,
-  set: (value: any) => emit("update:sort", value),
-});
 
 const itemsStore = useItemsStore();
+const sort = useSortStore();
 
-onMounted(async () => {
-  await itemsStore.fetchItems(sort.value.by, sort.value.order, props.setError);
+onMounted(() => {
+  itemsStore.fetchItems(sort.orderBy, sort.order, props.setError);
 });
 
-const changeOrder = async (order: COLUMNS) => {
-  if (order === sort.value.by) {
-    sort.value.order =
-      sort.value.order === ORDERS.ASC ? ORDERS.DESC : ORDERS.ASC;
-  } else {
-    sort.value.order = ORDERS.ASC;
-  }
-
-  sort.value.by = order;
-  await itemsStore.fetchItems(sort.value.by, sort.value.order, props.setError);
-};
-
-const removeItem = async (id: string): Promise<void> => {
+const removeItem = async (id: string | undefined): Promise<void> => {
+  if (id === undefined) return;
   if (props.isLoading) return;
 
   await ItemService.remove(id);
-  await itemsStore.fetchItems(sort.value.by, sort.value.order, props.setError);
+  await itemsStore.fetchItems(sort.orderBy, sort.order, props.setError);
+};
+
+const changeOrder = async (column: COLUMNS) => {
+  sort.changeOrder(column);
+  await itemsStore.fetchItems(sort.orderBy, sort.order, props.setError);
 };
 </script>
 
