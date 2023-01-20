@@ -6,16 +6,16 @@ import { COLUMNS, ORDERS } from "@/constants";
 export const useItemsStore = defineStore("itemsStore", {
   state: () => ({
     items: [] as ItemStore[],
-    sort: { orderBy: COLUMNS.NAME, hierarchy: ORDERS.ASC },
-    loading: { isLoading: false },
+    sort: { orderBy: COLUMNS.NAME, orderHierarchy: ORDERS.ASC },
+    loading: false,
   }),
   getters: {},
   actions: {
     async showLoading() {
-      this.loading.isLoading = true;
+      this.loading = true;
     },
     async hideLoading() {
-      this.loading.isLoading = false;
+      this.loading = false;
     },
     setItems(value: any[]): void {
       this.items = [...value];
@@ -30,7 +30,7 @@ export const useItemsStore = defineStore("itemsStore", {
       await this.showLoading();
       const result = await ItemService.read(
         this.sort.orderBy,
-        this.sort.hierarchy
+        this.sort.orderHierarchy
       );
       if (!result) {
         return setError("Failed to fetch items");
@@ -42,9 +42,9 @@ export const useItemsStore = defineStore("itemsStore", {
     },
     changeOrder(column: COLUMNS) {
       if (column === this.sort.orderBy) {
-        this.sort.hierarchy *= -1;
+        this.sort.orderHierarchy *= -1;
       } else {
-        this.sort.hierarchy = ORDERS.ASC;
+        this.sort.orderHierarchy = ORDERS.ASC;
       }
 
       this.sort.orderBy = column;

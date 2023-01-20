@@ -13,7 +13,7 @@
     </div>
     <div class="flex--center">
       <ItemTable
-        :isLoading="itemsStore.loading.isLoading"
+        :isLoading="itemsStore.loading"
         :setError="setError"
         :showCreateModal="showCreateModal"
         :showEditModal="showEditModal"
@@ -73,7 +73,7 @@ const hideModal = () => {
 };
 
 const save = async (): Promise<void> => {
-  if (itemsStore.loading.isLoading) return;
+  if (itemsStore.loading) return;
 
   if (itemsStore.findItemIndex(item.value.uuid) === -1) {
     await createItem();
@@ -88,12 +88,12 @@ const save = async (): Promise<void> => {
 };
 
 const showCreateModal = (): void => {
-  if (itemsStore.loading.isLoading) return;
+  if (itemsStore.loading) return;
   visible.value = true;
 };
 
 const showEditModal = (id: string): void => {
-  if (itemsStore.loading.isLoading) return;
+  if (itemsStore.loading) return;
   const objectIndex = itemsStore.findItemIndex(id);
   item.value = { ...itemsStore.items[objectIndex] };
 
@@ -111,7 +111,7 @@ const setError = (errorMessage: string = "Unknown error") => {
 };
 
 const createItem = async (): Promise<void> => {
-  if (itemsStore.loading.isLoading) return;
+  if (itemsStore.loading) return;
 
   await ItemService.write(item.value);
   await itemsStore.fetchItems(setError);
@@ -120,7 +120,7 @@ const createItem = async (): Promise<void> => {
 };
 
 const updateItem = async (): Promise<void> => {
-  if (itemsStore.loading.isLoading) return;
+  if (itemsStore.loading) return;
 
   if (item.value.uuid === undefined) {
     return;

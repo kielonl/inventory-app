@@ -77,7 +77,7 @@ const props = defineProps<Props>();
 const itemsStore = useItemsStore();
 
 const rotateArrow = (type: COLUMNS): boolean => {
-  if (itemsStore.sort.hierarchy > 0) return false;
+  if (itemsStore.sort.orderHierarchy > 0) return false;
   return itemsStore.sort.orderBy === type;
 };
 
