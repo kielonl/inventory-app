@@ -9,9 +9,10 @@
     border: none;
     padding-top: 0.5rem;
     padding-bottom: 0.5rem;
+    cursor: pointer;
   }
 
-  &:hover {
+  button:hover {
     background: #e2e8f0;
   }
 }
