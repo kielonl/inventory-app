@@ -14,7 +14,7 @@ const register = async (name: string, password: string): Promise<any> => {
 const login = async (
   name: string,
   password: string
-): Promise<{ success: boolean; login: string | undefined }> => {
+): Promise<{ detail: string; login: string | undefined }> => {
   const result = await callApi(HTTP_METHODS.POST, "/login", {
     name,
     username: name,
@@ -22,7 +22,7 @@ const login = async (
     is_admin: false,
   });
 
-  return result.data;
+  return result.response !== undefined ? result.response.data : result.data;
 };
 
 export { register, login };

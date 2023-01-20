@@ -22,36 +22,21 @@
               @click="changeOrder(COLUMNS.NAME)"
             >
               Name
-              <ArrowUp
-                :class="{
-                  'arrow-down': sort.order === ORDERS.DESC,
-                  'arrow-up': sort.order === ORDERS.ASC,
-                }"
-              />
+              <ArrowUp :sort="sort" :column="COLUMNS.NAME" />
             </td>
             <td
               class="items-table-cell type header-type"
               @click="changeOrder(COLUMNS.TYPE)"
             >
               Type
-              <ArrowUp
-                :class="{
-                  'arrow-down': sort.order === ORDERS.DESC,
-                  'arrow-up': sort.order === ORDERS.ASC,
-                }"
-              />
+              <ArrowUp :sort="sort" :column="COLUMNS.TYPE" />
             </td>
             <td
               class="items-table-cell description header-description"
               @click="changeOrder(COLUMNS.DESCRIPTION)"
             >
               Description
-              <ArrowUp
-                :class="{
-                  'arrow-down': sort.order === ORDERS.DESC,
-                  'arrow-up': sort.order === ORDERS.ASC,
-                }"
-              />
+              <ArrowUp :sort="sort" :column="COLUMNS.DESCRIPTION" />
             </td>
           </tbody>
         </th>
@@ -86,7 +71,6 @@ import EditIcon from "../../../icons/EditIcon.vue";
 import RemoveIcon from "../../../icons/RemoveIcon.vue";
 import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
 import ArrowUp from "@/icons/ArrowUpIcon.vue";
-import ArrowDown from "@/icons/ArrowDownIcon.vue";
 
 import * as ItemService from "../../../services/itemService";
 import type { Item, ItemError } from "../../../types";
@@ -106,7 +90,7 @@ const sort = ref<{ by: COLUMNS; order: ORDERS }>({
 });
 
 if (login.validateLogin()) {
-  // router.push("/");
+  router.push("/");
 }
 
 const itemsStore = useItemsStore();
@@ -128,10 +112,11 @@ const changeOrder = async (order: COLUMNS) => {
   if (order === sort.value.by) {
     sort.value.order =
       sort.value.order === ORDERS.ASC ? ORDERS.DESC : ORDERS.ASC;
+  } else {
+    sort.value.order = ORDERS.ASC;
   }
 
   sort.value.by = order;
-
   await fetchItems();
 };
 
@@ -216,7 +201,6 @@ const updateItem = async (): Promise<void> => {
     return;
   }
 
-  //check if user edited item. If not return an error
   await ItemService.put(item.value.uuid, {
     ...item.value,
     update_date: getCurrentDate(),
