@@ -19,8 +19,8 @@
           :isError="isError.description"
         />
         <ErrorBox
-          v-if="error.errorMessage !== ''"
-          :message="error.errorMessage"
+          v-if="itemsStore.error.details !== ''"
+          :message="itemsStore.error.details"
         />
         <div class="modal-buttons">
           <input
@@ -46,16 +46,16 @@
 </template>
 
 <script lang="ts" setup>
-import type { Item, ItemError } from "@/types";
+import type { Item } from "@/types";
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Transition, computed, ref } from "vue";
 import ErrorBox from "@/components/ReusableComponents/ErrorBox.vue";
 import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
 import InputTextArea from "@/components/ReusableComponents/InputTextArea.vue";
+import { useItemsStore } from "@/stores/Items";
 
 interface Props {
   modelValue: Item;
-  error: ItemError;
   save(): void;
   visible: boolean;
   hideModal(): void;
@@ -74,6 +74,8 @@ const isError = ref<{ name: boolean; type: boolean; description: boolean }>({
   type: false,
   description: false,
 });
+
+const itemsStore = useItemsStore();
 
 const validateItem = (): void => {
   if (item.value.uuid !== undefined) !props.dirty;

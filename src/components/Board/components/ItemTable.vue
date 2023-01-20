@@ -68,7 +68,6 @@ import * as ItemService from "@/services/itemService";
 
 interface Props {
   isLoading: boolean;
-  setError: (detail: string) => void;
   showCreateModal(): void;
   showEditModal(id?: string): void;
 }
@@ -86,12 +85,12 @@ const removeItem = async (id: string | undefined): Promise<void> => {
   if (props.isLoading) return;
 
   await ItemService.remove(id);
-  await itemsStore.fetchItems(props.setError);
+  await itemsStore.fetchItems();
 };
 
 const changeOrder = async (column: COLUMNS) => {
   itemsStore.changeOrder(column);
-  await itemsStore.fetchItems(props.setError);
+  await itemsStore.fetchItems();
 };
 </script>
 

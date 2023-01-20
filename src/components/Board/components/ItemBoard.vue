@@ -1,7 +1,6 @@
 <template>
   <ItemModal
     v-model="item"
-    :error="error"
     :save="save"
     :visible="visible"
     :hideModal="hideModal"
@@ -14,7 +13,6 @@
     <div class="flex--center">
       <ItemTable
         :isLoading="itemsStore.loading"
-        :setError="setError"
         :showCreateModal="showCreateModal"
         :showEditModal="showEditModal"
       />
@@ -30,7 +28,7 @@ import IconButton from "./IconButton.vue";
 import ItemTable from "./ItemTable.vue";
 
 import * as ItemService from "../../../services/itemService";
-import type { Item, ItemError } from "../../../types";
+import type { Item } from "../../../types";
 import { useRouter } from "vue-router";
 
 import { useItemsStore } from "@/stores/Items";
@@ -47,7 +45,7 @@ if (login.validateLogin()) {
 const itemsStore = useItemsStore();
 
 onMounted(() => {
-  itemsStore.fetchItems(setError);
+  itemsStore.fetchItems();
 });
 
 const item = ref<Item>({
@@ -57,7 +55,6 @@ const item = ref<Item>({
 });
 
 const visible = ref<boolean>(false);
-const error = ref<ItemError>({ errorMessage: "" });
 
 const resetFormData = () => {
   item.value = {
@@ -69,7 +66,7 @@ const resetFormData = () => {
 
 const hideModal = () => {
   visible.value = false;
-  setError("");
+  itemsStore.setError("");
 };
 
 const save = async (): Promise<void> => {
@@ -81,7 +78,7 @@ const save = async (): Promise<void> => {
     await updateItem();
   }
 
-  if (error.value.errorMessage === "") {
+  if (itemsStore.error.details === "") {
     resetFormData();
     hideModal();
   }
@@ -104,17 +101,11 @@ const showEditModal = (id: string): void => {
   visible.value = true;
 };
 
-const setError = (errorMessage: string = "Unknown error") => {
-  error.value = {
-    errorMessage,
-  };
-};
-
 const createItem = async (): Promise<void> => {
   if (itemsStore.loading) return;
 
   await ItemService.write(item.value);
-  await itemsStore.fetchItems(setError);
+  await itemsStore.fetchItems();
 
   hideModal();
 };
@@ -131,8 +122,8 @@ const updateItem = async (): Promise<void> => {
     update_date: getCurrentDate(),
   });
 
-  await itemsStore.fetchItems(setError);
-  setError("");
+  await itemsStore.fetchItems();
+  itemsStore.setError("");
   dirty.value = false;
 };
 
