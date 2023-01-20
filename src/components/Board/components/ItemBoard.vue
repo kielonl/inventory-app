@@ -13,7 +13,7 @@
     </div>
     <div class="flex--center">
       <ItemTable
-        :isLoading="isLoading"
+        :isLoading="itemsStore.loading.isLoading"
         :setError="setError"
         :showCreateModal="showCreateModal"
         :showEditModal="showEditModal"
@@ -39,7 +39,6 @@ import { useLoginStore } from "@/stores/Login";
 const dirty = ref<boolean>(false);
 const router = useRouter();
 const login = useLoginStore();
-const isLoading = ref<boolean>(false);
 
 if (login.validateLogin()) {
   router.push("/");
@@ -74,7 +73,7 @@ const hideModal = () => {
 };
 
 const save = async (): Promise<void> => {
-  if (isLoading.value) return;
+  if (itemsStore.loading.isLoading) return;
 
   if (itemsStore.findItemIndex(item.value.uuid) === -1) {
     await createItem();
@@ -89,12 +88,12 @@ const save = async (): Promise<void> => {
 };
 
 const showCreateModal = (): void => {
-  if (isLoading.value) return;
+  if (itemsStore.loading.isLoading) return;
   visible.value = true;
 };
 
 const showEditModal = (id: string): void => {
-  if (isLoading.value) return;
+  if (itemsStore.loading.isLoading) return;
   const objectIndex = itemsStore.findItemIndex(id);
   item.value = { ...itemsStore.items[objectIndex] };
 
@@ -112,7 +111,7 @@ const setError = (errorMessage: string = "Unknown error") => {
 };
 
 const createItem = async (): Promise<void> => {
-  if (isLoading.value) return;
+  if (itemsStore.loading.isLoading) return;
 
   await ItemService.write(item.value);
   await itemsStore.fetchItems(setError);
@@ -121,7 +120,7 @@ const createItem = async (): Promise<void> => {
 };
 
 const updateItem = async (): Promise<void> => {
-  if (isLoading.value) return;
+  if (itemsStore.loading.isLoading) return;
 
   if (item.value.uuid === undefined) {
     return;

@@ -7,9 +7,16 @@ export const useItemsStore = defineStore("itemsStore", {
   state: () => ({
     items: [] as ItemStore[],
     sort: { orderBy: COLUMNS.NAME, hierarchy: ORDERS.ASC },
+    loading: { isLoading: false },
   }),
   getters: {},
   actions: {
+    async showLoading() {
+      this.loading.isLoading = true;
+    },
+    async hideLoading() {
+      this.loading.isLoading = false;
+    },
     setItems(value: any[]): void {
       this.items = [...value];
     },
@@ -20,6 +27,7 @@ export const useItemsStore = defineStore("itemsStore", {
       return this.items.findIndex((obj: any) => obj.uuid === id);
     },
     async fetchItems(setError: (detail: string) => void) {
+      await this.showLoading();
       const result = await ItemService.read(
         this.sort.orderBy,
         this.sort.hierarchy
@@ -29,6 +37,7 @@ export const useItemsStore = defineStore("itemsStore", {
       }
       this.setItems(result.items);
 
+      await this.hideLoading();
       return result;
     },
     changeOrder(column: COLUMNS) {
