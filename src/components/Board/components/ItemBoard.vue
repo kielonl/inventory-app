@@ -113,7 +113,7 @@ const createItem = async (): Promise<void> => {
   if (isLoading.value) return;
 
   await ItemService.write(item.value);
-  await itemsStore.fetchItems(sort.orderBy, sort.order, setError);
+  await itemsStore.fetchItems(sort.orderBy, sort.hierarchy, setError);
 
   hideModal();
 };
@@ -130,7 +130,7 @@ const updateItem = async (): Promise<void> => {
     update_date: getCurrentDate(),
   });
 
-  await itemsStore.fetchItems(sort.orderBy, sort.order, setError);
+  await itemsStore.fetchItems(sort.orderBy, sort.hierarchy, setError);
   setError("");
   dirty.value = false;
 };

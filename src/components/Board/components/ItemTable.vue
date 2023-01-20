@@ -12,9 +12,9 @@
           <ArrowUp
             :class="{
               'arrow-down':
-                sort.order === ORDERS.DESC && sort.orderBy === COLUMNS.NAME,
+                sort.hierarchy === ORDERS.DESC && sort.orderBy === COLUMNS.NAME,
               'arrow-up':
-                sort.order === ORDERS.ASC && sort.orderBy === COLUMNS.NAME,
+                sort.hierarchy === ORDERS.ASC && sort.orderBy === COLUMNS.NAME,
             }"
             :disabled="sort.orderBy === COLUMNS.NAME"
           />
@@ -27,9 +27,9 @@
           <ArrowUp
             :class="{
               'arrow-down':
-                sort.order === ORDERS.DESC && sort.orderBy === COLUMNS.TYPE,
+                sort.hierarchy === ORDERS.DESC && sort.orderBy === COLUMNS.TYPE,
               'arrow-up':
-                sort.order === ORDERS.ASC && sort.orderBy === COLUMNS.TYPE,
+                sort.hierarchy === ORDERS.ASC && sort.orderBy === COLUMNS.TYPE,
             }"
             :disabled="sort.orderBy === COLUMNS.TYPE"
           />
@@ -42,10 +42,10 @@
           <ArrowUp
             :class="{
               'arrow-down':
-                sort.order === ORDERS.DESC &&
+                sort.hierarchy === ORDERS.DESC &&
                 sort.orderBy === COLUMNS.DESCRIPTION,
               'arrow-up':
-                sort.order === ORDERS.ASC &&
+                sort.hierarchy === ORDERS.ASC &&
                 sort.orderBy === COLUMNS.DESCRIPTION,
             }"
             :disabled="sort.orderBy === COLUMNS.DESCRIPTION"
@@ -99,7 +99,7 @@ const itemsStore = useItemsStore();
 const sort = useSortStore();
 
 onMounted(() => {
-  itemsStore.fetchItems(sort.orderBy, sort.order, props.setError);
+  itemsStore.fetchItems(sort.orderBy, sort.hierarchy, props.setError);
 });
 
 const removeItem = async (id: string | undefined): Promise<void> => {
@@ -107,12 +107,12 @@ const removeItem = async (id: string | undefined): Promise<void> => {
   if (props.isLoading) return;
 
   await ItemService.remove(id);
-  await itemsStore.fetchItems(sort.orderBy, sort.order, props.setError);
+  await itemsStore.fetchItems(sort.orderBy, sort.hierarchy, props.setError);
 };
 
 const changeOrder = async (column: COLUMNS) => {
   sort.changeOrder(column);
-  await itemsStore.fetchItems(sort.orderBy, sort.order, props.setError);
+  await itemsStore.fetchItems(sort.orderBy, sort.hierarchy, props.setError);
 };
 </script>
 
