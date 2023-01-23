@@ -1,65 +1,33 @@
 <template>
   <ItemModal
     v-model="item"
-    :error="error"
     :save="save"
     :visible="visible"
     :hideModal="hideModal"
     :dirty="dirty"
   />
   <div>
-    <LoadingIcon v-if="isLoading" />
     <div class="board-add-item-button">
       <IconButton @click="showCreateModal" :icon="'➕'" />
     </div>
-    <div class="flex-center">
-      <table class="items-wrapper box-shadow--bottom">
-        <th class="header-row">
-          <thead class="items-table-cell items-cell-lp">
-            Lp.
-          </thead>
-          <tbody class="items-other-cell-wrapper">
-            <td class="items-table-cell name">Name</td>
-            <td class="items-table-cell type">Type</td>
-            <td class="items-table-cell description">Description</td>
-          </tbody>
-        </th>
-        <tr
-          class="items-table-row"
-          v-for="(item, index) in itemsStore.items"
-          :key="item.uuid"
-        >
-          <td class="items-table-cell items-cell-lp">
-            {{ Number(index) + 1 }}
-          </td>
-          <tbody class="items-other-cell-wrapper">
-            <td class="items-table-cell name">{{ item.name }}</td>
-            <td class="items-table-cell type">{{ item.type }}</td>
-            <td class="items-table-cell description cut-text">
-              {{ item.description }}
-            </td>
-            <td class="items-table-cell edit-remove">
-              <EditIcon :showEditModal="showEditModal" :uuid="item.uuid" />
-              <RemoveIcon :removeItem="removeItem" :uuid="item.uuid" />
-            </td>
-          </tbody>
-        </tr>
-      </table>
+    <div class="flex--center">
+      <ItemTable
+        :showCreateModal="showCreateModal"
+        :showEditModal="showEditModal"
+      />
     </div>
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, watch } from "vue";
+import { onMounted, ref, watch } from "vue";
 
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
-import EditIcon from "../../../icons/EditIcon.vue";
-import RemoveIcon from "../../../icons/RemoveIcon.vue";
-import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
+import ItemTable from "./ItemTable.vue";
 
 import * as ItemService from "../../../services/itemService";
-import type { Item, ItemError } from "../../../types";
+import type { Item } from "../../../types";
 import { useRouter } from "vue-router";
 
 import { useItemsStore } from "@/stores/Items";
@@ -68,7 +36,6 @@ import { useLoginStore } from "@/stores/Login";
 const dirty = ref<boolean>(false);
 const router = useRouter();
 const login = useLoginStore();
-const isLoading = ref<boolean>(false);
 
 if (login.validateLogin()) {
   router.push("/");
@@ -76,8 +43,8 @@ if (login.validateLogin()) {
 
 const itemsStore = useItemsStore();
 
-onMounted(async () => {
-  await fetchItems();
+onMounted(() => {
+  itemsStore.fetchItems();
 });
 
 const item = ref<Item>({
@@ -87,15 +54,6 @@ const item = ref<Item>({
 });
 
 const visible = ref<boolean>(false);
-const error = ref<ItemError>({ errorMessage: "" });
-
-const showLoading = async () => {
-  isLoading.value = true;
-};
-
-const hideLoading = async () => {
-  isLoading.value = false;
-};
 
 const resetFormData = () => {
   item.value = {
@@ -107,11 +65,11 @@ const resetFormData = () => {
 
 const hideModal = () => {
   visible.value = false;
-  setError("");
+  itemsStore.setError("");
 };
 
 const save = async (): Promise<void> => {
-  if (isLoading.value) return;
+  if (itemsStore.loading) return;
 
   if (itemsStore.findItemIndex(item.value.uuid) === -1) {
     await createItem();
@@ -119,19 +77,19 @@ const save = async (): Promise<void> => {
     await updateItem();
   }
 
-  if (error.value.errorMessage === "") {
+  if (itemsStore.error.details === "") {
     resetFormData();
     hideModal();
   }
 };
 
 const showCreateModal = (): void => {
-  if (isLoading.value) return;
+  if (itemsStore.loading) return;
   visible.value = true;
 };
 
 const showEditModal = (id: string): void => {
-  if (isLoading.value) return;
+  if (itemsStore.loading) return;
   const objectIndex = itemsStore.findItemIndex(id);
   item.value = { ...itemsStore.items[objectIndex] };
 
@@ -142,55 +100,30 @@ const showEditModal = (id: string): void => {
   visible.value = true;
 };
 
-const setError = (errorMessage: string = "Unknown error") => {
-  error.value = {
-    errorMessage,
-  };
-};
-
 const createItem = async (): Promise<void> => {
-  if (isLoading.value) return;
+  if (itemsStore.loading) return;
 
   await ItemService.write(item.value);
-  await fetchItems();
+  await itemsStore.fetchItems();
+
   hideModal();
 };
 
-const removeItem = async (id: string): Promise<void> => {
-  if (isLoading.value) return;
-
-  await ItemService.remove(id);
-  await fetchItems();
-};
-
 const updateItem = async (): Promise<void> => {
-  if (isLoading.value) return;
+  if (itemsStore.loading) return;
 
   if (item.value.uuid === undefined) {
     return;
   }
 
-  //check if user edited item. If not return an error
   await ItemService.put(item.value.uuid, {
     ...item.value,
     update_date: getCurrentDate(),
   });
 
-  await fetchItems();
-  setError("");
+  await itemsStore.fetchItems();
+  itemsStore.setError("");
   dirty.value = false;
-};
-
-const fetchItems = async () => {
-  await showLoading();
-  const result = await ItemService.read();
-  if (!result) {
-    return setError("Failed to fetch items");
-  }
-  itemsStore.setItems(result.items);
-
-  await hideLoading();
-  return result;
 };
 
 const getCurrentDate = (): string => {
@@ -201,6 +134,4 @@ const getCurrentDate = (): string => {
 };
 </script>
 
-<style lang="scss">
-@import "../styles/ItemBoard.scss";
-</style>
+<style lang="scss"></style>

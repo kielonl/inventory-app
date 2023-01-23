@@ -7,14 +7,15 @@
   overflow-y: scroll;
   color: black;
   border-radius: 0.3rem;
+  position: relative;
+}
 
-  .header-row {
-    z-index: 1;
-    top: 0px;
-    position: sticky;
-    background: #2d3748;
-    color: white;
-  }
+.header-row {
+  z-index: 1;
+  top: 0px;
+  position: sticky;
+  background: #2d3748;
+  color: white;
 }
 
 .items-table-row,
@@ -82,15 +83,33 @@
   padding: 2rem;
 }
 
+.header-name,
+.header-type,
+.header-description {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 0.2rem;
+}
+
+.header-name svg,
+.header-type svg,
+.header-description svg {
+  margin: 0rem;
+  transition: transform 300ms;
+}
+
+.arrow-up {
+  transform: rorate(0deg);
+}
+
+.arrow-down {
+  transform: rotate(180deg);
+}
+
 svg {
   width: 1rem;
   height: 1rem;
   margin: 0.4rem;
   cursor: pointer;
-}
-
-.flex-center {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

@@ -1,36 +1,38 @@
 import type { Item, ServiceRead, UpdateItem, ItemError } from "@/types";
-import { HTTP_METHODS } from "@/constants";
+import { HTTP_METHOD, COLUMN, ORDER } from "@/constants";
 import { callApi } from "../api/callApi";
 
-const read = async (): Promise<ServiceRead> => {
+const read = async (column: COLUMN, order: ORDER): Promise<ServiceRead> => {
   const result = await callApi(
-    HTTP_METHODS.GET,
-    "/items/?skip=0&limit=100&sort=name&order=asc&page=1&size=50"
+    HTTP_METHOD.GET,
+    `/items/?skip=0&limit=100&sort=${column}&order=${
+      order < 0 ? "desc" : "asc"
+    }&page=1&size=50`
   );
 
   return result.data;
 };
 
 const readById = async (id: string): Promise<Item> => {
-  const result = await callApi(HTTP_METHODS.GET, `/items/${id}`);
+  const result = await callApi(HTTP_METHOD.GET, `/items/${id}`);
 
   return result.data;
 };
 
 const write = async (item: Omit<Item, "id">): Promise<Item> => {
-  const result = await callApi(HTTP_METHODS.POST, "/items", item);
+  const result = await callApi(HTTP_METHOD.POST, "/items", item);
 
   return result.data;
 };
 
 const put = async (id: string, item: Omit<Item, "id">): Promise<UpdateItem> => {
-  const result = await callApi(HTTP_METHODS.PUT, `/items/${id}`, item);
+  const result = await callApi(HTTP_METHOD.PUT, `/items/${id}`, item);
 
   return result.data;
 };
 
 const remove = async (id: string): Promise<ItemError> => {
-  const result = await callApi(HTTP_METHODS.DELETE, `/items/${id}`);
+  const result = await callApi(HTTP_METHOD.DELETE, `/items/${id}`);
 
   return result.data;
 };

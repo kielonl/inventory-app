@@ -19,8 +19,8 @@
           :isError="isError.description"
         />
         <ErrorBox
-          v-if="error.errorMessage !== ''"
-          :message="error.errorMessage"
+          v-if="itemsStore.error.details !== ''"
+          :message="itemsStore.error.details"
         />
         <div class="modal-buttons">
           <input
@@ -32,7 +32,11 @@
             :value="item.uuid !== undefined ? 'UPDATE' : 'ADD'"
             :disabled="item.uuid !== undefined && !dirty"
           />
-          <button class="button button--red" @click="_hideModal()">
+          <button
+            type="button"
+            class="button button--red"
+            @click="_hideModal()"
+          >
             CANCEL
           </button>
         </div>
@@ -42,16 +46,15 @@
 </template>
 
 <script lang="ts" setup>
-import type { Item, ItemError } from "@/types";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { Item } from "@/types";
 import { Transition, computed, ref } from "vue";
 import ErrorBox from "@/components/ReusableComponents/ErrorBox.vue";
 import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
 import InputTextArea from "@/components/ReusableComponents/InputTextArea.vue";
+import { useItemsStore } from "@/stores/Items";
 
 interface Props {
   modelValue: Item;
-  error: ItemError;
   save(): void;
   visible: boolean;
   hideModal(): void;
@@ -70,6 +73,8 @@ const isError = ref<{ name: boolean; type: boolean; description: boolean }>({
   type: false,
   description: false,
 });
+
+const itemsStore = useItemsStore();
 
 const validateItem = (): void => {
   if (item.value.uuid !== undefined) !props.dirty;
