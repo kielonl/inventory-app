@@ -1,10 +1,10 @@
-import type { HTTP_METHODS } from "@/constants";
+import type { HTTPMETHODS } from "@/constants";
 import axios from "axios";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export const callApi = async (
-  HTTPMethod: HTTP_METHODS,
+  HTTPMethod: HTTPMETHODS,
   url: string,
   data?: any
 ): Promise<any> => {

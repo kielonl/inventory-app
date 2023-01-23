@@ -12,7 +12,6 @@
     </div>
     <div class="flex--center">
       <ItemTable
-        :isLoading="itemsStore.loading"
         :showCreateModal="showCreateModal"
         :showEditModal="showEditModal"
       />

@@ -1,4 +1,4 @@
-export enum HTTP_METHODS {
+export enum HTTPMETHODS {
   GET = "GET",
   POST = "POST",
   PUT = "PUT",

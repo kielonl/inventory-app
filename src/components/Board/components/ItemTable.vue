@@ -1,37 +1,37 @@
 <template>
   <table class="items-wrapper box-shadow--bottom">
-    <LoadingIcon v-if="isLoading" />
+    <LoadingIcon v-if="itemsStore.loading" />
 
     <thead class="header-row">
       <tr class="items-other-cell-wrapper">
         <th
           class="items-table-cell name header-name"
-          @click="changeOrder(COLUMNS.NAME)"
+          @click="itemsStore.changeOrder(COLUMNS.NAME)"
         >
           Name
           <ArrowIcon
-            :rotated="rotateArrow(COLUMNS.NAME)"
-            :disabled="itemsStore.sort.orderBy === COLUMNS.NAME"
+            :rotated="arrowDirection(COLUMNS.NAME)"
+            :disabled="itemsStore.orderBy === COLUMNS.NAME"
           />
         </th>
         <th
           class="items-table-cell type header-type"
-          @click="changeOrder(COLUMNS.TYPE)"
+          @click="itemsStore.changeOrder(COLUMNS.TYPE)"
         >
           Type
           <ArrowIcon
-            :rotated="rotateArrow(COLUMNS.TYPE)"
-            :disabled="itemsStore.sort.orderBy === COLUMNS.TYPE"
+            :rotated="arrowDirection(COLUMNS.TYPE)"
+            :disabled="itemsStore.orderBy === COLUMNS.TYPE"
           />
         </th>
         <th
           class="items-table-cell description header-description"
-          @click="changeOrder(COLUMNS.DESCRIPTION)"
+          @click="itemsStore.changeOrder(COLUMNS.DESCRIPTION)"
         >
           Description
           <ArrowIcon
-            :rotated="rotateArrow(COLUMNS.DESCRIPTION)"
-            :disabled="itemsStore.sort.orderBy === COLUMNS.DESCRIPTION"
+            :rotated="arrowDirection(COLUMNS.DESCRIPTION)"
+            :disabled="itemsStore.orderBy === COLUMNS.DESCRIPTION"
           />
         </th>
       </tr>
@@ -48,8 +48,8 @@
           {{ item.description }}
         </td>
         <td class="items-table-cell edit-remove">
-          <EditIcon :showEditModal="() => showEditModal(item.uuid)" />
-          <RemoveIcon :removeItem="() => removeItem(item.uuid)" />
+          <EditIcon :onClick="() => showEditModal(item.uuid)" />
+          <RemoveIcon :onClick="() => itemsStore.removeItem(item.uuid)" />
         </td>
       </tr>
     </tbody>
@@ -64,33 +64,18 @@ import ArrowIcon from "@/icons/ArrowIcon.vue";
 
 import { COLUMNS } from "@/constants";
 import { useItemsStore } from "@/stores/Items";
-import * as ItemService from "@/services/itemService";
 
 interface Props {
-  isLoading: boolean;
   showCreateModal(): void;
   showEditModal(id?: string): void;
 }
 
-const props = defineProps<Props>();
+defineProps<Props>();
 const itemsStore = useItemsStore();
 
-const rotateArrow = (type: COLUMNS): boolean => {
-  if (itemsStore.sort.orderHierarchy > 0) return false;
-  return itemsStore.sort.orderBy === type;
-};
-
-const removeItem = async (id: string | undefined): Promise<void> => {
-  if (id === undefined) return;
-  if (props.isLoading) return;
-
-  await ItemService.remove(id);
-  await itemsStore.fetchItems();
-};
-
-const changeOrder = async (column: COLUMNS) => {
-  itemsStore.changeOrder(column);
-  await itemsStore.fetchItems();
+const arrowDirection = (type: COLUMNS): boolean => {
+  if (itemsStore.orderHierarchy > 0) return false;
+  return itemsStore.orderBy === type;
 };
 </script>
 

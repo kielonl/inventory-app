@@ -1,6 +1,6 @@
 <template>
   <svg
-    @click="removeItem"
+    @click="onClick"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 448 512"
   >
@@ -12,7 +12,7 @@
 
 <script lang="ts" setup>
 interface Props {
-  removeItem(): Promise<void>;
+  onClick(): Promise<void>;
 }
 
 defineProps<Props>();

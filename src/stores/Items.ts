@@ -6,17 +6,18 @@ import { COLUMNS, ORDERS } from "@/constants";
 export const useItemsStore = defineStore("itemsStore", {
   state: () => ({
     items: [] as ItemStore[],
-    sort: { orderBy: COLUMNS.NAME, orderHierarchy: ORDERS.ASC },
+    orderBy: COLUMNS.NAME,
+    orderHierarchy: ORDERS.ASC,
     loading: false,
     error: { details: "" },
   }),
   getters: {},
   actions: {
-    async showLoading() {
+    showLoading() {
       this.loading = true;
     },
 
-    async hideLoading() {
+    hideLoading() {
       this.loading = false;
     },
 
@@ -28,8 +29,12 @@ export const useItemsStore = defineStore("itemsStore", {
       this.items = [...value];
     },
 
-    removeItem(itemIndex: number): void {
-      this.items.splice(itemIndex, 1);
+    async removeItem(id: string | undefined): Promise<void> {
+      if (id === undefined) return;
+      if (this.loading) return;
+
+      await ItemService.remove(id);
+      await this.fetchItems();
     },
 
     findItemIndex(id: string | undefined): number {
@@ -37,28 +42,26 @@ export const useItemsStore = defineStore("itemsStore", {
     },
 
     async fetchItems() {
-      await this.showLoading();
-      const result = await ItemService.read(
-        this.sort.orderBy,
-        this.sort.orderHierarchy
-      );
+      this.showLoading();
+      const result = await ItemService.read(this.orderBy, this.orderHierarchy);
       if (!result) {
         return this.setError("Failed to fetch items");
       }
       this.setItems(result.items);
 
-      await this.hideLoading();
+      this.hideLoading();
       return result;
     },
 
-    changeOrder(column: COLUMNS) {
-      if (column === this.sort.orderBy) {
-        this.sort.orderHierarchy *= -1;
+    async changeOrder(column: COLUMNS) {
+      if (column === this.orderBy) {
+        this.orderHierarchy *= -1;
       } else {
-        this.sort.orderHierarchy = ORDERS.ASC;
+        this.orderHierarchy = ORDERS.ASC;
       }
 
-      this.sort.orderBy = column;
+      this.orderBy = column;
+      await this.fetchItems();
     },
   },
 });
