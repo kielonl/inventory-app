@@ -4,7 +4,7 @@
 
     <thead class="header-row">
       <tr class="items-other-cell-wrapper">
-        <td
+        <th
           class="items-table-cell name header-name"
           @click="changeOrder(COLUMNS.NAME)"
         >
@@ -13,8 +13,8 @@
             :rotated="rotateArrow(COLUMNS.NAME)"
             :disabled="itemsStore.sort.orderBy === COLUMNS.NAME"
           />
-        </td>
-        <td
+        </th>
+        <th
           class="items-table-cell type header-type"
           @click="changeOrder(COLUMNS.TYPE)"
         >
@@ -23,8 +23,8 @@
             :rotated="rotateArrow(COLUMNS.TYPE)"
             :disabled="itemsStore.sort.orderBy === COLUMNS.TYPE"
           />
-        </td>
-        <td
+        </th>
+        <th
           class="items-table-cell description header-description"
           @click="changeOrder(COLUMNS.DESCRIPTION)"
         >
@@ -33,7 +33,7 @@
             :rotated="rotateArrow(COLUMNS.DESCRIPTION)"
             :disabled="itemsStore.sort.orderBy === COLUMNS.DESCRIPTION"
           />
-        </td>
+        </th>
       </tr>
     </thead>
     <tbody
