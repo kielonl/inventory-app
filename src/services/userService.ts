@@ -1,8 +1,8 @@
-import { METHODS } from "@/constants";
+import { HTTP_METHOD } from "@/constants";
 import { callApi } from "../api/callApi";
 
 const register = async (name: string, password: string): Promise<any> => {
-  const result = await callApi(METHODS.POST, "/users/create", {
+  const result = await callApi(HTTP_METHOD.POST, "/users/create", {
     name,
     password,
     is_admin: false,
@@ -12,7 +12,7 @@ const register = async (name: string, password: string): Promise<any> => {
 };
 
 const login = async (name: string, password: string): Promise<any> => {
-  const result = await callApi(METHODS.POST, "/login", {
+  const result = await callApi(HTTP_METHOD.POST, "/login", {
     name,
     username: name,
     password,

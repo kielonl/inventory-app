@@ -1,4 +1,4 @@
-export enum METHODS {
+export enum HTTP_METHOD {
   GET = "GET",
   POST = "POST",
   PUT = "PUT",
@@ -6,13 +6,13 @@ export enum METHODS {
   DELETE = "DELETE",
 }
 
-export enum COLUMNS {
+export enum COLUMN {
   NAME = "name",
   TYPE = "type",
   DESCRIPTION = "description",
 }
 
-export enum ORDERS {
+export enum ORDER {
   ASC = 1,
   DESC = -1,
 }

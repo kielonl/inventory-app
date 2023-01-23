@@ -6,32 +6,32 @@
       <tr class="items-other-cell-wrapper">
         <th
           class="items-table-cell name header-name"
-          @click="itemsStore.changeOrder(COLUMNS.NAME)"
+          @click="itemsStore.changeOrder(COLUMN.NAME)"
         >
           Name
           <ArrowIcon
-            :rotated="arrowDirection(COLUMNS.NAME)"
-            :disabled="itemsStore.orderBy === COLUMNS.NAME"
+            :rotated="arrowDirection(COLUMN.NAME)"
+            :disabled="itemsStore.orderBy === COLUMN.NAME"
           />
         </th>
         <th
           class="items-table-cell type header-type"
-          @click="itemsStore.changeOrder(COLUMNS.TYPE)"
+          @click="itemsStore.changeOrder(COLUMN.TYPE)"
         >
           Type
           <ArrowIcon
-            :rotated="arrowDirection(COLUMNS.TYPE)"
-            :disabled="itemsStore.orderBy === COLUMNS.TYPE"
+            :rotated="arrowDirection(COLUMN.TYPE)"
+            :disabled="itemsStore.orderBy === COLUMN.TYPE"
           />
         </th>
         <th
           class="items-table-cell description header-description"
-          @click="itemsStore.changeOrder(COLUMNS.DESCRIPTION)"
+          @click="itemsStore.changeOrder(COLUMN.DESCRIPTION)"
         >
           Description
           <ArrowIcon
-            :rotated="arrowDirection(COLUMNS.DESCRIPTION)"
-            :disabled="itemsStore.orderBy === COLUMNS.DESCRIPTION"
+            :rotated="arrowDirection(COLUMN.DESCRIPTION)"
+            :disabled="itemsStore.orderBy === COLUMN.DESCRIPTION"
           />
         </th>
       </tr>
@@ -62,7 +62,7 @@ import RemoveIcon from "../../../icons/RemoveIcon.vue";
 import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
 import ArrowIcon from "@/icons/ArrowIcon.vue";
 
-import { COLUMNS } from "@/constants";
+import { COLUMN } from "@/constants";
 import { useItemsStore } from "@/stores/Items";
 
 interface Props {
@@ -73,7 +73,7 @@ interface Props {
 defineProps<Props>();
 const itemsStore = useItemsStore();
 
-const arrowDirection = (type: COLUMNS): boolean => {
+const arrowDirection = (type: COLUMN): boolean => {
   if (itemsStore.orderHierarchy > 0) return false;
   return itemsStore.orderBy === type;
 };
