@@ -13,7 +13,7 @@ export const useLoginStore = defineStore("loginStore", {
     },
     async loginUser(username: string, password: string) {
       const result = await login(username, password);
-      if (result.detail !== "Successfull login") return;
+      if (result.request.status >= 400) return;
 
       this.setLogin({
         username: username,

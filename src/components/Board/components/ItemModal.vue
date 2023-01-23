@@ -47,7 +47,6 @@
 
 <script lang="ts" setup>
 import type { Item } from "@/types";
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { Transition, computed, ref } from "vue";
 import ErrorBox from "@/components/ReusableComponents/ErrorBox.vue";
 import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
