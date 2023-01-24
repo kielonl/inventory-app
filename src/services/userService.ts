@@ -1,4 +1,5 @@
 import { HTTP_METHOD } from "@/constants";
+import axios from "axios";
 import { callApi } from "../api/callApi";
 
 const register = async (name: string, password: string): Promise<any> => {
@@ -18,6 +19,7 @@ const login = async (name: string, password: string): Promise<any> => {
     password,
     is_admin: false,
   });
+  console.log(result);
 
   return result;
 };
