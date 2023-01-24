@@ -7,8 +7,12 @@
     :dirty="dirty"
   />
   <div>
-    <div class="board-add-item-button">
+    <div class="board-header">
       <IconButton @click="showCreateModal" :icon="'➕'" />
+      <div class="search-container">
+        <InputTextField />
+        <SearchIcon />
+      </div>
     </div>
     <div class="flex--center">
       <ItemTable
@@ -25,6 +29,8 @@ import { onMounted, ref, watch } from "vue";
 import ItemModal from "./ItemModal.vue";
 import IconButton from "./IconButton.vue";
 import ItemTable from "./ItemTable.vue";
+import SearchIcon from "@/icons/SearchIcon.vue";
+import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
 
 import * as ItemService from "../../../services/itemService";
 import type { Item } from "../../../types";
@@ -32,7 +38,6 @@ import { useRouter } from "vue-router";
 
 import { useItemsStore } from "@/stores/Items";
 import { useLoginStore } from "@/stores/Login";
-
 const dirty = ref<boolean>(false);
 const router = useRouter();
 const login = useLoginStore();

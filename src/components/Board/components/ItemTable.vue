@@ -1,7 +1,5 @@
 <template>
   <table class="items-wrapper box-shadow--bottom">
-    <LoadingIcon v-if="itemsStore.loading" />
-
     <thead class="header-row">
       <tr class="items-other-cell-wrapper">
         <th
@@ -54,6 +52,7 @@
       </tr>
     </tbody>
   </table>
+  <LoadingIcon v-if="itemsStore.loading" />
 </template>
 
 <script setup lang="ts">
