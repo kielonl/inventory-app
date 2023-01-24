@@ -1,7 +1,8 @@
 import type { HTTP_METHOD } from "@/constants";
 import axios from "axios";
 
-const apiUrl = import.meta.env.VITE_API_URL;
+const apiUrl =
+  import.meta.env.VITE_ENV != "development" ? "" : import.meta.env.VITE_API_URL;
 
 export const callApi = async (
   HTTPMethod: HTTP_METHOD,
@@ -18,7 +19,7 @@ export const callApi = async (
         "content-type": "application/json",
       },
       method: HTTPMethod,
-      url: `${url}`,
+      url: `${apiUrl}${url}`,
       data,
     });
   } catch (error) {

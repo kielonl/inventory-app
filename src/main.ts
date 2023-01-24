@@ -6,9 +6,9 @@ import router from "./plugins/router";
 
 import "./assets/main.scss";
 
-if (import.meta.env.VITE_ENV == "development") {
-  worker.start();
-}
+// if (import.meta.env.VITE_ENV == "development") {
+//   worker.start();
+// }
 
 const pinia = createPinia();
 const app = createApp(App);
