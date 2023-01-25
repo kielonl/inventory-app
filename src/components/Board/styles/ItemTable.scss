@@ -50,10 +50,15 @@
   padding: 0.5rem;
 }
 
-.items-other-cell-wrapper > .name,
-.type,
-.description {
+tbody .name,
+tbody .type,
+tbody .description {
   width: 30%;
+}
+
+.items-other-cell-wrapper th {
+  margin-right: 11.9%;
+  margin-left: 11.9%;
 }
 
 .description {
@@ -135,4 +140,11 @@ svg {
 
 .search-container {
   width: 50rem;
+}
+
+.remove-modal-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }

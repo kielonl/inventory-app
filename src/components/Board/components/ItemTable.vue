@@ -1,9 +1,25 @@
 <template>
+  <ItemModal :visible="removing.isRemoving" :hideModal="hideModal"
+    ><div class="remove-modal-wrapper">
+      Do you want to delete?
+      <div class="modal-buttons">
+        <button
+          type="button"
+          class="button button--green"
+          @click="handleRemove(removing.removingId)"
+        >
+          YES</button
+        ><button type="button" class="button button--red" @click="hideModal()">
+          NO
+        </button>
+      </div>
+    </div></ItemModal
+  >
   <table class="items-wrapper box-shadow--bottom">
     <thead class="header-row">
       <tr class="items-other-cell-wrapper">
         <th
-          class="items-table-cell name header-name"
+          class="items-table-cell header-name"
           @click="itemsStore.changeOrder(COLUMN.NAME)"
         >
           Name
@@ -13,7 +29,7 @@
           />
         </th>
         <th
-          class="items-table-cell type header-type"
+          class="items-table-cell header-type"
           @click="itemsStore.changeOrder(COLUMN.TYPE)"
         >
           Type
@@ -23,7 +39,7 @@
           />
         </th>
         <th
-          class="items-table-cell description header-description"
+          class="items-table-cell header-description"
           @click="itemsStore.changeOrder(COLUMN.DESCRIPTION)"
         >
           Description
@@ -47,7 +63,7 @@
         </td>
         <td class="items-table-cell edit-remove">
           <EditIcon :onClick="() => showEditModal(item.uuid)" />
-          <RemoveIcon :onClick="() => itemsStore.removeItem(item.uuid)" />
+          <RemoveIcon :onClick="() => showRemoveModal(item.uuid)" />
         </td>
       </tr>
     </tbody>
@@ -60,9 +76,11 @@ import EditIcon from "../../../icons/EditIcon.vue";
 import RemoveIcon from "../../../icons/RemoveIcon.vue";
 import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
 import ArrowIcon from "@/icons/ArrowIcon.vue";
+import ItemModal from "./ItemModal.vue";
 
 import { COLUMN } from "@/constants";
 import { useItemsStore } from "@/stores/Items";
+import { ref } from "vue";
 
 interface Props {
   showCreateModal(): void;
@@ -71,10 +89,27 @@ interface Props {
 
 defineProps<Props>();
 const itemsStore = useItemsStore();
+const removing = ref<{ isRemoving: boolean; removingId: string | undefined }>({
+  isRemoving: false,
+  removingId: undefined,
+});
 
 const arrowDirection = (type: COLUMN): boolean => {
   if (itemsStore.orderHierarchy > 0) return false;
   return itemsStore.orderBy === type;
+};
+
+const handleRemove = async (id: string | undefined) => {
+  await itemsStore.removeItem(id);
+  removing.value = { isRemoving: false, removingId: undefined };
+};
+
+const showRemoveModal = (id: string | undefined) => {
+  removing.value = { isRemoving: true, removingId: id };
+};
+
+const hideModal = () => {
+  removing.value = { isRemoving: false, removingId: undefined };
 };
 </script>
 

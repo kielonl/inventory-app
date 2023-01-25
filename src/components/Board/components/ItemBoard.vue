@@ -7,7 +7,6 @@
       :hideModal="hideModal"
     />
   </ItemModal>
-
   <div>
     <div class="board-header">
       <IconButton @click="showCreateModal" :icon="'➕'" />
