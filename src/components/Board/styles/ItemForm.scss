@@ -1,0 +1,50 @@
+.modal-buttons {
+  margin-top: 1rem;
+  width: 100%;
+  gap: 1rem;
+  display: flex;
+  flex-direction: row-reverse;
+  align-self: flex-end;
+}
+
+.button {
+  border-radius: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-top: 0.5rem;
+
+  outline: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.button--blue {
+  width: 3rem;
+  background: #4299e1;
+  &:hover {
+    background: #3182ce;
+  }
+}
+
+.button--red {
+  background: #e53e3e;
+  &:hover {
+    background: #c53030;
+  }
+}
+
+.button--green {
+  background: #48bb78;
+  &:hover {
+    background: #38a169;
+  }
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+label {
+  font-size: 0.8rem;
+}

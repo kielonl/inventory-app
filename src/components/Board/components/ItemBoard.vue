@@ -1,11 +1,13 @@
 <template>
-  <ItemModal
-    v-model="item"
-    :save="save"
-    :visible="visible"
-    :hideModal="hideModal"
-    :dirty="dirty"
-  />
+  <ItemModal :visible="visible" :hideModal="hideModal"
+    ><ItemForm
+      :dirty="dirty"
+      v-model="item"
+      :save="save"
+      :hideModal="hideModal"
+    />
+  </ItemModal>
+
   <div>
     <div class="board-header">
       <IconButton @click="showCreateModal" :icon="'➕'" />
@@ -31,6 +33,7 @@ import IconButton from "./IconButton.vue";
 import ItemTable from "./ItemTable.vue";
 import SearchIcon from "@/icons/SearchIcon.vue";
 import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
+import ItemForm from "./ItemForm.vue";
 
 import * as ItemService from "../../../services/itemService";
 import type { Item } from "../../../types";
@@ -76,6 +79,7 @@ const resetFormData = () => {
 
 const hideModal = () => {
   visible.value = false;
+  resetFormData();
   itemsStore.setError("");
 };
 

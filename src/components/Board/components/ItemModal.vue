@@ -1,112 +1,22 @@
 <template>
-  <div :class="{ 'modal-backdrop': visible }"></div>
-  <form @submit.prevent="validateItem()">
+  <div :class="{ 'modal-backdrop': visible }" @click="hideModal()"></div>
+  <form>
     <Transition name="fade">
       <div class="modal-container" v-if="visible">
-        <InputTextField
-          :name="'Name'"
-          v-model="item.name"
-          :isError="isError.name"
-        />
-        <InputTextField
-          :name="'Type'"
-          v-model="item.type"
-          :isError="isError.type"
-        />
-        <InputTextArea
-          :name="'Description'"
-          v-model="item.description"
-          :isError="isError.description"
-        />
-        <ErrorBox
-          v-if="itemsStore.error.details !== ''"
-          :message="itemsStore.error.details"
-        />
-        <div class="modal-buttons">
-          <input
-            type="submit"
-            :class="{
-              'button button--green': item.uuid,
-              'button button--blue': !item.uuid,
-            }"
-            :value="item.uuid !== undefined ? 'UPDATE' : 'ADD'"
-            :disabled="item.uuid !== undefined && !dirty"
-          />
-          <button
-            type="button"
-            class="button button--red"
-            @click="_hideModal()"
-          >
-            CANCEL
-          </button>
-        </div>
+        <slot />
       </div>
     </Transition>
   </form>
 </template>
 
 <script lang="ts" setup>
-import type { Item } from "@/types";
-import { Transition, computed, ref } from "vue";
-import ErrorBox from "@/components/ReusableComponents/ErrorBox.vue";
-import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
-import InputTextArea from "@/components/ReusableComponents/InputTextArea.vue";
-import { useItemsStore } from "@/stores/Items";
+import { Transition } from "vue";
 
 interface Props {
-  modelValue: Item;
-  save(): void;
   visible: boolean;
   hideModal(): void;
-  dirty: boolean;
 }
-const props = defineProps<Props>();
-const emit = defineEmits(["update:modelValue", "update:error"]);
-
-const item = computed({
-  get: () => props.modelValue,
-  set: (value: any) => emit("update:modelValue", value),
-});
-
-const isError = ref<{ name: boolean; type: boolean; description: boolean }>({
-  name: false,
-  type: false,
-  description: false,
-});
-
-const itemsStore = useItemsStore();
-
-const validateItem = (): void => {
-  if (item.value.uuid !== undefined) !props.dirty;
-
-  isError.value = {
-    name: item.value.name === "",
-    type: item.value.type === "",
-    description: item.value.description === "",
-  };
-
-  if (
-    item.value.name !== "" &&
-    item.value.type !== "" &&
-    item.value.description !== ""
-  ) {
-    props.save();
-  }
-};
-
-const clearItem = (): void => {
-  item.value = {
-    name: "",
-    type: "",
-    description: "",
-    uuid: undefined,
-  };
-};
-
-const _hideModal = (): void => {
-  props.hideModal();
-  clearItem();
-};
+defineProps<Props>();
 </script>
 
 <style scoped lang="scss">
