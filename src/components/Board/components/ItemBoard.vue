@@ -10,7 +10,7 @@
     <div class="board-header">
       <IconButton @click="showCreateModal" :icon="'➕'" />
       <div class="search-container">
-        <InputTextField />
+        <InputTextField v-model="itemsStore.searchQuery" />
         <SearchIcon />
       </div>
     </div>
@@ -51,6 +51,15 @@ const itemsStore = useItemsStore();
 onMounted(() => {
   itemsStore.fetchItems();
 });
+
+watch(
+  () => itemsStore.searchQuery,
+  async () => {
+    setTimeout(async () => {
+      await itemsStore.fetchItems();
+    }, 500);
+  }
+);
 
 const item = ref<Item>({
   name: "",
