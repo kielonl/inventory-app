@@ -86,8 +86,8 @@ const validateItem = (): void => {
   };
 
   if (
-    item.value.name !== "" ||
-    item.value.type !== "" ||
+    item.value.name !== "" &&
+    item.value.type !== "" &&
     item.value.description !== ""
   ) {
     props.save();

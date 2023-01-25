@@ -113,3 +113,26 @@ svg {
   margin: 0.4rem;
   cursor: pointer;
 }
+
+.board-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.search-container {
+  display: flex;
+  flex-direction: row-reverse;
+  position: relative;
+}
+
+.search-container svg {
+  position: absolute;
+  width: 1.5rem;
+  height: 2.5rem;
+}
+
+.search-container {
+  width: 50rem;
+}

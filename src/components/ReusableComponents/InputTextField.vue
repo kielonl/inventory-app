@@ -1,22 +1,20 @@
 <template>
-  <div class="form-input-wrapper">
-    <label :for="name">{{ name }}</label>
-    <input
-      class="form-input box-shadow--bottom"
-      :class="{ 'input-not-filled': isError }"
-      :type="inputType"
-      spellcheck="false"
-      placeholder="..."
-      v-model="value"
-    />
-  </div>
+  <label :for="name">{{ name }}</label>
+  <input
+    class="form-input box-shadow--bottom"
+    :class="{ 'input-not-filled': isError }"
+    :type="inputType"
+    spellcheck="false"
+    placeholder="..."
+    v-model="value"
+  />
 </template>
 
 <script setup lang="ts">
 import { computed } from "vue";
 
 interface Props {
-  name: string;
+  name?: string;
   modelValue?: string;
   isError?: boolean;
   inputType?: string;
