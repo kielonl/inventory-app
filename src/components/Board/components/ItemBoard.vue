@@ -35,6 +35,7 @@ import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
 import * as ItemService from "../../../services/itemService";
 import type { Item } from "../../../types";
 import { useRouter } from "vue-router";
+import { debounce } from "@/utils";
 
 import { useItemsStore } from "@/stores/Items";
 import { useLoginStore } from "@/stores/Login";
@@ -54,11 +55,7 @@ onMounted(() => {
 
 watch(
   () => itemsStore.searchQuery,
-  async () => {
-    setTimeout(async () => {
-      await itemsStore.fetchItems();
-    }, 500);
-  }
+  debounce(async () => await itemsStore.fetchItems())
 );
 
 const item = ref<Item>({
