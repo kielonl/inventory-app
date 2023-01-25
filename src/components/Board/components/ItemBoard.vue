@@ -10,7 +10,7 @@
     <div class="board-header">
       <IconButton @click="showCreateModal" :icon="'➕'" />
       <div class="search-container">
-        <InputTextField />
+        <InputTextField v-model="itemsStore.searchQuery" />
         <SearchIcon />
       </div>
     </div>
@@ -35,6 +35,7 @@ import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
 import * as ItemService from "../../../services/itemService";
 import type { Item } from "../../../types";
 import { useRouter } from "vue-router";
+import { debounce } from "@/utils";
 
 import { useItemsStore } from "@/stores/Items";
 import { useLoginStore } from "@/stores/Login";
@@ -51,6 +52,11 @@ const itemsStore = useItemsStore();
 onMounted(() => {
   itemsStore.fetchItems();
 });
+
+watch(
+  () => itemsStore.searchQuery,
+  debounce(async () => await itemsStore.fetchItems())
+);
 
 const item = ref<Item>({
   name: "",

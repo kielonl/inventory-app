@@ -10,6 +10,7 @@ export const useItemsStore = defineStore("itemsStore", {
     orderHierarchy: ORDER.ASC,
     loading: false,
     error: { details: "" },
+    searchQuery: "",
   }),
   getters: {},
   actions: {
@@ -43,7 +44,11 @@ export const useItemsStore = defineStore("itemsStore", {
 
     async fetchItems() {
       this.showLoading();
-      const result = await ItemService.read(this.orderBy, this.orderHierarchy);
+      const result = await ItemService.read(
+        this.orderBy,
+        this.orderHierarchy,
+        this.searchQuery
+      );
       if (!result) {
         return this.setError("Failed to fetch items");
       }

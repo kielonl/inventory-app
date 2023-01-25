@@ -2,10 +2,14 @@ import type { Item, ServiceRead, UpdateItem, ItemError } from "@/types";
 import { HTTP_METHOD, COLUMN, ORDER } from "@/constants";
 import { callApi } from "../api/callApi";
 
-const read = async (column: COLUMN, order: ORDER): Promise<ServiceRead> => {
+const read = async (
+  column: COLUMN,
+  order: ORDER,
+  query?: string
+): Promise<ServiceRead> => {
   const result = await callApi(
     HTTP_METHOD.GET,
-    `/items/?skip=0&limit=100&sort=${column}&order=${
+    `/items/find?name=${query || ""}&skip=0&limit=100&sort=${column}&order=${
       order < 0 ? "desc" : "asc"
     }&page=1&size=50`
   );
