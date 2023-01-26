@@ -1,7 +1,7 @@
 <template>
   <ItemModal :visible="removing.isRemoving" :hideModal="hideModal"
     ><div class="remove-modal-wrapper">
-      Do you want to delete?
+      <div class="remove-modal-text">Do you want to delete?</div>
       <div class="modal-buttons">
         <button
           type="button"
@@ -63,7 +63,7 @@
         </td>
         <td class="items-table-cell edit-remove">
           <EditIcon :onClick="() => showEditModal(item.uuid)" />
-          <RemoveIcon :onClick="async () => showRemoveModal(item.uuid)" />
+          <RemoveIcon :onClick="() => showRemoveModal(item.uuid)" />
         </td>
       </tr>
     </tbody>
