@@ -1,18 +1,22 @@
 <template>
   <table class="items-wrapper box-shadow--bottom">
     <thead class="header-row">
-      <tr class="items-other-cell-wrapper">
+      <tr
+        class="items-other-cell-wrapper"
+        v-for="(column, index) in items"
+        :key="column.uuid"
+      >
         <th
           class="items-table-cell name header-name"
           @click="itemsStore.changeOrder(COLUMN.NAME)"
         >
-          Name
+          {{ Object.keys(column)[index] }}
           <ArrowIcon
-            :rotated="arrowDirection(COLUMN.NAME)"
+            :rotated="arrowDirection(Object.keys(column)[index])"
             :disabled="itemsStore.orderBy === COLUMN.NAME"
           />
         </th>
-        <th
+        <!-- <th
           class="items-table-cell type header-type"
           @click="itemsStore.changeOrder(COLUMN.TYPE)"
         >
@@ -31,14 +35,10 @@
             :rotated="arrowDirection(COLUMN.DESCRIPTION)"
             :disabled="itemsStore.orderBy === COLUMN.DESCRIPTION"
           />
-        </th>
+        </th> -->
       </tr>
     </thead>
-    <tbody
-      class="items-table-row"
-      v-for="item in itemsStore.items"
-      :key="item.uuid"
-    >
+    <tbody class="items-table-row" v-for="item in items" :key="item.uuid">
       <tr class="items-other-cell-wrapper">
         <td class="items-table-cell name">{{ item.name }}</td>
         <td class="items-table-cell type">{{ item.type }}</td>
@@ -67,12 +67,13 @@ import { useItemsStore } from "@/stores/Items";
 interface Props {
   showCreateModal(): void;
   showEditModal(id?: string): void;
+  items: any[];
 }
 
 defineProps<Props>();
 const itemsStore = useItemsStore();
 
-const arrowDirection = (type: COLUMN): boolean => {
+const arrowDirection = (type: string): boolean => {
   if (itemsStore.orderHierarchy > 0) return false;
   return itemsStore.orderBy === type;
 };

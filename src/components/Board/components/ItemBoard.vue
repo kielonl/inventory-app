@@ -18,6 +18,7 @@
       <ItemTable
         :showCreateModal="showCreateModal"
         :showEditModal="showEditModal"
+        :items="filteredItems"
       />
     </div>
   </div>
@@ -35,7 +36,7 @@ import InputTextField from "@/components/ReusableComponents/InputTextField.vue";
 import * as ItemService from "../../../services/itemService";
 import type { Item } from "../../../types";
 import { useRouter } from "vue-router";
-import { debounce } from "@/utils";
+import { debounce, pluck } from "@/utils";
 
 import { useItemsStore } from "@/stores/Items";
 import { useLoginStore } from "@/stores/Login";
@@ -48,6 +49,9 @@ if (login.validateLogin()) {
 }
 
 const itemsStore = useItemsStore();
+const filteredItems = pluck(itemsStore.items, ["type", "name", "description"]);
+console.log(itemsStore.items);
+console.log(filteredItems);
 
 onMounted(() => {
   itemsStore.fetchItems();
