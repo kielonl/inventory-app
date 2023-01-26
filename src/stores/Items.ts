@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import type { ItemStore } from "@/types";
 import * as ItemService from "@/services/itemService";
+import { COLUMN, ORDER } from "@/constants";
 import { useLoginStore } from "./Login";
 
 const user = useLoginStore();
