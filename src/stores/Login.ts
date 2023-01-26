@@ -1,6 +1,7 @@
 import { login } from "@/services/userService";
 import { defineStore } from "pinia";
-import axios from "axios"
+import axios from "axios";
+
 export const useLoginStore = defineStore("loginStore", {
   state: () => ({ login: { username: "", password: "" } }),
   getters: {},
@@ -19,7 +20,7 @@ export const useLoginStore = defineStore("loginStore", {
         username: username,
         password: password,
       });
-	axios.defaults.headers.common[
+      axios.defaults.headers.common[
         "Authorization"
       ] = `Bearer ${result.data.token}`;
     },
