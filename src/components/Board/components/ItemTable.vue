@@ -3,47 +3,31 @@
     <thead class="header-row">
       <tr
         class="items-other-cell-wrapper"
-        v-for="(column, index) in items"
-        :key="column.uuid"
+        v-for="(column, index) in columns"
+        :key="index"
       >
         <th
-          class="items-table-cell name header-name"
-          @click="itemsStore.changeOrder(COLUMN.NAME)"
+          class="items-table-cell header"
+          :class="column"
+          @click="itemsStore.changeOrder(column)"
         >
-          {{ Object.keys(column)[index] }}
+          {{ column }}
           <ArrowIcon
-            :rotated="arrowDirection(Object.keys(column)[index])"
-            :disabled="itemsStore.orderBy === COLUMN.NAME"
+            :rotated="arrowDirection(column)"
+            :disabled="itemsStore.orderBy === column"
           />
         </th>
-        <!-- <th
-          class="items-table-cell type header-type"
-          @click="itemsStore.changeOrder(COLUMN.TYPE)"
-        >
-          Type
-          <ArrowIcon
-            :rotated="arrowDirection(COLUMN.TYPE)"
-            :disabled="itemsStore.orderBy === COLUMN.TYPE"
-          />
-        </th>
-        <th
-          class="items-table-cell description header-description"
-          @click="itemsStore.changeOrder(COLUMN.DESCRIPTION)"
-        >
-          Description
-          <ArrowIcon
-            :rotated="arrowDirection(COLUMN.DESCRIPTION)"
-            :disabled="itemsStore.orderBy === COLUMN.DESCRIPTION"
-          />
-        </th> -->
       </tr>
     </thead>
     <tbody class="items-table-row" v-for="item in items" :key="item.uuid">
       <tr class="items-other-cell-wrapper">
-        <td class="items-table-cell name">{{ item.name }}</td>
-        <td class="items-table-cell type">{{ item.type }}</td>
-        <td class="items-table-cell description cut-text">
-          {{ item.description }}
+        <td
+          v-for="(column, index) in columns"
+          :key="index"
+          class="items-table-cell"
+          :class="column"
+        >
+          {{ item[column] }}
         </td>
         <td class="items-table-cell edit-remove">
           <EditIcon :onClick="() => showEditModal(item.uuid)" />
@@ -68,6 +52,7 @@ interface Props {
   showCreateModal(): void;
   showEditModal(id?: string): void;
   items: any[];
+  columns: string[];
 }
 
 defineProps<Props>();

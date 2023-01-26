@@ -1,10 +1,10 @@
 import type { Item, ServiceRead, UpdateItem, ItemError } from "@/types";
-import { HTTP_METHOD, COLUMN, ORDER } from "@/constants";
+import { HTTP_METHOD } from "@/constants";
 import { callApi } from "../api/callApi";
 
 const read = async (
-  column: COLUMN,
-  order: ORDER,
+  column: string,
+  order: number,
   query?: string
 ): Promise<ServiceRead> => {
   const result = await callApi(

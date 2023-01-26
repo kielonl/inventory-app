@@ -1,13 +1,12 @@
 import { defineStore } from "pinia";
 import type { ItemStore } from "@/types";
 import * as ItemService from "@/services/itemService";
-import { COLUMN, ORDER } from "@/constants";
 
 export const useItemsStore = defineStore("itemsStore", {
   state: () => ({
     items: [] as ItemStore[],
-    orderBy: COLUMN.NAME,
-    orderHierarchy: ORDER.ASC,
+    orderBy: "name",
+    orderHierarchy: 1,
     loading: false,
     error: { details: "" },
     searchQuery: "",
@@ -58,11 +57,11 @@ export const useItemsStore = defineStore("itemsStore", {
       return result;
     },
 
-    async changeOrder(column: COLUMN) {
+    async changeOrder(column: string) {
       if (column === this.orderBy) {
         this.orderHierarchy *= -1;
       } else {
-        this.orderHierarchy = ORDER.ASC;
+        this.orderHierarchy = 1;
       }
 
       this.orderBy = column;

@@ -83,18 +83,14 @@
   padding: 2rem;
 }
 
-.header-name,
-.header-type,
-.header-description {
+.header {
   display: flex;
   justify-content: center;
   align-items: center;
   margin-right: 0.2rem;
 }
 
-.header-name svg,
-.header-type svg,
-.header-description svg {
+.header svg {
   margin: 0rem;
   transition: transform 300ms;
 }
