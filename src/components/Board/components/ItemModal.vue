@@ -84,14 +84,22 @@ const validateItem = (): void => {
   const description = item.value.description.trim();
 
   isError.value = {
-    name: name.length < 3,
-    type: type.length < 3,
-    description: description.length < 3,
+    name: name.length <= 3 || name.length >= 15,
+    type: type.length <= 3 || type.length >= 15,
+    description: description.length <= 3 || description.length >= 60,
   };
 
-  if (name.length > 3 && type.length > 3 && description.length > 3) {
-    props.save();
+  if (
+    name.length <= 3 ||
+    name.length >= 15 ||
+    type.length <= 3 ||
+    type.length >= 15 ||
+    description.length <= 3 ||
+    description.length >= 60
+  ) {
+    return;
   }
+  props.save();
 };
 
 const clearItem = (): void => {
