@@ -79,19 +79,33 @@ const itemsStore = useItemsStore();
 const validateItem = (): void => {
   if (item.value.uuid !== undefined) !props.dirty;
 
+  item.value = {
+    name: item.value.name.trim(),
+    type: item.value.type.trim(),
+    description: item.value.description.trim(),
+  };
+
+  const name = item.value.name;
+  const type = item.value.type;
+  const description = item.value.description;
+
   isError.value = {
-    name: item.value.name === "",
-    type: item.value.type === "",
-    description: item.value.description === "",
+    name: name.length <= 3 || name.length >= 15,
+    type: type.length <= 3 || type.length >= 15,
+    description: description.length <= 3 || description.length >= 60,
   };
 
   if (
-    item.value.name !== "" &&
-    item.value.type !== "" &&
-    item.value.description !== ""
+    name.length <= 3 ||
+    name.length >= 15 ||
+    type.length <= 3 ||
+    type.length >= 15 ||
+    description.length <= 3 ||
+    description.length >= 60
   ) {
-    props.save();
+    return;
   }
+  props.save();
 };
 
 const clearItem = (): void => {
@@ -105,6 +119,11 @@ const clearItem = (): void => {
 
 const _hideModal = (): void => {
   props.hideModal();
+  isError.value = {
+    name: false,
+    type: false,
+    description: false,
+  };
   clearItem();
 };
 </script>
