@@ -79,9 +79,15 @@ const itemsStore = useItemsStore();
 const validateItem = (): void => {
   if (item.value.uuid !== undefined) !props.dirty;
 
-  const name = item.value.name.trim();
-  const type = item.value.type.trim();
-  const description = item.value.description.trim();
+  item.value = {
+    name: item.value.name.trim(),
+    type: item.value.type.trim(),
+    description: item.value.description.trim(),
+  };
+
+  const name = item.value.name;
+  const type = item.value.type;
+  const description = item.value.description;
 
   isError.value = {
     name: name.length <= 3 || name.length >= 15,
