@@ -63,7 +63,7 @@
         </td>
         <td class="items-table-cell edit-remove">
           <EditIcon :onClick="() => showEditModal(item.uuid)" />
-          <RemoveIcon :onClick="() => showRemoveModal(item.uuid)" />
+          <RemoveIcon :onClick="async () => showRemoveModal(item.uuid)" />
         </td>
       </tr>
     </tbody>
