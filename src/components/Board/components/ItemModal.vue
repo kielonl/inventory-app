@@ -80,15 +80,19 @@ const validateItem = (): void => {
   if (item.value.uuid !== undefined) !props.dirty;
 
   isError.value = {
-    name: item.value.name === "",
-    type: item.value.type === "",
-    description: item.value.description === "",
+    name: item.value.name === "" || item.value.name.length < 3,
+    type: item.value.type === "" || item.value.type.length < 3,
+    description:
+      item.value.description === "" || item.value.description.length < 3,
   };
 
   if (
     item.value.name !== "" &&
+    item.value.name.length > 3 &&
     item.value.type !== "" &&
-    item.value.description !== ""
+    item.value.type.length > 3 &&
+    item.value.description !== "" &&
+    item.value.description.length > 3
   ) {
     props.save();
   }
@@ -105,6 +109,11 @@ const clearItem = (): void => {
 
 const _hideModal = (): void => {
   props.hideModal();
+  isError.value = {
+    name: false,
+    type: false,
+    description: false,
+  };
   clearItem();
 };
 </script>
