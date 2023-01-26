@@ -79,21 +79,17 @@ const itemsStore = useItemsStore();
 const validateItem = (): void => {
   if (item.value.uuid !== undefined) !props.dirty;
 
+  const name = item.value.name.trim();
+  const type = item.value.type.trim();
+  const description = item.value.description.trim();
+
   isError.value = {
-    name: item.value.name === "" || item.value.name.length < 3,
-    type: item.value.type === "" || item.value.type.length < 3,
-    description:
-      item.value.description === "" || item.value.description.length < 3,
+    name: name.length < 3,
+    type: type.length < 3,
+    description: description.length < 3,
   };
 
-  if (
-    item.value.name !== "" &&
-    item.value.name.length > 3 &&
-    item.value.type !== "" &&
-    item.value.type.length > 3 &&
-    item.value.description !== "" &&
-    item.value.description.length > 3
-  ) {
+  if (name.length > 3 && type.length > 3 && description.length > 3) {
     props.save();
   }
 };
