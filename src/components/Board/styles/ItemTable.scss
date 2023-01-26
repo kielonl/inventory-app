@@ -148,3 +148,10 @@ svg {
   align-items: center;
   flex-direction: column;
 }
+
+.modal-buttons {
+  width: 5rem;
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+}
