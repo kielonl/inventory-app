@@ -1,6 +1,9 @@
 import { defineStore } from "pinia";
 import type { ItemStore } from "@/types";
 import * as ItemService from "@/services/itemService";
+import { useLoginStore } from "./Login";
+
+const user = useLoginStore();
 
 export const useItemsStore = defineStore("itemsStore", {
   state: () => ({
@@ -42,13 +45,15 @@ export const useItemsStore = defineStore("itemsStore", {
     },
 
     async fetchItems() {
+      if (user.login.username === "" || user.login.password === "") return;
+
       this.showLoading();
       const result = await ItemService.read(
         this.orderBy,
         this.orderHierarchy,
         this.searchQuery
       );
-      if (!result) {
+      if (result.status >= 400) {
         return this.setError("Failed to fetch items");
       }
       this.setItems(result.items);
