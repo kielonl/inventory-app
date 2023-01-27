@@ -3,11 +3,14 @@
     <div class="login-form-container flex--center">
       <img :src="logo" alt="logo" />
       <div class="login-inputs-container flex--center">
-        <LoginForm v-if="form == 'Login'" />
-        <RegisterForm v-if="form == 'Register'" :changeForm="changeForm" />
-        <div class="switch" @click="changeForm">
-          {{ form === "Login" ? "Register" : "Login" }}
-        </div>
+        <LoginForm
+          v-if="form == 'Login'"
+          :changeForm="() => changeForm('Register')"
+        />
+        <RegisterForm
+          v-if="form == 'Register'"
+          :changeForm="() => changeForm('Login')"
+        />
       </div>
       <ErrorBox v-if="errorMessage !== ''" :message="errorMessage" />
     </div>
@@ -25,10 +28,10 @@ import type { Form } from "@/types";
 
 const errorMessage = ref<string>("");
 
-const form = ref<Form>("Login");
+const form = ref<Form>("Register");
 
-const changeForm = () => {
-  return (form.value = form.value === "Login" ? "Register" : "Login");
+const changeForm = (formComponent: Form) => {
+  return (form.value = formComponent);
 };
 </script>
 

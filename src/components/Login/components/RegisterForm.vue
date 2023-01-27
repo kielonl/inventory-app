@@ -18,6 +18,7 @@
     />
     <input type="submit" class="login-button" value="Register" />
   </form>
+  <div class="switch" @click="changeForm('Login')">Login</div>
 </template>
 
 <script setup lang="ts">
@@ -28,7 +29,7 @@ import type { Register } from "@/types";
 import { ref } from "vue";
 
 interface Props {
-  changeForm(): void;
+  changeForm(formComponent: string): void;
 }
 const props = defineProps<Props>();
 const loginStore = useLoginStore();
@@ -66,6 +67,6 @@ const RegisterUser = async () => {
     register.value.name,
     register.value.password
   );
-  props.changeForm();
+  props.changeForm("Login");
 };
 </script>

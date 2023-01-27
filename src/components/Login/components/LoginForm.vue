@@ -14,6 +14,7 @@
 
     <input type="submit" class="login-button" value="Login" />
   </form>
+  <div class="switch" @click="changeForm('Login')">Register</div>
 </template>
 
 <script setup lang="ts">
@@ -24,6 +25,11 @@ import type { Login } from "@/types";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
+interface Props {
+  changeForm(formComponent: string): void;
+}
+
+defineProps<Props>();
 const router = useRouter();
 const loginStore = useLoginStore();
 
