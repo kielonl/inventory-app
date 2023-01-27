@@ -19,10 +19,16 @@ export interface ItemError {
   errorMessage: string;
 }
 
-export interface User {
+export interface Login {
   username: string;
   password: string;
 }
+
+export interface Register extends Login {
+  name: string;
+}
+
+type Form = "Login" | "Register";
 
 export interface ServiceRead {
   items: Item[];

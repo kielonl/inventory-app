@@ -1,11 +1,15 @@
 import { HTTP_METHOD } from "@/constants";
 import { callApi } from "../api/callApi";
 
-const register = async (name: string, password: string): Promise<any> => {
+const register = async (
+  username: string,
+  name: string,
+  password: string
+): Promise<any> => {
   const result = await callApi(HTTP_METHOD.POST, "/users/create", {
+    username,
     name,
     password,
-    is_admin: false,
   });
 
   return result.data;
