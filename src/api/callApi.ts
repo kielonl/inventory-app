@@ -9,7 +9,6 @@ export const callApi = async (
   data?: any
 ): Promise<any> => {
   try {
-    console.log(`${apiUrl}${url}`);
     return await axios({
       headers: {
         "Access-Control-Allow-Origin": "*",

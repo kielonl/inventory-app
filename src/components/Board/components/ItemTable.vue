@@ -61,10 +61,10 @@ import EditIcon from "../../../icons/EditIcon.vue";
 import RemoveIcon from "../../../icons/RemoveIcon.vue";
 import LoadingIcon from "@/components/ReusableComponents/LoadingIcon.vue";
 import ArrowIcon from "@/icons/ArrowIcon.vue";
+import LookUpIcon from "@/icons/LookUpIcon.vue";
 
 import { COLUMN } from "@/constants";
 import { useItemsStore } from "@/stores/Items";
-import LookUpIcon from "@/icons/LookUpIcon.vue";
 
 import { useRouter } from "vue-router";
 
