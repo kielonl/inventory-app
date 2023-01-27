@@ -11,6 +11,7 @@
 </template>
 
 <script setup lang="ts">
+//@ts-ignore
 import { QrcodeStream } from "vue3-qrcode-reader";
 import { checkIfValidUUID } from "@/utils";
 import { readById } from "@/services/itemService";
@@ -37,23 +38,31 @@ const onInit = async (promise: Promise<any>) => {
   try {
     await promise;
   } catch (error: any) {
-    if (error.name === "NotAllowedError") {
-      error.value = "ERROR: you need to grant camera access permission";
-    } else if (error.name === "NotFoundError") {
-      error.value = "ERROR: no camera on this device";
-    } else if (error.name === "NotSupportedError") {
-      error.value = "ERROR: secure context required (HTTPS, localhost)";
-    } else if (error.name === "NotReadableError") {
-      error.value = "ERROR: is the camera already in use?";
-    } else if (error.name === "OverconstrainedError") {
-      error.value = "ERROR: installed cameras are not suitable";
-    } else if (error.name === "StreamApiNotSupportedError") {
-      error.value = "ERROR: Stream API is not supported in this browser";
-    } else if (error.name === "InsecureContextError") {
-      error.value =
-        "ERROR: Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.";
-    } else {
-      error.value = `ERROR: Camera error (${error.name})`;
+    switch (error.name) {
+      case "NotAllowedError":
+        error.value = "ERROR: you need to grant camera access permission";
+        break;
+      case "NotFoundError":
+        error.value = "ERROR: no camera on this device";
+        break;
+      case "NotSupportedError":
+        error.value = "ERROR: secure context required (HTTPS, localhost)";
+        break;
+      case "NotReadableError":
+        error.value = "ERROR: is the camera already in use?";
+        break;
+      case "OverconstrainedError":
+        error.value = "ERROR: installed cameras are not suitable";
+        break;
+      case "StreamApiNotSupportedError":
+        error.value = "ERROR: Stream API is not supported in this browser";
+        break;
+      case "InsecureContextError":
+        error.value =
+          "ERROR: Camera access is only permitted in secure context. Use HTTPS or localhost rather than HTTP.";
+        break;
+      default:
+        error.value = `ERROR: Camera error (${error.name})`;
     }
   }
 };
