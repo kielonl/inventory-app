@@ -48,7 +48,7 @@
         <td class="items-table-cell edit-remove">
           <EditIcon :onClick="() => showEditModal(item.uuid)" />
           <RemoveIcon :onClick="() => itemsStore.removeItem(item.uuid)" />
-          <LookUpIcon :onClick="async () => lookUpItem(item.uuid)" />
+          <LookUpIcon :onClick="() => lookUpItem(item.uuid)" />
         </td>
       </tr>
     </tbody>

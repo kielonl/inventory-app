@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 interface Props {
-  onClick(): Promise<void>;
+  onClick(): void;
 }
 
 defineProps<Props>();
