@@ -19,8 +19,7 @@ export const callApi = async (
         "content-type": "application/json",
       },
       method: HTTPMethod,
-      // url: `${apiUrl}${url}`,
-      url,
+      url: `${apiUrl}${url}`,
       data,
     });
   } catch (error) {

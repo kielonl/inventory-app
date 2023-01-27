@@ -1,34 +1,47 @@
 <template>
-  <div class="item-wrapper flex--center">
-    <div class="item-container box-shadow--bottom">
-      <div class="item-image">
-        <img :src="header" alt="header-image" />
-      </div>
-      <div class="right-side">
-        <div class="item-author">autor</div>
-        <div class="item-type">type</div>
-        <div class="item-description">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ut delectus
-          aperiam quidem cupiditate eaque rem dolores ex id quo quae?
-        </div>
-      </div>
+  <div class="card">
+    <div @click="backToItems" class="upper-bar">
+      <LeftArrowIcon />BACK TO ALL ITEMS
+    </div>
+    <div class="item-image">
+      <img :src="header" alt="header-image" />
+    </div>
+    <div class="item-description">
+      <h2 class="item-author">{{ item?.name }}</h2>
+      <p class="item-uuid">{{ item?.uuid }}</p>
+      <h4 class="item-type">{{ item?.type }}</h4>
+      <p class="item-description">
+        {{ item?.description }}
+      </p>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from "vue";
-// import { readById } from "@/services/itemService";
-import header from "../../../assets/cos.png";
+import { onMounted, ref } from "vue";
+import { readById } from "@/services/itemService";
+import header from "../../../assets/halinowpetla.png";
+import type { Item } from "@/types";
+import LeftArrowIcon from "@/icons/LeftArrowIcon.vue";
+
+import { useRouter } from "vue-router";
 
 interface Props {
   id: string;
 }
-
 const props = defineProps<Props>();
+const router = useRouter();
+
+const item = ref<Item>();
+
 onMounted(async () => {
-  //   console.log(result);
+  const result = await readById(props.id);
+  item.value = result;
 });
+
+const backToItems = () => {
+  router.push("/home");
+};
 </script>
 
 <style scoped lang="scss">

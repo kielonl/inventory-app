@@ -48,6 +48,7 @@
         <td class="items-table-cell edit-remove">
           <EditIcon :onClick="() => showEditModal(item.uuid)" />
           <RemoveIcon :onClick="() => itemsStore.removeItem(item.uuid)" />
+          <LookUpIcon :onClick="async () => lookUpItem(item.uuid)" />
         </td>
       </tr>
     </tbody>
@@ -63,6 +64,9 @@ import ArrowIcon from "@/icons/ArrowIcon.vue";
 
 import { COLUMN } from "@/constants";
 import { useItemsStore } from "@/stores/Items";
+import LookUpIcon from "@/icons/LookUpIcon.vue";
+
+import { useRouter } from "vue-router";
 
 interface Props {
   showCreateModal(): void;
@@ -71,10 +75,17 @@ interface Props {
 
 defineProps<Props>();
 const itemsStore = useItemsStore();
+const router = useRouter();
 
 const arrowDirection = (type: COLUMN): boolean => {
   if (itemsStore.orderHierarchy > 0) return false;
   return itemsStore.orderBy === type;
+};
+
+const lookUpItem = (id?: string) => {
+  if (!id) return;
+
+  router.push(`/item/${id}`);
 };
 </script>
 
