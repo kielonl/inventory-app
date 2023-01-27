@@ -9,6 +9,7 @@ export const callApi = async (
   data?: any
 ): Promise<any> => {
   try {
+    console.log(`${apiUrl}${url}`);
     return await axios({
       headers: {
         "Access-Control-Allow-Origin": "*",
@@ -18,7 +19,8 @@ export const callApi = async (
         "content-type": "application/json",
       },
       method: HTTPMethod,
-      url: `${apiUrl}${url}`,
+      // url: `${apiUrl}${url}`,
+      url,
       data,
     });
   } catch (error) {

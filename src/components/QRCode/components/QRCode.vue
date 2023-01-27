@@ -12,13 +12,21 @@
 
 <script setup lang="ts">
 import { QrcodeStream } from "vue3-qrcode-reader";
+import { checkIfValidUUID } from "@/utils";
 import { ref } from "vue";
+import { readById } from "@/services/itemService";
 
 const result = ref("");
 const error = ref("");
 
-const onDecode = (result: any) => {
+const onDecode = async (result: any) => {
+  console.log(result);
+  if (!checkIfValidUUID(result)) {
+    result.value = "invalid uuid";
+  }
   result.value = result;
+  const item = await readById(result);
+  console.log(item);
 };
 
 const onInit = async (promise: Promise<any>) => {

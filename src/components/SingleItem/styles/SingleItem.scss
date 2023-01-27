@@ -1,0 +1,35 @@
+.item-wrapper {
+  width: 100%;
+  height: 100%;
+}
+.item-container {
+  width: 30rem;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: 0.2fr 0.7fr;
+  grid-column-gap: 0px;
+  grid-row-gap: 0px;
+}
+
+.item-image {
+  grid-area: 1 / 1 / 4 / 2;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.item-author {
+  grid-area: 1 / 2 / 2 / 3;
+  font-size: 12pt;
+  color: #3182ce;
+}
+.item-type {
+  grid-area: 2 / 2 / 3 / 3;
+  font-size: 18pt;
+}
+.item-description {
+  grid-area: 3 / 2 / 4 / 3;
+}
+.right-side {
+  padding: 1rem;
+  word-wrap: break-word;
+}
